@@ -1,0 +1,4 @@
+//Products
+export const LOADING_PRODUCTS = 'LOADING_PRODUCTS';
+export const PRODUCTS_SUCCESS = 'PRODUCTS_SUCCESS';
+export const PRODUCTS_FAIL = 'PRODUCTS_FAIL';
