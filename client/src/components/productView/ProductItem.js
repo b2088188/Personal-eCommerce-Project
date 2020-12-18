@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import RatingStar from '../../utils/RatingStar';
 
 const ProductItem = ({
@@ -8,13 +9,13 @@ const ProductItem = ({
 
 	return (
       <div className = "product-view__product">
-        		<a href="#" className = "product-view__linkimage">
+        		<Link to = {`/products/${product._id}`} className = "product-view__linkimage">
         			<img src = {product.image} alt = {product.name} className = "product-view__image" />
-        		</a>
+        		</Link>
                 <div className = "product-view__productdetails">
-                	<a href="#" className = "product-view__linkname">
+                	<Link to = {`/products/${product._id}`} className = "product-view__linkname">
                 		{product.name}
-                	</a>
+                	</Link>
                 	<div className = "product-view__rating">
                 		<RatingStar average = {product.ratingsAverage} />
                 		<span className = "product-view__ratingcount">{product.ratingsQuantity} reviews</span>
