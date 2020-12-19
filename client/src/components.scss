@@ -7,6 +7,16 @@
 	justify-content: space-between;
 }
 
+.u-left-40p{
+	margin-left: 40%;
+}
+
+.u-left-50p{
+	margin-left: 50%;
+}
+
+
+//Button
 .btn--default{
 	    background: #333;
 		color: #fff;
@@ -19,4 +29,29 @@
 		&:focus{
 			outline: none;
 		}
+}
+
+.btn--transparent{
+	background:none;
+	border:none;
+		cursor: pointer;
+	&:focus{
+			outline: none;
+		}
+}
+
+//Rating
+.ratingstar{
+	color: #FFC733;
+}
+
+//Spinner
+.spinner{
+	margin-left: 50%;
+}
+
+//Alert
+.alert{
+	width: 50%;
+	margin: 5rem auto;
 }
