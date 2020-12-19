@@ -5,11 +5,15 @@ import axios from 'axios';
 import {
 LOADING_PRODUCTS,
 PRODUCTS_SUCCESS,
-PRODUCTS_FAIL
+PRODUCTS_FAIL,
+LOADING_PRODUCT,
+PRODUCT_SUCCESS,
+PRODUCT_FAIL
 } from '../types';
 
 let InitialState = {
    products: [],
+   product: null,
    loading: null,
    error: null
 }
@@ -22,7 +26,8 @@ const ProductStore = ({
   async function getAllProducts() {
   	try {
     dispatch({type: LOADING_PRODUCTS});
-  	const {data: {data}} = await axios.get('/api/v1/products');  	      
+  	const {data: {data}} = await axios.get('/api/v1/products');  	    
+           console.log(data)  
   	dispatch({
   		type: PRODUCTS_SUCCESS,
   		payload: {
@@ -40,11 +45,34 @@ const ProductStore = ({
   	}  			
   }
 
+  async function getProduct(id) {
+     try {
+        dispatch({type: LOADING_PRODUCT})
+        const {data: {data}} = await axios.get(`/api/v1/products/${id}`);
+        dispatch({
+         type: PRODUCT_SUCCESS,
+         payload: {
+            product: data.product
+         }
+        })
+     }
+     catch({response: {data}}) {
+            dispatch({
+               type: PRODUCT_FAIL,
+               payload: {
+                  error: data.message
+               }
+            })
+     }           
+  }
+
 let value = {
    products: state.products,
+   product: state.product,
    loading: state.loading,
    error: state.error,
-   getAllProducts
+   getAllProducts,
+   getProduct
 }
 
 	return (
