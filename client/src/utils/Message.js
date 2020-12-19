@@ -8,7 +8,7 @@ const Message = ({
 	
 	return (
       <Alert variant = "outlined" severity = {severity} className = "alert">
-	  {alert}
+	  <span className = "alert__text">{alert}</span>
 	</Alert>
 		)
 }

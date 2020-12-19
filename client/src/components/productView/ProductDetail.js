@@ -4,13 +4,15 @@ import ProductContext from '../../stores/product/productContext';
 import CartContext from '../../stores/cart/cartContext';
 import RatingStar from '../../utils/RatingStar';
 import Select from '../../utils/Select';
+import Spinner from '../../utils/Spinner';
+import Message from '../../utils/Message';
 
 const ProductDetail = ({
     history,
     match
 }) => {
-    const { product, getProduct } = useContext(ProductContext);
-    const {addCartList} = useContext(CartContext);
+    const { product, getProduct, loading, error } = useContext(ProductContext);
+    const {addToCartList} = useContext(CartContext);
     const [selectQty, setSelectQty] = useState(1);
     useEffect(() => {
         getProduct(match.params.id)
@@ -22,7 +24,7 @@ const ProductDetail = ({
             <div className = "product-detail__group product-detail__group--flex-row">
                     <div className = "product-detail__col">Quantity</div>
                     <div className = "product-detail__col">
-                        <Select count = {count} selectQty = {selectQty} setSelectQty = {setSelectQty} />
+                        <Select count = {count} value = {selectQty} onChange = {(e) => setSelectQty(e.target.value)} />
                     </div>
                 </div>
         )
@@ -30,14 +32,18 @@ const ProductDetail = ({
 
   function addCartClick(product, quantity) {
     return function () {        
-      addCartList(product, quantity);
+      addToCartList(product, +quantity);
       history.push(`/cart`)
     }
   }
 
-
+    if(loading)
+     return <Spinner />
+    if(error)
+    return <Message alert = {error} severity = 'error' />
     if (!product)
         return null;
+    
     return (
         <div className = "product-detail">
       	<Link to = "/" className = "btn--default product-detail__linkhome">Go Back</Link>

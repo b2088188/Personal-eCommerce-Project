@@ -13,6 +13,7 @@
       border: solid .1rem rgba(#999, .2);
       display: flex;
       flex-direction: column;
+      align-self: flex-start;
 	}
 	&__title{
 		padding: 1rem;

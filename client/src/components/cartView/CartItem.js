@@ -1,29 +1,37 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import CartContext from '../../stores/cart/cartContext';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Select from '../../utils/Select';
 
 const CartItem = ({
-	product
+	item
 }) => {
+	const {changeItemQuantity, deleteFromCart} = useContext(CartContext);
+	const [selectQty, setSelectQty] = useState(item.quantity);	  
 	
+    function onSelectChange(e) {
+    	setSelectQty(e.target.value);
+    	changeItemQuantity(item._id, +e.target.value);
+    }
+
 	return (
      <div className = "cart-view__group">
      			<div className = "cart-view__col--15">
-     				<img src="https://s.yimg.com/zp/MerchandiseImages/E1427C2FC4-SP-8282361.jpg" alt="Image Test" className = "cart-view__image"/>
+     				<img src = {item.image} alt = {item.name} className = "cart-view__image"/>
      			</div>
      			<div className = "cart-view__col--25">
      				<a href="#" className = "cart-view__link">
-     					Airpods Wireless Bluetooth Headphones
+     					{item.name}
      				</a>
      			</div>
      			<div className = "cart-view__col--15">
-     				$89.99
+     				${item.price}
      			</div>
      			<div className = "cart-view__col--15">
-     				<Select count = {2} />
+     				<Select count = {item.countInStock} value = {selectQty}  onChange = {onSelectChange}  />
      			</div>
      			<div className = "cart-view__col--15">
-     				<button className = "btn--transparent cart-view__btndelete">
+     				<button className = "btn--transparent cart-view__btndelete" onClick = {deleteFromCart(item._id)}>
      					<DeleteIcon fontSize = 'large' />
      				</button>
      			</div>

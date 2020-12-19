@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PersonIcon from '@material-ui/icons/Person';
 
@@ -7,17 +8,17 @@ const Header = () => {
 	return (
      <header className="header">
      <div className = "header__linkbox">
-       <a href="#" className = "header__link header__linkhome">
+       <Link to = "/" className = "header__link header__linkhome">
          eCommerce
-       </a>
-       <a href="#" className = "header__link header__linkcart">         
+       </Link>
+       <Link to = "/cart" className = "header__link header__linkcart">         
        <ShoppingCartIcon />
        <span className = "header__text">Cart</span>
-       </a>
-       <a href="#" className = "header__link header__signin">         
+       </Link>
+       <Link to = "/login" className = "header__link header__signin">         
        <PersonIcon />
        <span className = "header__text">Sign In</span>
-       </a>
+       </Link>
      </div>
      </header>   
 		)

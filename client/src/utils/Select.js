@@ -1,18 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 const Select = ({
   count,
-	selectQty, 
-  setSelectQty
+	value = 1,
+  onChange  
 }) => {
-	
 
     function renderOptions(count) {
     	return [...Array(count).keys()].map(el => <option key = {el} value = {el + 1}>{el + 1}</option>)
     }
 
     return (
-      <select value = {selectQty} onChange = {(e) => setSelectQty(e.target.value)}>
+      <select value = {value} onChange = {onChange}>
       						{renderOptions(count)}
      </select>
     	)
