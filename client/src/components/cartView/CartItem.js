@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react';
+import {Link} from 'react-router-dom';
 import CartContext from '../../stores/cart/cartContext';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Select from '../../utils/Select';
@@ -20,9 +21,9 @@ const CartItem = ({
      				<img src = {item.image} alt = {item.name} className = "cart-view__image"/>
      			</div>
      			<div className = "cart-view__col--25">
-     				<a href="#" className = "cart-view__link">
+     				<Link to = {`/products/${item._id}`} className = "cart-view__link">
      					{item.name}
-     				</a>
+     				</Link>
      			</div>
      			<div className = "cart-view__col--15">
      				${item.price}

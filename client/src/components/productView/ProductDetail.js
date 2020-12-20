@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import ProductContext from '../../stores/product/productContext';
 import CartContext from '../../stores/cart/cartContext';
@@ -14,9 +14,11 @@ const ProductDetail = ({
     const { product, getProduct, loading, error } = useContext(ProductContext);
     const {addToCartList} = useContext(CartContext);
     const [selectQty, setSelectQty] = useState(1);
+
+
     useEffect(() => {
         getProduct(match.params.id)
-    }, [match.params.id])
+    }, [match.params.id, getProduct])
 
 
         function renderSelect(count) {

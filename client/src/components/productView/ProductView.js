@@ -11,7 +11,7 @@ const ProductView = () => {
 
     useEffect(() => {
         getAllProducts();
-    }, [])
+    }, [getAllProducts])
 
     function renderProducts(list) {
         return list.map(function generateItem(product) {

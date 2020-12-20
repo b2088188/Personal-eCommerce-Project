@@ -11,7 +11,7 @@ const Select = ({
     }
 
     return (
-      <select value = {value} onChange = {onChange}>
+      <select value = {value} onChange = {onChange} className = "select">
       						{renderOptions(count)}
      </select>
     	)
