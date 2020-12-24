@@ -1,3 +1,8 @@
+//Fetch
+export const LOADING_REQUEST = 'LOADING_REQUEST';
+export const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
+export const REQUEST_FAIL = 'REQUEST_FAIL';
+
 //Products
 export const LOADING_PRODUCTS = 'LOADING_PRODUCTS';
 export const PRODUCTS_SUCCESS = 'PRODUCTS_SUCCESS';
@@ -13,6 +18,7 @@ export const ADD_CARTITEM = 'ADD_CARTITEM';
 export const REMOVE_CARTITEM = 'REMOVE_CARTITEM';
 export const CHANGE_QUANTITY = 'CHANGE_QUANTITY';
 export const CALCULATE_QTYANDPRICE = 'CALCULATE_QTYANDPRICE';
+export const SAVE_PAYINFO = 'SAVE_PAYINFO';
 
 //Authentication
 export const LOADING_AUTH = 'LOADING_AUTH';
@@ -24,3 +30,9 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOADING_PROFILE = 'LOADING_PROFILE';
 export const PROFILE_SUCCESS = 'PROFILE_SUCCESS';
 export const PROFILE_FAIL = 'PROFILE_FAIL';
+
+
+//Order
+export const LOADING_ORDER = 'LOADING_ORDER';
+export const ORDER_SUCCESS = 'ORDER_SUCCESS';
+export const ORDER_FAIL = 'ORDER_FAIL';

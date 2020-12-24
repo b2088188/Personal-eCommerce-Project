@@ -24,6 +24,7 @@ const AuthStore = ({
 
 const authHandle = R.curry(async function (action, values) {
 	try {
+            dispatch({type: LOADING_AUTH});
    	      const {data: {data}} = await axios.post(`/api/v1/users/${action}`, values);   	      
    	      dispatch({
    	      	type: AUTH_SUCCESS,
@@ -48,6 +49,8 @@ const value = {
    user: state.user,
    token: state.token,
    isAuth: state.isAuthenticated,
+   loading: state.loading,
+   error: state.error,
    authHandle
 }
 

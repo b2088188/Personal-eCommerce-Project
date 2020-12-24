@@ -1,6 +1,7 @@
-import React, {useReducer} from 'react';
+import React, {useReducer, useCallback} from 'react';
 import {ProductProvider} from './productContext';
 import productReducer from './productReducer';
+import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
 import {
 LOADING_PRODUCTS,
@@ -23,48 +24,47 @@ const ProductStore = ({
 }) => {
 	const [state, dispatch] = useReducer(productReducer, InitialState);
 
-  async function getAllProducts() {
-  	try {
-    dispatch({type: LOADING_PRODUCTS});
-  	const {data: {data}} = await axios.get('/api/v1/products');  	    
-           console.log(data)  
-  	dispatch({
-  		type: PRODUCTS_SUCCESS,
-  		payload: {
-  			products: data.products
-  		}
-  	})
-  	}
-  	catch({response: {data}}) {
-  	   dispatch({
-  	   	type: PRODUCTS_FAIL,
-  	   	payload: {
-  	   		error: data.message
-  	   	}
-  	   })    
-  	}  			
-  }
-
-  async function getProduct(id) {
+const getAllProducts = useCallback(async function () {
      try {
-        dispatch({type: LOADING_PRODUCT})
-        const {data: {data}} = await axios.get(`/api/v1/products/${id}`);
-        dispatch({
-         type: PRODUCT_SUCCESS,
-         payload: {
-            product: data.product
-         }
-        })
+    dispatch({type: LOADING_PRODUCTS});
+     const {data: {data}} = await axios.get('/api/v1/products');         
+     dispatch({
+        type: PRODUCTS_SUCCESS,
+        payload: {
+           products: data.products
+        }
+     })
      }
      catch({response: {data}}) {
-            dispatch({
-               type: PRODUCT_FAIL,
-               payload: {
-                  error: data.message
-               }
-            })
+        dispatch({
+           type: PRODUCTS_FAIL,
+           payload: {
+              error: data.message
+           }
+        })    
      }           
-  }
+  }, [])
+
+  const getProduct = useCallback(async function (id) {
+       try {
+          dispatch({type: LOADING_PRODUCT})
+          const {data: {data}} = await axios.get(`/api/v1/products/${id}`);
+          dispatch({
+           type: PRODUCT_SUCCESS,
+           payload: {
+              product: data.product
+           }
+          })
+       }
+       catch({response: {data}}) {
+              dispatch({
+                 type: PRODUCT_FAIL,
+                 payload: {
+                    error: data.message
+                 }
+              })
+       }           
+    }, [])
 
 let value = {
    products: state.products,

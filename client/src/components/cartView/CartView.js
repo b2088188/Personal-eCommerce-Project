@@ -5,16 +5,18 @@ import CartItem from './CartItem';
 import Spinner from '../../utils/Spinner';
 
 
-const CartView = () => {
+const CartView = ({
+    history
+}) => {
 	const {cartList, getCartList, loading, totalPrice, totalQuantity} = useContext(CartContext);
 
-    useEffect(() => {
-      getCartList();
-    }, [])
+    // useEffect(() => {
+    //   getCartList();
+    // }, [getCartList])
 
     function renderCartList(list) {
     	return list.map(function generateItem(item) {
-    		return <CartItem key = {item._id} item = {item} />
+    		return <CartItem key = {item.product} item = {item} />
     	})
     }
 
@@ -32,7 +34,7 @@ const CartView = () => {
      			<h2 className = "cart-view__subtitle">Subtotal ({totalQuantity}) Items</h2>
      			<span className = "cart-view__total">${totalPrice}</span>
      		</div>
-     		<button className = "btn--transparent cart-view__btncheckout">
+     		<button className = "btn--transparent cart-view__btncheckout" onClick = {() => history.push('/shipping')}>
      			Proceed To Check Out
      		</button>
      	</div>

@@ -19,9 +19,30 @@ const UserStore = ({
 }) => {
 	const [state, dispatch] = useReducer(userReducer, InitialState);    
     const getUserProfile = useCallback(async function () {
-        	try {
-        		dispatch({type: LOADING_PROFILE});
-        	   const {data: {data}} = await axios.get('/api/v1/users/profile');
+            	try {
+            		dispatch({type: LOADING_PROFILE});
+            	   const {data: {data}} = await axios.get('/api/v1/users/profile');
+            	   dispatch({
+            	   	type: PROFILE_SUCCESS,
+            	   	payload: {
+            	   		user: data.user
+            	   	}
+            	   })
+            	}
+            	catch({response: {data}}) {
+            	        dispatch({
+            	        	type: PROFILE_FAIL,
+            	        	payload: {
+            	        		error: data.message
+            	        	}
+            	        })
+            	}
+            }, [])
+
+     async function updateUserProfile(values) {
+     	try {
+                dispatch({type: LOADING_PROFILE});
+        	   const {data: {data}} = await axios.patch('/api/v1/users/profile', values);
         	   dispatch({
         	   	type: PROFILE_SUCCESS,
         	   	payload: {
@@ -37,13 +58,14 @@ const UserStore = ({
         	        	}
         	        })
         	}
-        }, []);
+     }
 
 	const value = {
 	  user: state.user,
 	  loading: state.loading,
 	  error: state.error,
-      getUserProfile
+      getUserProfile,
+      updateUserProfile
 	}
 
 	return (

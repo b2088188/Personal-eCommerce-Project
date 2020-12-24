@@ -2,21 +2,24 @@ import React, {useEffect, useContext, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import UserContext from '../../stores/user/userContext';
 import { useForm } from 'react-hook-form';
-import FormGroup from '../../utils/FormGroup';
+import FormGroup from '../../utils/form/FormGroup';
+import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
  
 
 const ProfileView = () => {
-	const {user, loading, error, getUserProfile} = useContext(UserContext);
+	const {user, loading, error, getUserProfile, updateUserProfile} = useContext(UserContext);
 	const { register, handleSubmit, errors, setValue } = useForm();
     
     useEffect(() => {
       getUserProfile();
     }, [getUserProfile])
 
+   
+
    function onSubmit(values) {
-   	console.log(values)
+   	updateUserProfile(values);
    }
 
     if(loading)
@@ -28,6 +31,7 @@ const ProfileView = () => {
      <div className = "form-container">
       	<div className = "form__formbox">
       		<h1 className = "form__title">User Profile</h1>
+      		 <FormError errors = {errors} />
       		<form className = "form__body" onSubmit = {handleSubmit(onSubmit)}>
 	      		<FormGroup name = 'name' type = 'text' register = {register({
 	      				required: 'You must specify a name'

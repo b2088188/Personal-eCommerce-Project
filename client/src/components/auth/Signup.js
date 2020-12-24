@@ -1,18 +1,25 @@
-import React, {useContext, useRef} from 'react';
+import React, {useEffect, useContext, useRef} from 'react';
 import { useForm } from 'react-hook-form';
 import AuthContext from '../../stores/auth/authContext';
-import FormGroup from '../../utils/FormGroup';
+import FormGroup from '../../utils/form/FormGroup';
+import FormError from '../../utils/form/FormError';
 
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({
+	history,
 	location
 }) => {
-	const {authHandle} = useContext(AuthContext);
+	const {isAuth, authHandle} = useContext(AuthContext);
     const { register, handleSubmit, watch, errors } = useForm();
     const password = useRef({});
     password.current = watch('password', '');
     
+    useEffect(() => {
+      if(isAuth)
+        history.push(location.state?.from || '/');
+   }, [isAuth, history, location.state])
+
    function onSubmit(values) {
    	authHandle('signup')(values);
    }
@@ -21,6 +28,7 @@ const Signup = ({
         <div className = "form-container">
       	<div className = "form__formbox">
       		<h1 className = "form__title">Sign Up</h1>
+      		<FormError errors = {errors} />
       		<form className = "form__body" onSubmit = {handleSubmit(onSubmit)}>
       			<FormGroup name = 'name' type = 'text' register = {register({
       				required: 'You must specify a name'

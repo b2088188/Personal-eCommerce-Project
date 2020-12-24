@@ -9,34 +9,39 @@ CARTLIST_SUCCESS,
 ADD_CARTITEM,
 REMOVE_CARTITEM,
 CHANGE_QUANTITY,
-CALCULATE_QTYANDPRICE
+CALCULATE_QTYANDPRICE,
+SAVE_PAYINFO
 } from '../types';
 
 const InitialState = {
   cartList: JSON.parse(localStorage.getItem('cartList')) || [],
-  loading: null,
-  error: null,
+  itemsPrice: 0,
+  shippingPrice: 0,
   totalPrice: 0,
-  totalQuantity: 0
+  totalQuantity: 0,
+  shippingAddress: null,
+  paymentMethod: null,
+  loading: null,
+  error: null
 }
 
 const CartStore = ({
 	children
 }) => {
 	const [state, dispatch] = useReducer(cartReducer, InitialState);
-  console.log(state.cartList)
  function addToCartList(item, quantity) {
   	dispatch({
   		type: ADD_CARTITEM,
   		payload: {
   			item: {
-  				...R.pick(['_id', 'name', 'image', 'price', 'countInStock'], item),
+          ['product']: R.prop('_id', item),
+  				...R.pick(['name', 'image', 'price', 'countInStock'], item),
   				...{quantity}
   			}
   		}
   	})
-   calcTotal();
-  	//localStorage.setItem('cartList', JSON.stringify(state.cartList))
+   calcPriceAndQty();
+  	
   }
 
   function deleteFromCart(id) {
@@ -47,6 +52,7 @@ const CartStore = ({
   			id
   		}
   	})
+    calcPriceAndQty();
   	}
   }
 
@@ -58,10 +64,10 @@ const CartStore = ({
         quantity
       }
      })
-     calcTotal();
+     calcPriceAndQty();
   }
 
-  function calcTotal() {
+  function calcPriceAndQty() {
      dispatch({
       type: CALCULATE_QTYANDPRICE     
     })
@@ -83,16 +89,31 @@ const CartStore = ({
   	// })
   }
 
+  function savePayInfo(name, values) {
+    dispatch({
+      type: SAVE_PAYINFO,
+      payload: {
+        name,
+        data: values
+      }
+    })
+  }
+
 	let value = {
 		cartList: state.cartList,
 		loading: state.loading,
-		error: state.error,
+		error: state.error,    
+    itemsPrice: state.itemsPrice,
+    shippingPrice: state.shippingPrice,
 		totalPrice: state.totalPrice,
 		totalQuantity: state.totalQuantity,
+    shippingAddress: state.shippingAddress,
+    paymentMethod: state.paymentMethod,
 		getCartList,
     addToCartList,
     changeItemQuantity,
-    deleteFromCart
+    deleteFromCart,
+    savePayInfo
 	}
 
 	return (
