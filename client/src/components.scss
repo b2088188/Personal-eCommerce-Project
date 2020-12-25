@@ -16,6 +16,17 @@
     margin-left: 50%;
 }
 
+.u-padding-default{
+    padding: .75rem 1rem;
+}
+
+.u-bt-default{
+    border-top: solid .1rem var(--color-grey-light-4);
+}
+
+.u-b-default{
+    border: solid .1rem var(--color-grey-light-4);
+}
 
 //Button
 .btn--default {
@@ -63,8 +74,6 @@
 
 //Alert
 .alert {
-    width: 50%;
-    margin: 5rem auto;
     display: flex;
     align-items: center;
 

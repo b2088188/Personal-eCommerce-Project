@@ -15,9 +15,9 @@ const PlaceOrder = ({
 	const {currentOrder, createStatus, createOrder} = useContext(OrderContext);
 
     useEffect(() => {
-      if(createStatus === 'success')
+      if(currentOrder)
       	history.push(`/order/${currentOrder._id}`)
-    }, [createStatus])
+    }, [history, currentOrder])
 
 	function createOrderHandle(e) {
 		createOrder({
@@ -54,19 +54,19 @@ const PlaceOrder = ({
     		    <div className = "list-item__col--full">    		    	
     		    <h2 className = 'list-group__title placeorder-view__summarytitle'>Order Summary</h2>
     		    </div>
-    			<div className = "list-item placeorder-view__summarybox">
+    			<div className = "list-item u-bt-default">
       				<div className = "list-item__col--45">Items</div>
       				<span className = "list-item__col--45">${itemsPrice}</span>
       			</div>
-      			<div className = "list-item placeorder-view__summarybox">
+      			<div className = "list-item u-bt-default">
       				<div className = "list-item__col--45">Shipping</div>
       				<span className = "list-item__col--45">${shippingPrice}</span>
       			</div>
-      			<div className = "list-item placeorder-view__summarybox">
+      			<div className = "list-item u-bt-default">
       				<div className = "list-item__col--45">Total</div>
       				<span className = "list-item__col--45">${totalPrice}</span>
       			</div>
-      			<div className = "list-item__col--full placeorder-view__summarybox">
+      			<div className = "list-item__col--full u-bt-default">
       				<button className = 'btn--default placeorder-view__btnorder' onClick = {createOrderHandle}>
       					Place Order
       				</button>

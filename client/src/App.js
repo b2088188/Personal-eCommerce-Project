@@ -18,6 +18,7 @@ import ProfileView from './components/profileView/ProfileView';
 import ShippingInfo from './components/placeorder/ShippingInfo';
 import SelectPayment from './components/placeorder/SelectPayment';
 import PlaceOrder from './components/placeorder/PlaceOrder';
+import OrderView from './components/order/OrderView';
 
 const App = ()=> {
   return (
@@ -33,6 +34,7 @@ const App = ()=> {
          <Route path = '/placeorder' exact component = {PlaceOrder} />
          <Route path = '/shipping' exact component = {ShippingInfo} />
          <Route path = '/payment' exact component = {SelectPayment} />
+         <Route path = '/order/:id' exact component = {OrderView} />
          <PrivateRoute path = '/profile' exact component = {ProfileView} />
          <Route path = '/signup' exact component = {Signup} />
          <Route path = '/login' exact component = {Login} />

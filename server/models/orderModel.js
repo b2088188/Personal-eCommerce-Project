@@ -13,6 +13,14 @@ const orderSchema = new mongoose.Schema({
             required: [true, 'An item must have a product ID'],
             ref: 'Product'
         },
+        name: {
+            type: String,
+            required: [true, 'An item must have a name']
+        },
+        image: {
+            type: String,
+            required: [true, 'An item must have an image']
+        },
         price: {
             type: Number,
             required: [true, 'An item must have a price']
@@ -58,9 +66,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentResult: {
     	id: String,
-    	status: String,
-    	updateTime: String,
-    	emailAddress: String
+    	status: String
     },
     isPaid: {
     	type: Boolean,
@@ -82,5 +88,10 @@ const orderSchema = new mongoose.Schema({
     }    
 })
 
+orderSchema.methods.processOrder = function (body) {
+    this.isPaid = true;
+    this.paidAt = Date.now();
+    this.paymentResult = body.paymentResult;
+}
 const Order = mongoose.model('Order', orderSchema);
 export default Order;
