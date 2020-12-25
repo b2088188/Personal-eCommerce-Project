@@ -8,9 +8,11 @@ const Message = ({
 }) => {
 	
 	return (
+	<div className = 'alert__container'>		
       <Alert variant = {variant} severity = {severity} className = "alert">
 	  <span className = "alert__text">{alert}</span>
 	</Alert>
+	</div>
 		)
 }
 

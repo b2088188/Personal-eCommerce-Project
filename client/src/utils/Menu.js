@@ -41,7 +41,7 @@ const Menu = ({
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open}>
-                    <MenuItem onClick={() => history.push('/profile')}>Profile</MenuItem>                    
+                    <MenuItem onClick={() => history.push('/profile/settings')}>Profile</MenuItem>                    
                     <MenuItem onClick={handleClose}>Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>

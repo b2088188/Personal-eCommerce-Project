@@ -48,6 +48,8 @@ const ProductDetail = ({
     
     return (
         <div className = "product-detail">
+            
+        <div className = "product-detail__container">
       	<Link to = "/" className = "btn--default product-detail__linkhome">Go Back</Link>
       	<div className = "product-detail__box">
       	    <div className = "product-detail__imagebox">      	    	
@@ -86,6 +88,7 @@ const ProductDetail = ({
       		</div>
       	</div>
       </div>
+        </div>
     )
 }
 

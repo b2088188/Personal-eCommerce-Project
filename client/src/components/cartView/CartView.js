@@ -25,6 +25,7 @@ const CartView = ({
 
 	return (
      <div className = "cart-view">
+     <div className = 'cart-view__container'>         
      	<div className = "cart-view__cartlist">
      		<h1 className = "cart-view__title">Shopping Cart</h1>
      		{renderCartList(cartList)}
@@ -38,6 +39,7 @@ const CartView = ({
      			Proceed To Check Out
      		</button>
      	</div>
+     </div>
      </div>
 		)
 }

@@ -1,8 +1,11 @@
 .cart-view{
-	width: 70%;
+	min-height: 80vh;
+	&__container{
+		width: 70%;
 	margin: auto;
     display: flex;
     padding: 2rem;
+	}
 	&__cartlist{
       flex: 0 0 60%;
       margin: 0 2.5%;

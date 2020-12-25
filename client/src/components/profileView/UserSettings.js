@@ -1,14 +1,16 @@
+import './profileview.scss';
 import React, {useEffect, useContext, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import UserContext from '../../stores/user/userContext';
 import { useForm } from 'react-hook-form';
+import Sidebar from '../../layout/Sidebar';
 import FormGroup from '../../utils/form/FormGroup';
 import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
  
 
-const ProfileView = () => {
+const UserSettings = () => {
 	const {user, loading, error, getUserProfile, updateUserProfile} = useContext(UserContext);
 	const { register, handleSubmit, errors, setValue } = useForm();
     
@@ -28,7 +30,12 @@ const ProfileView = () => {
     	return <Message />
 
 	return (
-     <div className = "form-container">
+		<div className = 'profile-view'>
+		<div className = 'profile-view__nav'>
+			<Sidebar />
+		</div>
+		<div className = 'profile-view__container'>			
+     <div className = "form-container profile-view__form">
       	<div className = "form__formbox">
       		<h1 className = "form__title">User Profile</h1>
       		 <FormError errors = {errors} />
@@ -49,7 +56,9 @@ const ProfileView = () => {
       		</form>
       	</div>
       </div>
+		</div>			
+		</div>
 		)
 }
 
-export default ProfileView;
+export default UserSettings;
