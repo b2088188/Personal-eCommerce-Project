@@ -10,7 +10,7 @@ const FormRadio = ({
 	
 	return (
       <div className = "form__group--radio">
-		<input type = {type} name = {name} id = {value} value = {value} className = "form__input" ref = {register} checked = {checked} />
+		<input type = {type} name = {name} id = {value} value = {value} className = "form__input" ref = {register} defaultChecked = {checked} />
 		<label htmlFor = {value} className = "form__label">{value[0].toUpperCase() + value.slice(1)}</label>
 	  </div>
 		)

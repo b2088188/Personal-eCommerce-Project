@@ -12,7 +12,13 @@ function authReducer(currentState, action) {
 		  	...currentState,
 		  	user: action.payload.user,
 		  	token: action.payload.token,
-		  	isAuthenticated: true
+		  	isAuthenticated: true,
+		  	error:null
+		  }
+		case AUTH_FAIL:
+		  return {
+		  	...currentState,
+		  	error: action.payload.error
 		  }
 		default:
 		  return currentState;

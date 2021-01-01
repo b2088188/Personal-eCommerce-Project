@@ -1,68 +1,84 @@
-// import { useReducer, useEffect, Reducer } from 'react';
-// import {
-// LOADING_REQUEST,
-// REQUEST_SUCCESS,
-// REQUEST_FAIL
-// } from '../stores/types';
-// import axios from 'axios';
+import { useState, useEffect, useReducer } from 'react';
+import {
+LOADING_REQUEST,
+REQUEST_SUCCESS,
+REQUEST_FAIL
+} from '../stores/types';
+import axios from 'axios';
 
 
+const fetchReducer = (currentState, action) => {
+  switch (action.type) {
+    case LOADING_REQUEST:
+      return {
+        ...currentState,
+        loading: true
+      };
+    case REQUEST_SUCCESS:
+      return {
+        ...currentState,
+        data: action.payload.data,
+        loading: false
+      };
+    case REQUEST_FAIL:
+      return {
+        ...currentState,
+        error: action.payload.error
+      };
+    default:
+      return currentState;
+  }
+};
 
-// function fetchReducer(currentState, action) {
-//   switch(action.type) {
-//     case LOADING_REQUEST:
-//       return {
-//         ...currentState,
-//         loading: true
-//       }
-//     case REQUEST_SUCCESS:
-//       return {
-//         ...currentState,
-//         data: action.payload.data
-//       }
-//     case REQUEST_FAIL:
-//       return {
-//         ...currentState,
-//         loading: false,
-//         error: action.payload.error
-//       }
-//     default:
-//       return currentState;
-//   }
-// }
+const useFetch = ({ initialUrl, initialData }) => {
+  const [Url, setUrl] = useState(initialUrl);
+  const [{ data, loading, error }, dispatch] = useReducer(
+    fetchReducer,
+    {
+      data: initialData.state,
+      loading: null,
+      error: null,
+    },
+  );
 
-// const useFetch = (url, method, InitialState) => {
-//   cont [state, dispatch] = useReducer(fetchReducer, InitialState);
+  useEffect(() => {
+        if(Url)
+   		 fetchData();
+    async function fetchData() {
+      try {
+      dispatch({
+        type: LOADING_REQUEST,
+      });
+         const {data: {data}} = await axios({
+				  method: initialData.method,
+				  url: Url,
+          data: initialData.data
+				});
+          dispatch({
+            type: REQUEST_SUCCESS,
+            payload: {
+              data,
+            },
+          });
+      } catch ({response: {data}}) {
+          dispatch({
+            type: REQUEST_FAIL,
+            payload: {
+            	error: data.message
+            }
+          });
+      }
+    }
+  }, [Url, initialData.method, initialData.data]);
 
-//  async function fetchData(url, method) {
-//        try {
-//           dispatch({type: LOADING_REQUEST});
-//           const res = await axios({
-//             method,
-//             url
-//           });
-//           dispatch({
-//             type: REQUEST_SUCCESS,
-//             payload: {
-//               data: res.data.data.data
-//             }
-//           })
-//        }
-//        catch({response: {data}}) {
-//           dispatch({
-//             type: REQUEST_FAIL,
-//             payload: data.message
-//           })     
-//        }
-//      }
-   
+  return [
+    {
+      data,
+      loading,
+      error,
+    },
+    setUrl
+  ];
+};
 
-//   useEffect(() => {
-//     if(url)
-//     fetchData(url, method);    
-//   }, [url])
-
-//   return state;
-// }
-
-// export default useFetch;
+export default useFetch;

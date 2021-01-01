@@ -1,8 +1,8 @@
 import React from 'react';
+import {Button} from '../design/components';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Grow from '@material-ui/core/Grow';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -25,13 +25,14 @@ const Menu = ({
 
 	return (
 		<>
-		 <button
+		 <Button
           ref={anchorRef}
           onClick={handleToggle}      
-          className = "btn--transparent menu__btn"        
+          className = "menu__btn"        
+          modifiers = 'transparent'
           >
           ShunzeLin
-        </button>
+        </Button>
         <Popper open={open} anchorEl={anchorRef.current}  transition >
           {({ TransitionProps, placement }) => (
             <Grow

@@ -28,37 +28,6 @@
     border: solid .1rem var(--color-grey-light-4);
 }
 
-//Button
-.btn--default {
-    background: #333;
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.7rem;
-    font-weight: 300;
-    padding: .5rem 1rem;
-    border: none;
-    cursor: pointer;
-
-    &:focus {
-        outline: none;
-    }
-}
-
-.btn--transparent {
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    &:focus {
-        outline: none;
-    }
-}
-
-//Link
-.link--default{
-	    text-transform: uppercase;
-        text-decoration: none;
-}
 
 //Rating
 .ratingstar {
@@ -99,89 +68,17 @@
 }
 
 //Form
-.form-container {
-    display: flex;
-    justify-content: center;
-}
-
 .form {
-    &__formbox {
-        flex: 0 0 50%;
-    }
+    // &__group {
+    //     display: flex;
+    //     flex-direction: column;
+    //     margin: 1rem 0;
+    //     &--radio{
+    //         flex-direction: row;
+    //         align-items:center;
+    //     }
+    // }
 
-    &__body {
-        display: flex;
-        flex-direction: column;
-    }
-
-    &__footer {
-        display: flex;
-        align-items: center;
-        margin-top: 1rem;
-    }
-
-    &__group {
-        display: flex;
-        flex-direction: column;
-        margin: 1rem 0;
-        &--radio{
-            flex-direction: row;
-            align-items:center;
-        }
-    }
-
-    &__title {
-        margin-bottom: .5rem;
-        text-transform: uppercase;
-        font-size: 2.5rem;
-        font-weight: 400;
-    }
-
-    &__subtitle{
-        font-size: 2rem;
-        font-weight: 300;
-    }
-
-    &__label {
-        font-size: 1.6rem;
-        font-weight: 300;
-        margin-bottom: 1rem;
-
-        &--footer {
-            margin-bottom: 0;
-            margin-right: 1rem;
-        }
-    }
-
-    &__input {
-        padding: 1rem;
-        font-size: 1.6rem;
-        font-family: inherit;
-        color: var(--color-grey-dark-2);
-        background: var(--color-grey-light-2);
-        border: #333;
-
-        &:focus {
-            outline: solid .2rem var(--color-grey-light-4);
-        }
-    }
-
-    &__submit {
-        align-self: flex-start;
-        text-transform: uppercase;
-    }
-
-    &__link {
-        font-size: 1.6rem;
-        font-weight: 300;
-        color: currentColor;
-        text-decoration: none;
-        transition: text-decoration .25s;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
 }
 
 

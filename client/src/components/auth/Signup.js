@@ -1,7 +1,7 @@
 import React, {useEffect, useContext, useRef} from 'react';
+import {Container, FormContainer, Form} from '../../design/components';
 import { useForm } from 'react-hook-form';
 import AuthContext from '../../stores/auth/authContext';
-import FormGroup from '../../utils/form/FormGroup';
 import FormError from '../../utils/form/FormError';
 
 
@@ -20,40 +20,39 @@ const Signup = ({
         history.push(location.state?.from || '/');
    }, [isAuth, history, location.state])
 
-   function onSubmit(values) {
-   	authHandle('signup')(values);
-   }
+
 
     return (
-        <div className = "form-container">
-      	<div className = "form__formbox">
-      		<h1 className = "form__title">Sign Up</h1>
-      		<FormError errors = {errors} />
-      		<form className = "form__body" onSubmit = {handleSubmit(onSubmit)}>
-      			<FormGroup name = 'name' type = 'text' register = {register({
-      				required: 'You must specify a name'
-      			})} />
-      			<FormGroup name = 'email' type = 'text' register = {register({
-      				required: 'You must specify an email',
-	               pattern: {
-	                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-	                        message: 'Invalid email address'
-	               }
-      			})} />
-      			<FormGroup name = 'password' type = 'password' register = {register({
-      				required: 'You must specify a password',
-	                minLength: [8, 'Password must have at least 8 characters']
-      			})} />
-      			<FormGroup name = 'passwordConfirm' type = 'password' register = {register({
-      				required: 'You must confirm your password',
-	               	validate: value => value === password.current || 'The passwords do no match, please try again'
-      			})} />
-      			<button className = "btn--default form__submit">
-      				Sign Up
-      			</button>
-      		</form>
-      	</div>
-      </div>
+        <Container>            
+        <FormContainer>
+          <Form.Title modifiers = {['big', 'light']}>Sign Up</Form.Title>
+          <Form onSubmit = {handleSubmit(authHandle('signup'))}>
+                <Form.Label>Name</Form.Label>
+                <Form.Input name = 'name' type = 'text' ref= {register({
+                    required: 'Please enter your name'
+                })} />                
+                <Form.Label>Email</Form.Label>
+                <Form.Input name = 'email' type = 'text' ref = {register({
+                    required: 'Please enter your email',
+                   pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: 'Invalid email address'
+                   }
+                })} />
+                <Form.Label>Password</Form.Label>
+                <Form.Input name = 'password' type = 'password' ref = {register({
+                  required: 'You must specify a password',
+                  minLength: [8, 'Password must have at least 8 characters']
+            })} />    
+                <Form.Label>Password Confirm</Form.Label>
+                <Form.Input name = 'passwordConfirm' type = 'password' ref = {register({
+                  required: 'You must confirm your password',
+                  validate: value => value === password.current || 'The passwords do no match, please try again'
+            })} />
+            <Form.Button>Sign Up</Form.Button>
+          </Form>
+        </FormContainer>
+        </Container>        
     )
 }
 

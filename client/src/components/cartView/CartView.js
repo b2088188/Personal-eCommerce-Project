@@ -1,14 +1,19 @@
-import './cartview.scss';
-import React, {useEffect, useContext} from 'react';
-import CartContext from '../../stores/cart/cartContext';
+import React, {useState, useEffect} from 'react';
+import {Redirect} from 'react-router-dom';
+import {useCartState} from '../../stores/cart/cartStateContext';
+import styled from 'styled-components';
+import {Container, Title, Span, Button} from '../../design/components';
+import {colorGrey, setBorder, setFlex, setFlexWidth} from '../../design/utils';
 import CartItem from './CartItem';
 import Spinner from '../../utils/Spinner';
 
 
 const CartView = ({
-    history
-}) => {
-	const {cartList, getCartList, loading, totalPrice, totalQuantity} = useContext(CartContext);
+    history,
+    className
+}) => {   
+	const {cartList, totalPrice, totalQuantity} = useCartState();
+   const [toShipping, setToShipping] = useState(false);
 
     // useEffect(() => {
     //   getCartList();
@@ -20,28 +25,58 @@ const CartView = ({
     	})
     }
 
-    if(loading)
-    	return <Spinner />
+    // if(loading)
+    // 	return <Spinner />
+    if(toShipping)
+      return <Redirect to = '/shipping' />
 
 	return (
-     <div className = "cart-view">
-     <div className = 'cart-view__container'>         
-     	<div className = "cart-view__cartlist">
-     		<h1 className = "cart-view__title">Shopping Cart</h1>
+      <Container>        
+     <div className = {className}>
+     <div className = 'container'>         
+     	<div className = "cartlist">
+     		<Title modifiers = 'large' className = 'title'>Shopping Cart</Title>
      		{renderCartList(cartList)}
      	</div>
-     	<div className = "cart-view__info">
-     		<div className = "cart-view__totalbox">
-     			<h2 className = "cart-view__subtitle">Subtotal ({totalQuantity}) Items</h2>
-     			<span className = "cart-view__total">${totalPrice}</span>
+     	<div className = "info">
+     		<div className = "totalbox">
+     			<Title as = 'h2' modifiers = {['medium', 'light']} className = 'subtitle'>Subtotal ({totalQuantity}) Items</Title>
+     			<Span modifiers = 'medium'>${totalPrice}</Span>
      		</div>
-     		<button className = "btn--transparent cart-view__btncheckout" onClick = {() => history.push('/shipping')}>
+     		<Button btop modifiers = {['transparent', 'full']} onClick = {() => setToShipping(true)}>
      			Proceed To Check Out
-     		</button>
+     		</Button>
      	</div>
      </div>
      </div>
+     </Container>
 		)
 }
 
-export default CartView;
+export default styled(CartView)`
+   .container{
+      width: 70%;
+      margin: auto;
+    display: flex;
+    padding: 2rem;
+   }
+   .cartlist{
+     ${setFlexWidth({width: '60'})}  
+   }
+   .info{
+      ${setFlexWidth({width: '30'})}      
+      ${setBorder()}
+      ${setFlex({direction: 'column', y: 'flex-start'})}
+   }
+   .title{
+      padding: 1rem;
+   }
+   .subtitle{
+      padding: 1rem 0;
+   }
+
+   .totalbox{
+      padding: .75rem;     
+   }
+
+`;

@@ -1,5 +1,6 @@
 import './base.scss';
-import React from 'react';
+import React, {lazy, Suspense} from 'react';
+import GlobalStyle from './design/GlobalStyle';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import AuthStore from './stores/auth/AuthStore';
 import UserStore from './stores/user/UserStore';
@@ -7,52 +8,58 @@ import ProductStore from './stores/product/ProductStore';
 import CartStore from './stores/cart/CartStore';
 import OrderStore from './stores/order/OrderStore';
 import PrivateRoute from './routes/PrivateRoutes';
-import Signup from './components/auth/Signup';
-import Login from './components/auth/Login';
+import ProductView from './components/productView/ProductView';
 import Header from './layout/header/Header';
 import Footer from './layout/Footer';
-import ProductView from './components/productView/ProductView';
-import ProductDetail from './components/productView/ProductDetail';
-import CartView from './components/cartView/CartView';
-import UserSettings from './components/profileView/UserSettings';
-import UserOrder from './components/profileView/UserOrders';
-import ShippingInfo from './components/placeorder/ShippingInfo';
-import SelectPayment from './components/placeorder/SelectPayment';
-import PlaceOrder from './components/placeorder/PlaceOrder';
-import OrderView from './components/order/OrderView';
+import Spinner from './utils/Spinner';
+const ProductDetail = lazy(() => import('./components/productView/ProductDetail'));
+const CartView = lazy(() => import('./components/cartView/CartView'));
+const ShippingInfo = lazy(() => import('./components/placeorder/ShippingInfo'));
+const SelectPayment = lazy(() => import('./components/placeorder/SelectPayment'));
+const PlaceOrder = lazy(() => import('./components/placeorder/PlaceOrder'));
+const OrderView = lazy(() => import('./components/order/OrderView'));
+const Signup = lazy(() => import('./components/auth/Signup'));
+const Login = lazy(() => import('./components/auth/Login'));
+const UserSettings = lazy(() => import('./components/profileView/UserSettings'));
+const UserOrder = lazy(() => import('./components/profileView/UserOrders'));
 
 const App = ()=> {
   return (
-     <AuthStore>        
-     <UserStore>        
-     <ProductStore>
-     <CartStore>
-     <OrderStore>        
+    <AuthStore>  
+     <UserStore>    
+      <GlobalStyle />
      <Router>        
+     <Suspense fallback = {<Spinner />}>             
      <div className="container">      
      <Header />
       <div className = "content">
-         <Route path = '/placeorder' exact component = {PlaceOrder} />
-         <Route path = '/shipping' exact component = {ShippingInfo} />
-         <Route path = '/payment' exact component = {SelectPayment} />
-         <Route path = '/order/:id' exact component = {OrderView} />
-         <PrivateRoute path = '/profile/settings' exact component = {UserSettings} />
-         <PrivateRoute path = '/profile/orders' exact component = {UserOrder} />         
          <Route path = '/signup' exact component = {Signup} />
          <Route path = '/login' exact component = {Login} />
-         <Route path = '/products/:id' exact component = {ProductDetail} />
+      <OrderStore> 
+      <CartStore>      
+         <PrivateRoute path = '/placeorder' exact component = {PlaceOrder} />
+         <PrivateRoute path = '/shipping' exact component = {ShippingInfo} />
+         <Route path = '/payment' exact component = {SelectPayment} />
          <Route path = '/cart' exact component = {CartView} />
+         <ProductStore>
+         <Route path = '/products/:id' exact component = {ProductDetail} />
          <Route path = '/' exact component = {ProductView} />
+         </ProductStore>
+      </CartStore>
+         <PrivateRoute path = '/order/:id' exact component = {OrderView} />
+         <PrivateRoute path = '/profile/settings' exact component = {UserSettings} />
+         <PrivateRoute path = '/profile/orders' exact component = {UserOrder} />         
+       </OrderStore>        
       </div>
       <Footer />
     </div> 
-     </Router>        
-     </OrderStore>        
-     </CartStore>
-     </ProductStore>
+    </Suspense>
+     </Router>      
      </UserStore>
      </AuthStore>
   );
+
+
 }
 
 export default App;

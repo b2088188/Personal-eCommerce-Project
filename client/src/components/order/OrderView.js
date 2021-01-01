@@ -57,6 +57,7 @@ const OrderView = ({
     if(!currentOrder)
     	return null;
 	return (
+		<div className="container">			
      <div className = 'order-view'>
      	<h1 className = 'order-view__title'>ORDER {currentOrder._id}</h1>
      	<div className = 'order-view__container'>
@@ -96,6 +97,7 @@ const OrderView = ({
      		</div>
      	</div>
      </div>
+		</div>
 		)
 }
 

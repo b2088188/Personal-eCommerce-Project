@@ -1,5 +1,7 @@
-import React, {useContext} from 'react';
-import CartContext from '../../stores/cart/cartContext';
+import React, {useState} from 'react';
+import {Redirect} from 'react-router-dom';
+import {useCartActions} from '../../stores/cart/cartActionContext';
+import {Container, FormContainer, Form} from '../../design/components';
 import { useForm } from 'react-hook-form';
 import Navsteps from '../../layout/NavSteps';
 import FormGroup from '../../utils/form/FormGroup';
@@ -7,43 +9,47 @@ import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
 
-const ShippingInfo = ({
-	history
-}) => {
-	const {savePayInfo} = useContext(CartContext);
+const ShippingInfo = () => {
+    const {dispatchCart, savePayInfo} = useCartActions();
+    const [toPayment, setToPayment] = useState(false);
 	const {register, handleSubmit, errors} = useForm();
    
-   function onSubmit(values) {
-   	savePayInfo('shippingAddress', values);
-   	history.push('/payment');
-   }
+
+    function onSubmit(values) {
+        savePayInfo('shippingAddress', values)
+        setToPayment(true);
+    }
+
+   if(toPayment)
+    return <Redirect to = '/payment' />
 
 	return (
-    <div className = "form-container">
-      	<div className = "form__formbox">
-      	<Navsteps step1 />  
-	<h1 className = "form__title">Shipping</h1>
-            {/*loading && <Spinner />*/}
-            <FormError errors = {errors} />
-      		<form className = "form__body" onSubmit = {handleSubmit(onSubmit)}>
-      			<FormGroup name = 'address' type = 'text' register = {register({
+		 <Container>            
+        <FormContainer>
+        	<Navsteps step1 />  
+          <Form.Title modifiers = {['big', 'light']}>Shipping</Form.Title>
+          <Form onSubmit = {handleSubmit(onSubmit)}>
+          	<FormError errors = {errors} />
+                <Form.Label>Address</Form.Label>
+                <Form.Input name = 'address' type = 'text' ref = {register({
       				required: 'Please provide your address'	               
-      			})} />
-      			<FormGroup name = 'city' type = 'text' register = {register({
+      			})} />                
+                <Form.Label>City</Form.Label>
+                <Form.Input name = 'city' type = 'text' ref = {register({
       				required: 'Please provide your city'
-      			})} />
-      			<FormGroup name = 'postalCode' type = 'text' register = {register({
+      			})}  />
+                <Form.Label>PostalCode</Form.Label>
+                <Form.Input name = 'postalCode' type = 'text' ref = {register({
       				required: 'Please provide your postalCode'
-      			})} />
-      			<FormGroup name = 'country' type = 'text' register = {register({
+      			})} />    
+                <Form.Label>Country</Form.Label>
+                <Form.Input name = 'country' type = 'text' ref = {register({
       				required: 'Please provide your country'
-      			})} />
-      			<button className = "btn--default form__submit">
-      				Continue
-      			</button>
-      		</form>
-      	</div>
-    </div>		
+      			})}  />
+            <Form.Button>Continue</Form.Button>
+          </Form>
+        </FormContainer>
+        </Container>     
 		)
 }
 

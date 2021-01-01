@@ -1,5 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Card, Image} from '../../design/components';
+import {Link as ReactLink} from 'react-router-dom';
 import RatingStar from '../../utils/RatingStar';
 
 const ProductItem = ({
@@ -8,23 +9,23 @@ const ProductItem = ({
 
 
 	return (
-      <div className = "product-view__product">
-        		<Link to = {`/products/${product._id}`} className = "product-view__linkimage">
-        			<img src = {product.image} alt = {product.name} className = "product-view__image" />
-        		</Link>
-                <div className = "product-view__productdetails">
-                	<Link to = {`/products/${product._id}`} className = "product-view__linkname">
+      <Card>
+        		<Card.Link as = {ReactLink} to = {`/products/${product._id}`} modifiers = 'image'>
+        			<Image src = {product.image} alt = {product.name}  />
+        		</Card.Link>
+                <div className = "details">
+                	<Card.Link as = {ReactLink}  to = {`/products/${product._id}`} modifiers = 'name'>
                 		{product.name}
-                	</Link>
-                	<div className = "product-view__rating">
+                	</Card.Link>
+                	<div className = "rating">
                 		<RatingStar average = {product.ratingsAverage} />
-                		<span className = "product-view__ratingcount">{product.ratingsQuantity} reviews</span>
+                		<Card.Span>{product.ratingsQuantity} reviews</Card.Span>
                 	</div>
-                	<h3 className = "product-view__price">
+                	<Card.Title  modifiers = 'medium'>
                 		${product.price}
-                	</h3>
+                	</Card.Title>
                 </div>
-        	</div>    
+        	</Card>    
 		)
 }
 

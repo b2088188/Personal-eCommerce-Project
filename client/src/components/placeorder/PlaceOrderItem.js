@@ -1,5 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link as ReactLink} from 'react-router-dom';
+import styled from 'styled-components';
+import {ListGroup, Image, Link} from '../../design/components';
 
 
 const PlaceOrderItem = ({
@@ -7,19 +9,23 @@ const PlaceOrderItem = ({
 }) => {
 
 	return (
-      <div className = "list-item">
- 			<div className = "list-item__col--20 placeorder-view__imgbox">
- 				<img src = {item.image} alt = {item.name} className = "placeorder-view__img"/>
- 			</div>
- 			<div className = "list-item__col--40">
- 				<Link to = {`/product/${item._id}`} className = "cart-view__link">
- 					{item.name}
+      <ListGroup ycenter>
+ 			<ListGroup.Item p15>
+ 				<Image src = {item.image} alt = {item.name} className = "placeorder-view__img"/>
+ 			</ListGroup.Item>
+ 			<ListGroup.Item p40>
+ 				<Link as = {ReactLink} to = {`/product/${item._id}`}>
+ 					<ListGroup.Span modifiers = 'medium'>
+ 						{item.name}
+ 					</ListGroup.Span>
  				</Link>
- 			</div>
- 			<div className = "list-item__col--30">
- 			{item.quantity} x ${item.price} = ${item.quantity * item.price} 			
- 			</div>
- 		</div>
+ 			</ListGroup.Item>
+ 			<ListGroup.Item p30>
+ 				<ListGroup.Span modifiers = 'medium'>
+ 					{item.quantity} x ${item.price} = ${item.quantity * item.price} 			
+ 				</ListGroup.Span> 			
+ 			</ListGroup.Item>
+ 		</ListGroup>
 		)
 }
 

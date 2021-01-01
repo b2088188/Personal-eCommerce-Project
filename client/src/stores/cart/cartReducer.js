@@ -28,6 +28,7 @@ function cartReducer(currentState, action) {
 		  	cartList: R.uniqBy(R.prop('product'), [...currentState.cartList, action.payload.item])
 		  }
 		case CALCULATE_QTYANDPRICE:
+
 		const itemsPrice = addDecimal(currentState.cartList.reduce((acc, cur) => acc + cur.quantity * cur.price, 0));
 		const shippingPrice = currentState.cartList.length<1 ? 0 : itemsPrice>100 ? 0 : 100;
 		  return {

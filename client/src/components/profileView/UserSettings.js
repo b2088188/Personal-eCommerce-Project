@@ -30,6 +30,7 @@ const UserSettings = () => {
     	return <Message />
 
 	return (
+		<div className="container">			
 		<div className = 'profile-view'>
 		<div className = 'profile-view__nav'>
 			<Sidebar />
@@ -57,6 +58,7 @@ const UserSettings = () => {
       	</div>
       </div>
 		</div>			
+	</div>
 		</div>
 		)
 }

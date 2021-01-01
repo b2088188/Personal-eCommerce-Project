@@ -1,34 +1,35 @@
-import './placeorder.scss';
 import React, {useEffect, useContext} from 'react';
 import {Link} from 'react-router-dom';
-import CartContext from '../../stores/cart/cartContext';
+import styled from 'styled-components';
+import {Container, ListGroup, Title} from '../../design/components';
 import OrderContext from '../../stores/order/orderContext';
-import ListGroup from '../../utils/list/ListGroup';
+import ListGroups from '../../utils/list/ListGroup';
 import Navsteps from '../../layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
 
 
 const PlaceOrder = ({
-	history
+	history,
+	className
 }) => {
-	const {cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod} = useContext(CartContext);
+	//const {cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod} = useContext(CartContext);
 	const {currentOrder, createStatus, createOrder} = useContext(OrderContext);
 
-    useEffect(() => {
-      if(currentOrder)
-      	history.push(`/order/${currentOrder._id}`)
-    }, [history, currentOrder])
+ //    useEffect(() => {
+ //      if(currentOrder)
+ //      	history.push(`/order/${currentOrder._id}`)
+ //    }, [history, currentOrder])
 
-	function createOrderHandle(e) {
-		createOrder({
-			orderItems: cartList,
-			shippingAddress,
-			paymentMethod,
-			itemsPrice,
-			shippingPrice,
-			totalPrice
-		})
-	}
+	// function createOrderHandle(e) {
+	// 	createOrder({
+	// 		orderItems: cartList,
+	// 		shippingAddress,
+	// 		paymentMethod,
+	// 		itemsPrice,
+	// 		shippingPrice,
+	// 		totalPrice
+	// 	})
+	// }
 
     function renderPlaceOrderItem(list) {
     	return list.map(function generateItem(item) {
@@ -36,45 +37,67 @@ const PlaceOrder = ({
     	})
     }
 
-	return (
-    <div className = 'placeorder-view'>
-    	<div>
-    		<Navsteps step1 step2 step3 />
-    	</div>
-    	<div className = 'placeorder-view__container'>
-    		<div className = 'placeorder-view__info'>
-    			<ListGroup title = 'Shipping' info = {`Address: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, ${shippingAddress.country}`} />
-    			<ListGroup title = 'Payment Method' info = {`Method: ${paymentMethod}`} />
-    			 <div className = 'list-group'>
-					<h2 className = 'list-group__title'>Order Items</h2>
-					{renderPlaceOrderItem(cartList)}
-				</div>
-    		</div>
-    		<div className = 'placeorder-view__summary'>
-    		    <div className = "list-item__col--full">    		    	
-    		    <h2 className = 'list-group__title placeorder-view__summarytitle'>Order Summary</h2>
-    		    </div>
-    			<div className = "list-item u-bt-default">
-      				<div className = "list-item__col--45">Items</div>
-      				<span className = "list-item__col--45">${itemsPrice}</span>
-      			</div>
-      			<div className = "list-item u-bt-default">
-      				<div className = "list-item__col--45">Shipping</div>
-      				<span className = "list-item__col--45">${shippingPrice}</span>
-      			</div>
-      			<div className = "list-item u-bt-default">
-      				<div className = "list-item__col--45">Total</div>
-      				<span className = "list-item__col--45">${totalPrice}</span>
-      			</div>
-      			<div className = "list-item__col--full u-bt-default">
-      				<button className = 'btn--default placeorder-view__btnorder' onClick = {createOrderHandle}>
-      					Place Order
-      				</button>
-      			</div>
-    		</div>
-    	</div>
-    </div>
-		)
+return null;
+	// return (
+	// 	<Container>			
+ //    <div className = {className}>
+ //    		<Navsteps step1 step2 step3 />
+ //    	<ListGroup xcenter>
+ //    		<ListGroup.Item p60>
+ //    			<ListGroup>    				
+ //    			<ListGroup.Title>Shipping</ListGroup.Title>
+ //    			<ListGroup.Paragraph modifiers = 'exlight'>{`Address: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, ${shippingAddress.country}`}</ListGroup.Paragraph>
+ //    			</ListGroup>
+ //    			<ListGroup>    				
+ //    			<ListGroup.Title>Payment Method</ListGroup.Title>
+ //    			<ListGroup.Paragraph modifiers = 'exlight'>{`Method: ${paymentMethod}`}</ListGroup.Paragraph>
+ //    			</ListGroup>
+ //    			 <ListGroup>
+	// 				<ListGroup.Title>Order Items</ListGroup.Title>
+	// 				{/*renderPlaceOrderItem(cartList)*/}
+	// 			</ListGroup>
+ //    		</ListGroup.Item>
+ //    		<ListGroup.Item p30 bd yself>
+ //    		    <ListGroup>    		    	
+ //    		    <ListGroup.Title>Order Summary</ListGroup.Title>
+ //    		    </ListGroup>
+ //    			<ListGroup xcenter bdtop>
+ //      				<ListGroup.Item half>
+ //      					<ListGroup.Span modifiers = {['medium', 'light']}>Items</ListGroup.Span>
+ //      				</ListGroup.Item>
+ //      				<ListGroup.Item half>
+ //      					<ListGroup.Span modifiers = {['medium', 'light']}>${itemsPrice}</ListGroup.Span>
+ //      				</ListGroup.Item>      				
+ //      			</ListGroup>
+ //      			<ListGroup xcenter bdtop>
+ //      				<ListGroup.Item half>
+ //      					<ListGroup.Span modifiers = {['medium', 'light']}>Shipping</ListGroup.Span> 
+ //      				</ListGroup.Item>
+ //      				<ListGroup.Item half>
+ //      					<ListGroup.Span modifiers = {['medium', 'light']}>${shippingPrice}</ListGroup.Span> 
+ //      				</ListGroup.Item>
+ //      			</ListGroup>
+ //      			<ListGroup xcenter bdtop>
+ //      				<ListGroup.Item half>
+ //      					<ListGroup.Span modifiers = {['medium', 'light']}>Total</ListGroup.Span> 
+ //      				</ListGroup.Item>
+ //      				<ListGroup.Item half>
+ //      					<ListGroup.Span modifiers = {['medium', 'light']}>${totalPrice}</ListGroup.Span> 
+ //      				</ListGroup.Item>
+ //      			</ListGroup>
+ //      			<ListGroup bdtop>
+ //      				<ListGroup.Button modifiers = 'full' onClick = {createOrderHandle}>
+ //      					Place Order
+ //      				</ListGroup.Button>
+ //      			</ListGroup>
+ //    		</ListGroup.Item>
+ //    	</ListGroup>
+ //    </div>
+	// 	</Container>
+	// 	)
 }
 
-export default PlaceOrder;
+export default styled(PlaceOrder)`
+	width: 70%;
+	margin: 2rem auto;
+`;

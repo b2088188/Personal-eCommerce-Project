@@ -1,6 +1,7 @@
 import * as R from 'ramda';
-import React, {useReducer} from 'react';
-import {CartProvider} from './cartContext';
+import React, {useReducer, useMemo} from 'react';
+import {CartStateProvider} from './cartStateContext';
+import {CartActionProvider} from './cartActionContext';
 import cartReducer from './cartReducer';
 import axios from 'axios';
 import {
@@ -29,43 +30,43 @@ const CartStore = ({
 	children
 }) => {
 	const [state, dispatch] = useReducer(cartReducer, InitialState);
- function addToCartList(item, quantity) {
-  	dispatch({
-  		type: ADD_CARTITEM,
-  		payload: {
-  			item: {
-          ['product']: R.prop('_id', item),
-  				...R.pick(['name', 'image', 'price', 'countInStock'], item),
-  				...{quantity}
-  			}
-  		}
-  	})
-   calcPriceAndQty();
+ // function addToCartList(item, quantity) {
+ //  	dispatch({
+ //  		type: ADD_CARTITEM,
+ //  		payload: {
+ //  			item: {
+ //          ['product']: R.prop('_id', item),
+ //  				...R.pick(['name', 'image', 'price', 'countInStock'], item),
+ //  				...{quantity}
+ //  			}
+ //  		}
+ //  	})
+ //   calcPriceAndQty();
   	
-  }
+ //  }
 
-  function deleteFromCart(id) {
-  	return function () {  		
-  	dispatch({
-  		type: REMOVE_CARTITEM,
-  		payload: {
-  			id
-  		}
-  	})
-    calcPriceAndQty();
-  	}
-  }
+  // function deleteFromCart(id) {
+  // 	return function () {  		
+  // 	dispatch({
+  // 		type: REMOVE_CARTITEM,
+  // 		payload: {
+  // 			id
+  // 		}
+  // 	})
+  //   calcPriceAndQty();
+  // 	}
+  // }
 
-  function changeItemQuantity(id, quantity) {
-     dispatch({
-      type: CHANGE_QUANTITY,
-      payload: {
-        id,
-        quantity
-      }
-     })
-     calcPriceAndQty();
-  }
+  // function changeItemQuantity(id, quantity) {
+  //    dispatch({
+  //     type: CHANGE_QUANTITY,
+  //     payload: {
+  //       id,
+  //       quantity
+  //     }
+  //    })
+  //    calcPriceAndQty();
+  // }
 
   function calcPriceAndQty() {
      dispatch({
@@ -90,36 +91,51 @@ const CartStore = ({
   }
 
   function savePayInfo(name, values) {
-    dispatch({
-      type: SAVE_PAYINFO,
-      payload: {
-        name,
-        data: values
-      }
-    })
-  }
+      dispatch({
+        type: SAVE_PAYINFO,
+        payload: {
+          name,
+          data: values
+        }
+      })
+    }
 
-	let value = {
-		cartList: state.cartList,
-		loading: state.loading,
-		error: state.error,    
-    itemsPrice: state.itemsPrice,
-    shippingPrice: state.shippingPrice,
-		totalPrice: state.totalPrice,
-		totalQuantity: state.totalQuantity,
-    shippingAddress: state.shippingAddress,
-    paymentMethod: state.paymentMethod,
-		getCartList,
-    addToCartList,
-    changeItemQuantity,
-    deleteFromCart,
-    savePayInfo
-	}
+	// let value = {
+	// 	cartList: state.cartList,
+	// 	loading: state.loading,
+	// 	error: state.error,    
+ //    itemsPrice: state.itemsPrice,
+ //    shippingPrice: state.shippingPrice,
+	// 	totalPrice: state.totalPrice,
+	// 	totalQuantity: state.totalQuantity,
+ //    shippingAddress: state.shippingAddress,
+ //    paymentMethod: state.paymentMethod,
+	// 	getCartList,
+ //    addToCartList,
+ //    changeItemQuantity,
+ //    deleteFromCart,
+ //    savePayInfo
+	// }
+
+let value = useMemo(() => ({
+  cartList: state.cartList,
+  itemsPrice: state.itemsPrice,
+  shippingPrice: state.shippingPrice,
+  totalPrice: state.totalPrice,
+  totalQuantity: state.totalQuantity
+}), [state])
+
+let actions = {
+  dispatchCart: dispatch,
+  savePayInfo
+}
 
 	return (
-      <CartProvider value = {value}>
-      	{children}
-      </CartProvider>
+<CartStateProvider value = {value}>
+<CartActionProvider value = {actions}>
+  {children}
+</CartActionProvider>
+</CartStateProvider>
 		)
 }
 

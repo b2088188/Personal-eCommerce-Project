@@ -1,5 +1,7 @@
 import React, {useEffect, useContext, useRef} from 'react';
-import {Link} from 'react-router-dom';
+import {Link as ReactLink} from 'react-router-dom';
+import styled from 'styled-components';
+import {Container, FormContainer, Form} from '../../design/components';
 import AuthContext from '../../stores/auth/authContext';
 import { useForm } from 'react-hook-form';
 import FormGroup from '../../utils/form/FormGroup';
@@ -18,40 +20,35 @@ const Login = ({
         history.push(location.state?.from || '/');
    }, [isAuth, history, location.state])
 
-   function onSubmit(values) {
-   	authHandle('login')(values);
-   }
-
-    if(error)
-        return <Message alert = {error} severity = 'error' />
 
     return (
-        <div className = "form-container">
-      	<div className = "form__formbox">
-      		<h1 className = "form__title">Login</h1>
+        <Container>            
+        <FormContainer>
+      		<Form.Title modifiers = {['big', 'light']}>Login</Form.Title>
             {loading && <Spinner />}
+            {error && <Message alert = {error} severity = 'error' />}
             <FormError errors = {errors} />
-      		<form className = "form__body" onSubmit = {handleSubmit(onSubmit)}>
-      			<FormGroup name = 'email' type = 'text' register = {register({
-      				required: 'Please enter your email',
-	               pattern: {
-	                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-	                        message: 'Invalid email address'
-	               }
-      			})} />
-      			<FormGroup name = 'password' type = 'password' register = {register({
-      				required: 'Please enter your password'
-      			})} />
-      			<button className = "btn--default form__submit">
-      				Login
-      			</button>
-      		</form>
-            <div className = "form__footer">
-                <span className = "form__label form__label--footer">New Customer?</span>
-                <Link to = '/signup' className = "form__link">Register</Link>
-            </div>
-      	</div>
-      </div>
+      		<Form onSubmit = {handleSubmit(authHandle('login'))}>                
+                <Form.Label>Email</Form.Label>
+                <Form.Input name = 'email' type = 'text' ref = {register({
+                    required: 'Please enter your email',
+                   pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: 'Invalid email address'
+                   }
+                })} />
+                <Form.Label>Email</Form.Label>
+                <Form.Input name = 'password' type = 'password' ref= {register({
+                    required: 'Please enter your password'
+                })} />
+      			<Form.Button>Login</Form.Button>
+      		</Form>
+            <Form.Footer>
+                <Form.Label modifiers = 'footer'>New Customer?</Form.Label>
+                <Form.Link as = {ReactLink} to = '/signup' modifiers = 'exlight'>Register</Form.Link>
+            </Form.Footer>      
+        </FormContainer>
+        </Container>
     )
 }
 

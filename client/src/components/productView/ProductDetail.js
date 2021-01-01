@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import ProductContext from '../../stores/product/productContext';
-import CartContext from '../../stores/cart/cartContext';
+import * as R from 'ramda';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link as ReactLink, Redirect } from 'react-router-dom';
+import styled from 'styled-components';
+import { Container, Button, Image, Span, Title, ListGroup } from '../../design/components';
+import {useProduct} from '../../stores/product/productContext';
+import {useCartActions} from '../../stores/cart/cartActionContext';
 import RatingStar from '../../utils/RatingStar';
 import Select from '../../utils/Select';
 import Spinner from '../../utils/Spinner';
@@ -9,87 +12,138 @@ import Message from '../../utils/Message';
 
 const ProductDetail = ({
     history,
-    match
+    match,
+    className
 }) => {
-    const { product, getProduct, loading, error } = useContext(ProductContext);
-    const {addToCartList} = useContext(CartContext);
+    const {product, loadingProduct, errorProduct, getProduct} = useProduct();
+    const  {dispatchCart} = useCartActions();
     const [selectQty, setSelectQty] = useState(1);
-
+    const [toCart, setToCart] = useState(false);
 
     useEffect(() => {
-        getProduct(match.params.id)
+        getProduct(`/api/v1/products/${match.params.id}`)
     }, [match.params.id, getProduct])
 
 
-        function renderSelect(count) {
+
+    function renderSelect(count) {
         return (
-            <div className = "product-detail__group product-detail__group--flex-row">
-                    <div className = "product-detail__col">Quantity</div>
-                    <div className = "product-detail__col">
+            <ListGroup bbottom ycenter>
+                    <ListGroup.Item half>Quantity</ListGroup.Item>
+                    <ListGroup.Item half>
                         <Select count = {count} value = {selectQty} onChange = {(e) => setSelectQty(e.target.value)} />
-                    </div>
-                </div>
+                    </ListGroup.Item>
+            </ListGroup>
         )
     }
 
-  function addCartClick(product, quantity) {
-    return function () {        
-      addToCartList(product, +quantity);
-      history.push(`/cart`)
+    function addCartClick(item, quantity) {
+        return function() {
+            dispatchCart({
+            type: 'ADD_CARTITEM',
+            payload: {
+                item: {
+                    ['product']: R.prop('_id', item),
+                    ...R.pick(['name', 'image', 'price', 'countInStock'], item),
+                    ...{quantity: +quantity}
+                }
+            }
+        })
+            dispatchCart({type: 'CALCULATE_QTYANDPRICE'});
+            setToCart(true);
+        }
     }
-  }
 
-    if(loading)
-     return <Spinner />
-    if(error)
-    return <Message alert = {error} severity = 'error' />
+    if(toCart)
+        return <Redirect to = '/cart' />
+
+    if (loadingProduct)
+        return <Spinner />
+    if (errorProduct)
+        return <Message alert = {errorProduct} severity = 'error' />
     if (!product)
         return null;
-    
+
     return (
-        <div className = "product-detail">
-            
-        <div className = "product-detail__container">
-      	<Link to = "/" className = "btn--default product-detail__linkhome">Go Back</Link>
-      	<div className = "product-detail__box">
-      	    <div className = "product-detail__imagebox">      	    	
-      		<img src = {product.image} alt = {product.name}  className = "product-detail__image" />
-      	    </div>
-      		<div className = "product-detail__productbox">
-      			<div className = "product-detail__group">
-      				<h2 className = "product-detail__name">{product.name}</h2>
-      			</div>
-      			<div className = "product-detail__group u-vertical-center">
-      				<RatingStar average = {product.ratingsAverage} />
-      				<span className = "product-detail__rating">{product.ratingsQuantity} reviews</span>
-      			</div>
-      			<div className = "product-detail__group">
-      				Price: ${product.price}
-      			</div>
-      			<div className = "product-detail__group">
-      				{product.description}
-      			</div>
-      		</div>
-      		<div className = "product-detail__checkoutbox">
-      			<div className = "product-detail__group product-detail__group--flex-row">
-      				<div className = "product-detail__col">Price: </div>
-      				<span className = "product-detail__col">${product.price}</span>
-      			</div>
-      			<div className = "product-detail__group u-flex-row product-detail__group--flex-row">
-      				<div className = "product-detail__col">Status: </div>
-      				<div className = "product-detail__col">{product.countInStock>1 ? 'In Stock' : 'Out of Stock'}</div>
-      			</div>
-      			{product.countInStock>0 && renderSelect(product.countInStock)}
-      			<div className="product-detail__group">
-      				<button className = "btn--default product-detail__btnaddcart" onClick = {addCartClick(product, selectQty)}>
+        <Container>            
+        <div className = {className}>            
+        <div className = "container">
+        <Button as = {ReactLink} to = '/' className = 'home'>Go Back</Button>
+        <ListGroup ystart>
+            <ListGroup.Item p35>                
+            <Image src = {product.image} alt = {product.name} />
+            </ListGroup.Item>
+            <ListGroup.Item p25>
+                <ListGroup bdbottom>
+                    <Title as = 'h2' modifiers = {['large', 'light']}>{product.name}</Title>
+                </ListGroup>
+                <ListGroup ycenter bdbottom>
+                    <ListGroup.Item half>                        
+                    <RatingStar average = {product.ratingsAverage} />
+                    </ListGroup.Item>
+                    <ListGroup.Item half>                        
+                    <Span className = 'rating'>{product.ratingsQuantity} reviews</Span>
+                    </ListGroup.Item>
+                </ListGroup>
+                <ListGroup bdbottom>
+                    Price: ${product.price}
+                </ListGroup>
+                <ListGroup bdbottom>
+                    {product.description}
+                </ListGroup>
+            </ListGroup.Item>
+            <ListGroup.Item p25>
+                <ListGroup bdbottom ycenter>
+                    <ListGroup.Item half>
+                        Price: 
+                    </ListGroup.Item>
+                    <ListGroup.Item half>                        
+                    <span className = "product-detail__col">${product.price}</span>
+                    </ListGroup.Item>
+                </ListGroup>
+                <ListGroup bdbottom ycenter>
+                    <ListGroup.Item half >
+                        Status: 
+                    </ListGroup.Item>
+                    <ListGroup.Item half>                        
+                    {product.countInStock>1 ? 'In Stock' : 'Out of Stock'}
+                    </ListGroup.Item>
+                </ListGroup>
+                {product.countInStock>0 && renderSelect(product.countInStock)}
+                <ListGroup bdtop>
+                    <ListGroup.Button modifiers = 'full' onClick = {addCartClick(product, selectQty)}>
                         Add To Cart 
-                    </button>
-      			</div>
-      		</div>
-      	</div>
+                    </ListGroup.Button>
+                </ListGroup>
+            </ListGroup.Item>
+        </ListGroup>
       </div>
         </div>
+        </Container>
     )
 }
 
-export default ProductDetail;
+export default styled(ProductDetail)
+`
+   .container{
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+   }
+
+    .home{
+        margin: 2rem 0;
+    }
+
+    .imagebox{
+        box-shadow: var(--shadow-dark-shallow);
+    }
+
+
+   .rating{
+    margin-left: 1rem;
+   }
+
+`;

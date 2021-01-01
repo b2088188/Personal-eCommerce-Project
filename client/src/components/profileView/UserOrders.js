@@ -24,6 +24,7 @@ const UserOrder = () => {
     if(error)
       return <Message severity = 'error' alert = {error} /> 
 	return (
+		<div className="container">			
 		<div className = 'profile-view'>
 			<div className="profile-view__nav">
 				<Sidebar />
@@ -46,6 +47,7 @@ const UserOrder = () => {
  				</table>
  				</div>
  			</div>
+		</div>
 		</div>
 		)
 }

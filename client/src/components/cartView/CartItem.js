@@ -1,43 +1,87 @@
-import React, {useState, useContext} from 'react';
-import {Link} from 'react-router-dom';
-import CartContext from '../../stores/cart/cartContext';
+import React, { useState, useContext } from 'react';
+import { Link as ReactLink, useRouteMatch } from 'react-router-dom';
+import {useCartActions} from '../../stores/cart/cartActionContext';
+import styled from 'styled-components';
+import { ListGroup, Button, Image, Link } from '../../design/components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Select from '../../utils/Select';
 
 const CartItem = ({
-	item
+    item
 }) => {
-	const {changeItemQuantity, deleteFromCart} = useContext(CartContext);
-	const [selectQty, setSelectQty] = useState(item.quantity);	  
-	
+    //const { changeItemQuantity, deleteFromCart } = useContext(CartContext);
+    const dispatchCart = useCartActions();
+    const [selectQty, setSelectQty] = useState(item.quantity);
+    const {url} = useRouteMatch();
+
     function onSelectChange(e) {
-    	setSelectQty(e.target.value);
-    	changeItemQuantity(item.product, +e.target.value);
+        reCalcPriceAndQty(e.target.value);
+        setSelectQty(+e.target.value);
     }
 
-	return (
-     <div className = "list-item">
-     			<div className = "list-item__col--15">
-     				<img src = {item.image} alt = {item.name} className = "cart-view__image"/>
-     			</div>
-     			<div className = "list-item__col--25">
-     				<Link to = {`/products/${item.product}`} className = "cart-view__link">
+    function reCalcPriceAndQty(quantity) {
+        dispatchCart({
+          type: 'CHANGE_QUANTITY',
+          payload: {
+            id: item.product,
+            quantity
+          }
+         })
+        dispatchCart({type: 'CALCULATE_QTYANDPRICE'});
+    }
+
+  function deleteFromCart(id) {
+    return function () {        
+    dispatchCart({
+        type: 'REMOVE_CARTITEM',
+        payload: {
+            id
+        }
+    })
+   dispatchCart({type: 'CALCULATE_QTYANDPRICE'});
+    }
+  }
+
+
+    return (
+        <ListGroup ycenter>
+     			<ListGroup.Item p15>
+     				<Image src = {item.image} alt = {item.name} className = 'image' />
+     			</ListGroup.Item>
+     			<ListGroup.Item p15>
+     				<Link as = {ReactLink} to = {`/products/${item.product}`} className = 'link'>
      					{item.name}
      				</Link>
-     			</div>
-     			<div className = "list-item__col--15">
+     			</ListGroup.Item>
+     			<ListGroup.Item p15>
      				${item.price}
-     			</div>
-     			<div className = "list-item__col--15">
+     			</ListGroup.Item>
+     			<ListGroup.Item p15>
      				<Select count = {item.countInStock} value = {selectQty}  onChange = {onSelectChange}  />
-     			</div>
-     			<div className = "list-item__col--15">
-     				<button className = "btn--transparent cart-view__btndelete" onClick = {deleteFromCart(item.product)}>
+     			</ListGroup.Item>
+     			<ListGroup.Item p15>
+     				<Button className = 'delete' modifiers = 'transparent' onClick = {deleteFromCart(item.product)}>
      					<DeleteIcon fontSize = 'large' />
-     				</button>
-     			</div>
-     		</div>
-		)
+     				</Button>
+     			</ListGroup.Item>
+     		</ListGroup>
+    )
 }
 
-export default CartItem;
+export default styled(CartItem)
+`
+	.link{
+       transition: border-bottom .25s;
+       border-bottom: solid .1rem currentColor;
+	&:hover{
+		border-bottom: solid .1rem currentColor;
+	}
+	}
+
+   .delete{
+   	transition: background .25s;
+   	 &:hover{
+   	 	background: var(--color-grey-light-4);
+   	 }
+   }
+`;
