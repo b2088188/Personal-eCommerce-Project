@@ -1,8 +1,10 @@
 import './orderview.scss';
 import React, {useState, useEffect, useContext} from 'react';
+import {Link as ReactLink} from 'react-router-dom';
+import styled from 'styled-components';
+import {Container, ListGroup, Image, Link} from '../../design/components';
 import {PayPalButton} from 'react-paypal-button-v2';
 import OrderContext from '../../stores/order/orderContext';
-import ListGroup from '../../utils/list/ListGroup';
 import ListItem from '../../utils/list/ListItem';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
@@ -10,7 +12,8 @@ import formatDate from '../../utils/formatDate';
 import axios from 'axios';
 
 const OrderView = ({
-	match
+	match,
+	className
 }) => {
 	const [sdkReady, setSdkReady] = useState(false);
 	const {loading, currentOrder, getOrder, updateOrderToPaid, clearOrder} = useContext(OrderContext);
@@ -39,16 +42,30 @@ const OrderView = ({
 	}
 
 	function renderOrderItems(list) {
-		return list.map(function generateItem(order) {
-			return <ListItem key = {order._id} item = {order} />
+		return list.map(function generateItem(order) {			
+		  return	(
+          <ListGroup key = {order._id} x center>
+ 			<ListGroup.Item p20>
+ 				<Image src = {order.image} alt = {order.name} />
+ 			</ListGroup.Item>
+ 			<ListGroup.Item p35>
+ 				<Link as = {ReactLink} to = {`/product/${order._id}`} >
+ 					{order.name}
+ 				</Link>
+ 			</ListGroup.Item>
+ 			<ListGroup.Item p30>
+ 			{order.quantity} x ${order.price} = ${order.quantity * order.price} 			
+ 			</ListGroup.Item>
+ 		</ListGroup>
+				)
 		})
 	}
 
 	function renderPayButton(totalPrice) {
 		return (
-         <div className="list-item__col--full u-bt-default">
+         <ListGroup bdtop>
 			<PayPalButton amount = {totalPrice} onSuccess = {onSuccessPayHandler} /> 
-		</div>
+		</ListGroup>
 			);
 	}
 
@@ -56,49 +73,64 @@ const OrderView = ({
      	return <Spinner />
     if(!currentOrder)
     	return null;
+
 	return (
-		<div className="container">			
-     <div className = 'order-view'>
-     	<h1 className = 'order-view__title'>ORDER {currentOrder._id}</h1>
-     	<div className = 'order-view__container'>
-     		<div className = 'order-view__col--60'>
-     			<div className = 'order-view__group'>     				
-     			<ListGroup title = 'Shipping' info = {`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`} />
+		<Container>			
+     <div className = {className}>
+     	<ListGroup.Title modifiers = 'large'>ORDER {currentOrder._id}</ListGroup.Title>
+     	<ListGroup xcenter>
+     		<ListGroup.Item p60>
+     			<ListGroup bdbottom>     				
+     			<ListGroup>
+     				<ListGroup.Title>Shipping</ListGroup.Title>
+     				<ListGroup.Paragraph>
+     					{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`} 
+     				</ListGroup.Paragraph>
+     			</ListGroup>
      			<Message alert = 'Not Delivered' severity = 'error'/>
-     			</div>
-     			<div className = 'order-view__group'>     				
+     			</ListGroup>
+     			<ListGroup bdbottom>     				
      			<ListGroup title = 'Payment Method' info = {`Method: ${currentOrder.paymentMethod}`}/>
      			{currentOrder.isPaid ?
  				<Message alert = {`Paid on ${formatDate(currentOrder.paidAt)}`} severity = 'success'/> :
      			<Message alert = 'Not Paid' severity = 'error'/>}
-     			</div>
-     			<div className = 'order-view__group'>     			
-     				<h1 className = 'list-group__title  u-padding-default'>Order Items</h1>
+     			</ListGroup>
+     			<ListGroup bdbottom>     			
+     				<ListGroup.Title>Order Items</ListGroup.Title>
      				{renderOrderItems(currentOrder.orderItems)}
-     			</div>	
-     		</div>
-     		<div className = 'order-view__col--30 u-b-default'>
-     			<div className = "list-item__col--full">    		    	
-    		    <h2 className = 'list-group__title'>Order Summary</h2>
-    		    </div>
-    			<div className = "list-item u-bt-default">
-      				<div className = "list-item__col--45">Items</div>
-      				<span className = "list-item__col--45">${currentOrder.itemsPrice}</span>
-      			</div>
-      			<div className = "list-item u-bt-default">
-      				<div className = "list-item__col--45">Shipping</div>
-      				<span className = "list-item__col--45">${currentOrder.shippingPrice}</span>
-      			</div>
-      			<div className = "list-item u-bt-default">
-      				<div className = "list-item__col--45">Total</div>
-      				<span className = "list-item__col--45">${currentOrder.totalPrice}</span>
-      			</div>
+     			</ListGroup>	
+     		</ListGroup.Item>
+     		<ListGroup.Item p30 bd yself>
+     			<ListGroup.Item full>    		    	
+    		    <ListGroup.Title>Order Summary</ListGroup.Title>
+    		    </ListGroup.Item>
+    			<ListGroup xcenter bdtop>
+      				<ListGroup.Item half>Items</ListGroup.Item>
+      				<ListGroup.Item half>
+      				<ListGroup.Span>${currentOrder.itemsPrice}</ListGroup.Span> 
+      				</ListGroup.Item>
+      			</ListGroup>
+      			<ListGroup xcenter bdtop>
+      				<ListGroup.Item half>Shipping</ListGroup.Item>
+      				<ListGroup.Item half>
+      				<ListGroup.Span>${currentOrder.shippingPrice}</ListGroup.Span> 
+      				</ListGroup.Item>
+      			</ListGroup>
+      			<ListGroup xcenter bdtop>
+      				<ListGroup.Item half>Total</ListGroup.Item>
+      				<ListGroup.Item half>
+      				<ListGroup.Span>${currentOrder.totalPrice}</ListGroup.Span> 
+      				</ListGroup.Item>
+      			</ListGroup>
       			{!currentOrder.isPaid && renderPayButton(currentOrder.totalPrice)}      			
-     		</div>
-     	</div>
+     		</ListGroup.Item>
+     	</ListGroup>
      </div>
-		</div>
+		</Container>
 		)
 }
 
-export default OrderView;
+export default styled(OrderView)`
+	width: 70%;
+	margin: 2rem auto;	
+`;

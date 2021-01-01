@@ -1,32 +1,39 @@
-import React, {useEffect, useContext, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
+import {Redirect} from 'react-router-dom';
+import {useAuthState} from '../../stores/auth/authStateContext';
+import {useAuthActions} from '../../stores/auth/authActionContext';
 import {Container, FormContainer, Form} from '../../design/components';
 import { useForm } from 'react-hook-form';
-import AuthContext from '../../stores/auth/authContext';
 import FormError from '../../utils/form/FormError';
 
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({
-	history,
 	location
 }) => {
-	const {isAuth, authHandle} = useContext(AuthContext);
+    const {user} = useAuthState();
+    const {authHandle} = useAuthActions();
     const { register, handleSubmit, watch, errors } = useForm();
     const password = useRef({});
     password.current = watch('password', '');
     
-    useEffect(() => {
-      if(isAuth)
-        history.push(location.state?.from || '/');
-   }, [isAuth, history, location.state])
+   console.log(user)
 
+    function onSubmit(values) {
+        authHandle({
+            Url: `/api/v1/users/signup`,
+            data: values
+        })
+    }
 
+    if(user)
+        return <Redirect to = {location.state?.from || '/'} />
 
     return (
         <Container>            
         <FormContainer>
           <Form.Title modifiers = {['big', 'light']}>Sign Up</Form.Title>
-          <Form onSubmit = {handleSubmit(authHandle('signup'))}>
+          <Form onSubmit = {handleSubmit(onSubmit)}>
                 <Form.Label>Name</Form.Label>
                 <Form.Input name = 'name' type = 'text' ref= {register({
                     required: 'Please enter your name'

@@ -122,7 +122,9 @@ let value = useMemo(() => ({
   itemsPrice: state.itemsPrice,
   shippingPrice: state.shippingPrice,
   totalPrice: state.totalPrice,
-  totalQuantity: state.totalQuantity
+  totalQuantity: state.totalQuantity,
+  shippingAddress: state.shippingAddress,
+  paymentMethod: state.paymentMethod
 }), [state])
 
 let actions = {

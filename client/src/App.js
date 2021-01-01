@@ -39,7 +39,7 @@ const App = ()=> {
       <CartStore>      
          <PrivateRoute path = '/placeorder' exact component = {PlaceOrder} />
          <PrivateRoute path = '/shipping' exact component = {ShippingInfo} />
-         <Route path = '/payment' exact component = {SelectPayment} />
+         <PrivateRoute path = '/payment' exact component = {SelectPayment} />
          <Route path = '/cart' exact component = {CartView} />
          <ProductStore>
          <Route path = '/products/:id' exact component = {ProductDetail} />

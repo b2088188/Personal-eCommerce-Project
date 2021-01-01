@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link as ReactLink, Redirect } from 'react-router-dom';
+import { Link as ReactLink, Redirect, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container, Button, Image, Span, Title, ListGroup } from '../../design/components';
 import {useProduct} from '../../stores/product/productContext';
@@ -17,12 +17,15 @@ const ProductDetail = ({
 }) => {
     const {product, loadingProduct, errorProduct, getProduct} = useProduct();
     const  {dispatchCart} = useCartActions();
+    const {id} = useParams();
+
+
+
     const [selectQty, setSelectQty] = useState(1);
     const [toCart, setToCart] = useState(false);
-
     useEffect(() => {
-        getProduct(`/api/v1/products/${match.params.id}`)
-    }, [match.params.id, getProduct])
+        getProduct({Url: `/api/v1/products/${id}`})
+    }, [id, getProduct])
 
 
 
@@ -53,6 +56,7 @@ const ProductDetail = ({
             setToCart(true);
         }
     }
+
 
     if(toCart)
         return <Redirect to = '/cart' />

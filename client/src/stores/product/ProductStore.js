@@ -34,7 +34,7 @@ let valueProduct = useMemo(() => ({
    loadingProduct: stateProduct.loading,
    errorProduct: stateProduct.error,
    getProduct: lazyFetchProduct
-}))
+}), [stateProducts, lazyFetchProduct])
 
 	return (
       <ProductsProvider value = {valueProducts}>

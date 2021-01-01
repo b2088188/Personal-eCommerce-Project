@@ -30,8 +30,8 @@ const fetchReducer = (currentState, action) => {
   }
 };
 
-const useFetch = ({ initialUrl, initialData }) => {
-  const [Url, setUrl] = useState(initialUrl);
+const useFetch = ({ initialData }) => {
+  const [ajax, setAjax] = useState(initialData);
   const [{ data, loading, error }, dispatch] = useReducer(
     fetchReducer,
     {
@@ -42,7 +42,7 @@ const useFetch = ({ initialUrl, initialData }) => {
   );
 
   useEffect(() => {
-        if(Url)
+        if(ajax.Url)
    		 fetchData();
     async function fetchData() {
       try {
@@ -51,8 +51,8 @@ const useFetch = ({ initialUrl, initialData }) => {
       });
          const {data: {data}} = await axios({
 				  method: initialData.method,
-				  url: Url,
-          data: initialData.data
+				  url: ajax.Url,
+          data: ajax.data
 				});
           dispatch({
             type: REQUEST_SUCCESS,
@@ -69,7 +69,7 @@ const useFetch = ({ initialUrl, initialData }) => {
           });
       }
     }
-  }, [Url, initialData.method, initialData.data]);
+  }, [ajax, initialData.method]);
 
   return [
     {
@@ -77,7 +77,7 @@ const useFetch = ({ initialUrl, initialData }) => {
       loading,
       error,
     },
-    setUrl
+    setAjax
   ];
 };
 

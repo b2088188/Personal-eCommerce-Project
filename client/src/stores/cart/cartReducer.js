@@ -50,6 +50,7 @@ function cartReducer(currentState, action) {
 		  	cartList: R.reject(el => el.product === action.payload.id, currentState.cartList)
 		  }
 	  	case SAVE_PAYINFO:
+	  	console.log(action.payload.data)
 	  	  return {
 	  	  	...currentState,
 	  	  	...{[action.payload.name]: action.payload.data}

@@ -33,7 +33,8 @@ const TITLE_MODIFIERS = {
 }
 
 export const Title = styled.h1`
-	    color: ${colorGrey.greydark1};        
+	    color: ${colorGrey.greydark1}; 
+	    font-size: 1.7rem;       
         line-height: 1.2;
         ${applyStyleModifiers(TITLE_MODIFIERS)}
 `

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useCartState} from '../../stores/cart/cartStateContext';
 import {useCartActions} from '../../stores/cart/cartActionContext';
 import {Redirect} from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,14 +13,18 @@ const SelectPayment = ({
     className
 }) => {
     const { savePayInfo } = useCartActions();
+    const {shippingAddress} = useCartState();
     const [toPlaceOrder, setToPlaceOrder] = useState(false);
     const { register, handleSubmit, errors } = useForm();
 
 
-    function onSubmit(values) {
-    	savePayInfo('paymentMethod', values);
+    function onSubmit({payment}) {
+    	savePayInfo('paymentMethod', payment);
     	setToPlaceOrder(true);
     }
+
+    if(!shippingAddress)
+    	return <Redirect to = '/' />
 
     if(toPlaceOrder)
      return <Redirect to = '/placeorder' />

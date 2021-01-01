@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
+import {Link as ReactLink, useHistory} from 'react-router-dom';
+import {useAuthState} from '../../stores/auth/authStateContext';
 import styled from 'styled-components';
 import {Span, Link} from '../../design/components';
 import {colorGrey} from '../../design/utils';
-import {Link as ReactLink, useHistory} from 'react-router-dom';
-import AuthContext from '../../stores/auth/authContext';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PersonIcon from '@material-ui/icons/Person';
 import Menu from '../../utils/Menu';
@@ -11,7 +11,7 @@ import Menu from '../../utils/Menu';
 const Header = ({
   className
 }) => {
-	const {isAuth} = useContext(AuthContext);
+	const {user} = useAuthState();
   let history = useHistory();
 	return (
      <header className = {className}>
@@ -23,7 +23,7 @@ const Header = ({
        <ShoppingCartIcon />
        <Header.Span>Cart</Header.Span>
        </Link>
-       {isAuth ? 
+       {user ? 
        (<Menu history = {history} />) : 
        (<Link as = {ReactLink} to = "/login" className = "signin">         
              <PersonIcon />

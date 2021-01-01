@@ -1,34 +1,45 @@
-import React, {useEffect, useContext, useRef} from 'react';
-import {Link as ReactLink} from 'react-router-dom';
+import React, {useEffect, useRef} from 'react';
+import {Link as ReactLink, Redirect} from 'react-router-dom';
+import {useAuthState} from '../../stores/auth/authStateContext';
+import {useAuthActions} from '../../stores/auth/authActionContext';
 import styled from 'styled-components';
 import {Container, FormContainer, Form} from '../../design/components';
-import AuthContext from '../../stores/auth/authContext';
 import { useForm } from 'react-hook-form';
 import FormGroup from '../../utils/form/FormGroup';
 import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
 
+
+
+
+
+
 const Login = ({
-    location,
-    history
+    location
 }) => {
     const { register, handleSubmit, watch, errors } = useForm();
-    const {authHandle, isAuth, loading, error} = useContext(AuthContext);
-   useEffect(() => {
-      if(isAuth)
-        history.push(location.state?.from || '/');
-   }, [isAuth, history, location.state])
+    const {user, loadingAuth, errorAuth} = useAuthState();
+    const {authHandle} = useAuthActions();
 
+   function onSubmit(values) {
+        authHandle({
+            Url: `/api/v1/users/login`,
+            data: values
+        })
+    }
+
+    if(user)
+        return <Redirect to = {location.state?.from || '/'} />
 
     return (
         <Container>            
         <FormContainer>
       		<Form.Title modifiers = {['big', 'light']}>Login</Form.Title>
-            {loading && <Spinner />}
-            {error && <Message alert = {error} severity = 'error' />}
+            {loadingAuth && <Spinner />}
+            {errorAuth && <Message alert = {errorAuth} severity = 'error' />}
             <FormError errors = {errors} />
-      		<Form onSubmit = {handleSubmit(authHandle('login'))}>                
+      		<Form onSubmit = {handleSubmit(onSubmit)}>                
                 <Form.Label>Email</Form.Label>
                 <Form.Input name = 'email' type = 'text' ref = {register({
                     required: 'Please enter your email',

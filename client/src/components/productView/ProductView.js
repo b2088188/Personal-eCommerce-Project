@@ -13,7 +13,7 @@ const ProductView = ({
 }) => {
     const {products, loadingProducts, errorProducts, getAllProducts} = useProducts();
     useEffect(() =>{
-        getAllProducts('/api/v1/products')
+        getAllProducts({Url: '/api/v1/products'})
     }, [getAllProducts])
 
     function renderProducts(list) {

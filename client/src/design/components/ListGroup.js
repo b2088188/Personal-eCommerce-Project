@@ -20,14 +20,16 @@ const ITEM_MODIFIERS = {
 
 }
 
-const ListGroupItem = styled.div`
+const ListGroupItem = styled.div`    
     // Width
 	${props=> props.full && setFlexWidth({width: '95'})}
     ${props=> props.p60 && setFlexWidth({width: '60'})}
 	${props => props.half && setFlexWidth()}
     ${props=> props.p40 && setFlexWidth({width: '40'})}
-    ${props=> props.p30 && setFlexWidth({width: '35'})}
+    ${props=> props.p35 && setFlexWidth({width: '35'})}
+    ${props=> props.p30 && setFlexWidth({width: '30'})}
     ${props=> props.p25 && setFlexWidth({width: '25'})}
+    ${props=> props.p20 && setFlexWidth({width: '20'})}
 	${props=> props.p15 && setFlexWidth({width: '15'})}
     //Border
     ${props => props.bd && setBorder()}
