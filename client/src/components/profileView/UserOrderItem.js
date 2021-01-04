@@ -1,5 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link as ReactLink} from 'react-router-dom';
+import {Table, Link} from '../../design/components';
 import formatDate from '../../utils/formatDate';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -8,14 +9,14 @@ const UserOrderItem = ({
 }) => {
 	
 	return (
-		<tr className = 'profile-view__tr'>
-			<td className = 'profile-view__td'>{order._id}</td>
-			<td className = 'profile-view__td'>{formatDate(order.createdAt)}</td>
-			<td className = 'profile-view__td'>{order.totalPrice}</td>
-			<td className = 'profile-view__td'>{order.isPaid ? formatDate(order.paidAt) : <CloseIcon />}</td>
-			<td className = 'profile-view__td'>{order.isDelivered ? formatDate(order.deliveredAt) : <CloseIcon />}</td>
-			<td className = 'profile-view__td'><Link to = '/'>Details</Link></td>
-		</tr>
+		<Table.Tr>
+			<Table.Td>{order._id}</Table.Td>
+			<Table.Td>{formatDate(order.createdAt)}</Table.Td>
+			<Table.Td>{order.totalPrice}</Table.Td>
+			<Table.Td>{order.isPaid ? formatDate(order.paidAt) : <CloseIcon />}</Table.Td>
+			<Table.Td>{order.isDelivered ? formatDate(order.deliveredAt) : <CloseIcon />}</Table.Td>
+			<Table.Td><Link as = {ReactLink} to = '/'>Details</Link></Table.Td>
+		</Table.Tr>
 		)
 }
 

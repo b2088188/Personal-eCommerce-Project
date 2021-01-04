@@ -1,21 +1,25 @@
 import React from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import {Link as ReactLink, useLocation, useRouteMatch} from 'react-router-dom';
+import styled from 'styled-components';
+import {Link, Span} from '../design/components';
+import {setFlex, setTransition, colorGrey} from '../design/utils';
 
-const Sidebar = () => {
+const Sidebar = ({
+    className
+}) => {
     const location = useLocation();
-
 	
 	return (
-    <nav className ="sidebar">
-       <ul className ="side-nav">
-           <li className ="side-nav__item">
-               <Link to = '/profile/settings' className = {`side-nav__link ${location.pathname === '/profile/settings' && 'side-nav__link--active'}`}>
-                   <span className ="side-nav__text">Settings</span>
+    <nav className = {className}>
+       <ul className ="list">
+           <li className ="item">
+               <Link as = {ReactLink} to = '/profile/settings' className = {`link ${useRouteMatch({path: '/profile/settings', exact: true}) ? 'active': ''}`} modifiers = {['big', 'exlight']}>
+                   <Span>Settings</Span>
                </Link>
            </li>
-           <li className ="side-nav__item">
-               <Link to = '/profile/orders' className = {`side-nav__link ${location.pathname === '/profile/orders' && 'side-nav__link--active'}`}>
-                   <span className ="side-nav__text">My Orders</span>
+           <li className ="item">
+               <Link as = {ReactLink} to = '/profile/orders' className = {`link ${useRouteMatch({path: '/profile/orders', exact: true}) ? 'active': ''}`} modifiers = {['big', 'exlight']}>
+                   <Span>My Orders</Span>
                </Link>
            </li>
        </ul>
@@ -23,4 +27,27 @@ const Sidebar = () => {
 		)
 }
 
-export default Sidebar;
+
+
+export default styled(Sidebar)`
+    margin: 2.5rem 0;
+    .list{
+        ${setFlex({direction: 'column'})}
+    }
+    .item{
+        width: 100%;
+        margin: 1rem auto;
+        ${setFlex({direction: 'column', y: 'center'})}
+    }
+    .link{
+        flex: 0 0 100%;
+        color: ${colorGrey.light4};
+        ${setTransition()}
+        &:hover{
+            color: ${colorGrey.dark2};
+        }
+    }
+    .active{
+        color: ${colorGrey.dark2};
+    }
+`;

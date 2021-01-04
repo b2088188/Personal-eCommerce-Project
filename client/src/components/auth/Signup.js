@@ -5,6 +5,7 @@ import {useAuthActions} from '../../stores/auth/authActionContext';
 import {Container, FormContainer, Form} from '../../design/components';
 import { useForm } from 'react-hook-form';
 import FormError from '../../utils/form/FormError';
+import axios from 'axios';
 
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
@@ -17,13 +18,9 @@ const Signup = ({
     const password = useRef({});
     password.current = watch('password', '');
     
-   console.log(user)
 
     function onSubmit(values) {
-        authHandle({
-            Url: `/api/v1/users/signup`,
-            data: values
-        })
+        authHandle(axios.post(`/api/v1/users/signup`, values))
     }
 
     if(user)

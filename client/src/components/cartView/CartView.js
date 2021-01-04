@@ -9,15 +9,12 @@ import Spinner from '../../utils/Spinner';
 
 
 const CartView = ({
-    history,
     className
 }) => {   
 	const {cartList, totalPrice, totalQuantity} = useCartState();
    const [toShipping, setToShipping] = useState(false);
 
-    // useEffect(() => {
-    //   getCartList();
-    // }, [getCartList])
+
 
     function renderCartList(list) {
     	return list.map(function generateItem(item) {

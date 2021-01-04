@@ -2,6 +2,7 @@ import {createContext} from 'react';
 import useContextFactory from '../../customhooks/useContextFactory';
 
 const ProductContext = createContext();
+ProductContext.displayName = 'ProductContext';
 
 export const ProductProvider = ProductContext.Provider;
 /* eslint-disable */

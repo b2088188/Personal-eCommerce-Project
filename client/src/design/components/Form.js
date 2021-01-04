@@ -46,11 +46,31 @@ export const Form = styled.form`
 }
 `
 
+export const FormGroup = styled.div`
+    margin-bottom: 1rem;
+    ${setFlex({direction: 'column'})}
+`;
+Form.Group = FormGroup;
+
 export const Input = styled.input`
 		padding: 1rem;
         font-size: 1.7rem;
         font-family: inherit;
 `
+
+export const Select = styled.select`
+        padding: 1rem;
+        font-size: 1.5rem;
+        font-weight: 350;
+        font-family: inherit;
+        border: none;
+        background: ${colorGrey.light2};
+        &:focus{
+            outline:none;
+        }
+`;
+
+
 
 //Form Title
 const FormTitle = styled(Title)`

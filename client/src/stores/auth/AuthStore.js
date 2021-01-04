@@ -8,11 +8,8 @@ import useFetch from '../../customhooks/useFetch';
 const AuthStore = ({
 	children
 }) => {
-	const [stateAuth, lazyFetchAuth] = useFetch({
-    initialData: {
-      state: {},
-      method: 'post'
-    }
+	const [stateAuth, fetchAuth] = useFetch({
+    data: {}
   });
 
 // const authHandle = R.curry(async function (action, values) {
@@ -39,15 +36,15 @@ const AuthStore = ({
 
 
 const value = useMemo(() =>({
-   user: stateAuth.data?.user,
-   token: stateAuth.data?.token,   
-   loadingAuth: stateAuth.loading,
+   user: stateAuth.data.user,
+   token: stateAuth.data.token,   
+   statusAuth: stateAuth.status,
    errorAuth: stateAuth.error   
 }), [stateAuth])
 
 const actions = useMemo(() =>({
-   authHandle: lazyFetchAuth   
-}), [lazyFetchAuth])
+   authHandle: fetchAuth   
+}), [fetchAuth])
 
 	return (
       <AuthStateProvider value = {value}>

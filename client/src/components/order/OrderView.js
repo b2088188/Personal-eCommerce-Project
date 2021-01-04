@@ -1,10 +1,11 @@
-import './orderview.scss';
-import React, {useState, useEffect, useContext} from 'react';
-import {Link as ReactLink} from 'react-router-dom';
+import * as R from 'ramda';
+import React, {useState, useEffect} from 'react';
+import {Link as ReactLink, useParams} from 'react-router-dom';
+import {useOrderState} from '../../stores/order/orderStateContext';
+import {useOrderActions} from '../../stores/order/orderActionContext';
 import styled from 'styled-components';
 import {Container, ListGroup, Image, Link} from '../../design/components';
 import {PayPalButton} from 'react-paypal-button-v2';
-import OrderContext from '../../stores/order/orderContext';
 import ListItem from '../../utils/list/ListItem';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
@@ -12,11 +13,13 @@ import formatDate from '../../utils/formatDate';
 import axios from 'axios';
 
 const OrderView = ({
-	match,
 	className
 }) => {
 	const [sdkReady, setSdkReady] = useState(false);
-	const {loading, currentOrder, getOrder, updateOrderToPaid, clearOrder} = useContext(OrderContext);
+	const {currentOrder, loadingOrder, error} = useOrderState();
+	const {orderHandle} = useOrderActions();
+	const {id} = useParams();
+	
 
 	useEffect(() => {
 		if(currentOrder && !currentOrder.isPaid && !window.paypal)
@@ -33,12 +36,21 @@ const OrderView = ({
 	}, [currentOrder])
 
 	useEffect(() => {
-	   clearOrder();	   
-       getOrder(match.params.id);
-	}, [match.params.id, getOrder, clearOrder])
+	   //clearOrder();	   
+       orderHandle({
+       	method: 'get',
+       	Url: `/api/v1/orders/${id}`
+       })
+	}, [id, orderHandle])
 
 	function onSuccessPayHandler(result) {
-		updateOrderToPaid(match.params.id, result);
+		orderHandle({
+			method: 'patch',
+			Url: `/api/v1/orders/${id}`,
+			data: {
+				paymentResult: R.pick(['id', 'update_time', 'status'], result)
+			}
+		})
 	}
 
 	function renderOrderItems(list) {
@@ -69,7 +81,7 @@ const OrderView = ({
 			);
 	}
 
-     if(loading)
+     if(loadingOrder)
      	return <Spinner />
     if(!currentOrder)
     	return null;
@@ -83,7 +95,7 @@ const OrderView = ({
      			<ListGroup bdbottom>     				
      			<ListGroup>
      				<ListGroup.Title>Shipping</ListGroup.Title>
-     				<ListGroup.Paragraph>
+     				<ListGroup.Paragraph modifiers = 'exlight'>
      					{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`} 
      				</ListGroup.Paragraph>
      			</ListGroup>

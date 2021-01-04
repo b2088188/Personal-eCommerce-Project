@@ -1,66 +1,80 @@
-import './profileview.scss';
-import React, {useEffect, useContext, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
-import UserContext from '../../stores/user/userContext';
+import {useUserState} from '../../stores/user/userStateContext';
+import {useUserActions} from '../../stores/user/userActionContext';
 import { useForm } from 'react-hook-form';
+import {Container, FormContainer, Form, Row, Col} from '../../design/components';
 import Sidebar from '../../layout/Sidebar';
 import FormGroup from '../../utils/form/FormGroup';
 import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
- 
+ import axios from 'axios';
+
 
 const UserSettings = () => {
-	const {user, loading, error, getUserProfile, updateUserProfile} = useContext(UserContext);
-	const { register, handleSubmit, errors, setValue } = useForm();
-    
+	const {user, statusUser, errorUser} = useUserState();
+	const {userHandle} = useUserActions();
+	const { register, handleSubmit, errors, setValue, reset } = useForm();
     useEffect(() => {
-      getUserProfile();
-    }, [getUserProfile])
-
-   
+      userHandle(axios.get('/api/v1/users/profile'))
+    }, [userHandle])
+    useEffect(() => {    	
+    if (user) {
+      setValue('name', user.name)
+      setValue('email', user.email)
+    }
+  }, [user]);
 
    function onSubmit(values) {
-   	updateUserProfile(values);
+   	reset();
+   	userHandle(axios.patch('/api/v1/users/profile', values))
    }
 
-    if(loading)
+    if(statusUser === 'idle' || statusUser === 'pending')
     	return <Spinner />
-    if(error)
-    	return <Message />
-
+    if(statusUser === 'rejected' && errorUser)
+    	return <Message alert = {errorUser} severity = 'error' />
+    if(statusUser === 'resolved')
 	return (
-		<div className="container">			
-		<div className = 'profile-view'>
-		<div className = 'profile-view__nav'>
+		<Container>			
+		<Row>
+		<Col col_3>
 			<Sidebar />
-		</div>
-		<div className = 'profile-view__container'>			
-     <div className = "form-container profile-view__form">
-      	<div className = "form__formbox">
-      		<h1 className = "form__title">User Profile</h1>
+		</Col>
+		<Col col_9>			
+     <FormContainer>
+      		<Form.Title modifiers = {['big', 'light']}>User Profile</Form.Title>
       		 <FormError errors = {errors} />
-      		<form className = "form__body" onSubmit = {handleSubmit(onSubmit)}>
-	      		<FormGroup name = 'name' type = 'text' register = {register({
+      		<Form onSubmit = {handleSubmit(onSubmit)}>
+      		<Form.Group>
+      			<Form.Label>Name</Form.Label>
+      			<Form.Input name = 'name' type = 'text' ref = {register({
 	      				required: 'You must specify a name'
 	      			})} />
-      			<FormGroup name = 'email' type = 'text' register = {register({
+      		</Form.Group>
+      		<Form.Group>
+      			<Form.Label>Email</Form.Label>
+      			<Form.Input name = 'email' type = 'text' ref = {register({
       				required: 'You must specify an email',
 	               pattern: {
 	                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
 	                        message: 'Invalid email address'
 	               }
-      			})} />      			
-      			<button className = "btn--default form__submit">
+      			})}  />
+      		</Form.Group>
+      			<Form.Button>
       				Save Changes
-      			</button>
-      		</form>
-      	</div>
-      </div>
-		</div>			
-	</div>
-		</div>
+      			</Form.Button>
+      		</Form>      		
+      </FormContainer>
+		</Col>			
+	</Row>
+		</Container>
 		)
 }
+
+
+
 
 export default UserSettings;

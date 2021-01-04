@@ -9,24 +9,17 @@ import FormGroup from '../../utils/form/FormGroup';
 import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
 import Spinner from '../../utils/Spinner';
-
-
-
-
-
+import axios from 'axios';
 
 const Login = ({
     location
 }) => {
     const { register, handleSubmit, watch, errors } = useForm();
-    const {user, loadingAuth, errorAuth} = useAuthState();
+    const {user, statusAuth, errorAuth} = useAuthState();
     const {authHandle} = useAuthActions();
 
    function onSubmit(values) {
-        authHandle({
-            Url: `/api/v1/users/login`,
-            data: values
-        })
+    authHandle(axios.post(`/api/v1/users/login`, values))
     }
 
     if(user)
@@ -36,8 +29,8 @@ const Login = ({
         <Container>            
         <FormContainer>
       		<Form.Title modifiers = {['big', 'light']}>Login</Form.Title>
-            {loadingAuth && <Spinner />}
-            {errorAuth && <Message alert = {errorAuth} severity = 'error' />}
+            {statusAuth === 'pending' ? <Spinner /> : null}
+            {errorAuth ? <Message alert = {errorAuth} severity = 'error' /> : null}
             <FormError errors = {errors} />
       		<Form onSubmit = {handleSubmit(onSubmit)}>                
                 <Form.Label>Email</Form.Label>

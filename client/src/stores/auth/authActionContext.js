@@ -2,6 +2,7 @@ import {createContext} from 'react';
 import useContextFactory from '../../customhooks/useContextFactory';
 
 const AuthActionContext = createContext();
+AuthActionContext.displayName = 'AuthActionContext';
 
 export const AuthActionProvider = AuthActionContext.Provider;
 

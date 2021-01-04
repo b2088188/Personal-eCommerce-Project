@@ -5,9 +5,13 @@ const globalErrorHandler = (err, req, res, next) => {
 	err.status = err.status || 'error';
 	if(process.env.NODE_ENV === 'development')
       return sendErrorDev(err, res);
-    if(err.code === 11000)
-        return sendErrorProd(handleDuplicateFieldsDB(err), res);
-    	sendErrorProd(err, res)
+  let error = {...err};
+  error.message = err.message
+    if(error.code === 11000)
+        error =  handleDuplicateFieldsDB(error);
+    if(error.name === 'CastError')
+    	error = handleCastErrorDB(error);
+    	sendErrorProd(error, req, res)
 }
 
 function sendErrorDev(err, res) {
@@ -24,6 +28,11 @@ function sendErrorProd(err, res) {
 		status: err.status,
 		message: err.message
 	})
+}
+
+function handleCastErrorDB(err) {
+	const message = `Invalid ${err.path}: ${err.value}.`;
+	return new AppError(message, 400);
 }
 
 function handleDuplicateFieldsDB(err) {

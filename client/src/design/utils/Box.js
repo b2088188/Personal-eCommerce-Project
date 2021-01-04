@@ -21,11 +21,20 @@ export const setBorder = ({
 
 export const setFlexWidth = ({
     width = '45',
-    mx =  '2.5%',
-    my = '0'
+    mx,
+    my
     } = {}) => {
     return css`
         flex: 0 0 ${width}%;
         margin: ${my} ${mx};
+    `
+}
+
+export const setMargin = ({
+    mx,
+    my
+}) => {
+    return css`
+     margin: ${my} ${mx};
     `
 }

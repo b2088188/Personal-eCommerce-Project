@@ -8,6 +8,7 @@ import {setFlex, setBorder, setFlexWidth} from '../utils';
 
 export const ListGroup = styled.div`
 	padding: .75rem 1.25rem;
+    //Position
 	${props =>props.xcenter && setFlex({x:'center'})}
 	${props =>props.ycenter && setFlex({y:'center'})}
 	${props =>props.center && setFlex({x: 'center', y:'center'})}
@@ -22,15 +23,15 @@ const ITEM_MODIFIERS = {
 
 const ListGroupItem = styled.div`    
     // Width
-	${props=> props.full && setFlexWidth({width: '95'})}
-    ${props=> props.p60 && setFlexWidth({width: '60'})}
-	${props => props.half && setFlexWidth()}
-    ${props=> props.p40 && setFlexWidth({width: '40'})}
-    ${props=> props.p35 && setFlexWidth({width: '35'})}
-    ${props=> props.p30 && setFlexWidth({width: '30'})}
-    ${props=> props.p25 && setFlexWidth({width: '25'})}
-    ${props=> props.p20 && setFlexWidth({width: '20'})}
-	${props=> props.p15 && setFlexWidth({width: '15'})}
+	${props=> props.full && setFlexWidth({width: '95', mx: '2.5%'})}
+    ${props=> props.p60 && setFlexWidth({width: '60', mx: '2.5%'})}
+	${props => props.half && setFlexWidth({mx: '2.5%'})}
+    ${props=> props.p40 && setFlexWidth({width: '40', mx: '2.5%'})}
+    ${props=> props.p35 && setFlexWidth({width: '35', mx: '2.5%'})}
+    ${props=> props.p30 && setFlexWidth({width: '30', mx: '2.5%'})}
+    ${props=> props.p25 && setFlexWidth({width: '25', mx: '2.5%'})}
+    ${props=> props.p20 && setFlexWidth({width: '20', mx: '2.5%'})}
+	${props=> props.p15 && setFlexWidth({width: '15', mx: '2.5%'})}
     //Border
     ${props => props.bd && setBorder()}
     ${props => props.bdtop && setBorder({position: 'border-top'})}
@@ -48,7 +49,6 @@ const ListGroupItem = styled.div`
 ListGroup.Item = ListGroupItem;
 
 const ListGroupTitle = styled(Title)`
-    font-size: 2rem;
     font-weight: 400;
 `
 ListGroup.Title = ListGroupTitle;

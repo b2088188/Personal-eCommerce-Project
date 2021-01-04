@@ -1,17 +1,23 @@
-import React, {useEffect, useContext} from 'react';
-import UserContext from '../../stores/user/userContext';
+import React, {useEffect} from 'react';
+import {useUserState} from '../../stores/user/userStateContext';
+import {useUserActions} from '../../stores/user/userActionContext';
+import styled from 'styled-components';
+import {Container, Row, Col, Title, Table} from '../../design/components';
 import Sidebar from '../../layout/Sidebar';
 import UserOrderItem from './UserOrderItem';
 import Spinner from '../../utils/Spinner';
 import Message from '../../utils/Message';
+import axios from 'axios';
 
 
-const UserOrder = () => {
-	const {orders, loading, error, getUserOrders} = useContext(UserContext);
-
+const UserOrder = ({
+	className
+}) => {
+	const {userOrdersHandle} = useUserActions();
+	const {userOrders, statusUserOrders, errorUserOrders} = useUserState();
 	useEffect(() => {
-		getUserOrders();
-	}, [getUserOrders])
+		userOrdersHandle(axios.get('/api/v1/users/orders'));
+	}, [userOrdersHandle])
 
 	function renderUserOrders(list) {
 		return list.map(function generateItem(order) {
@@ -19,37 +25,55 @@ const UserOrder = () => {
 		})
 	}
 
-	if(loading)
+console.log(statusUserOrders)
+
+	if(statusUserOrders === 'idle' || statusUserOrders === 'pending')
       return <Spinner />
-    if(error)
-      return <Message severity = 'error' alert = {error} /> 
+    if(statusUserOrders === 'rejected' && errorUserOrders)
+      return <Message severity = 'error' alert = {errorUserOrders} /> 
+    if(statusUserOrders === 'resolved')
 	return (
-		<div className="container">			
-		<div className = 'profile-view'>
-			<div className="profile-view__nav">
+		<Container className = {className}>			
+		<Row>
+			<Col col_3>
 				<Sidebar />
-			</div>
- 			<div className="profile-view__container">
- 				<div className="profile-view__tablebox"> 					
- 				<h2 className = 'profile-view__title'>My Orders</h2>
- 				<table className = 'profile-view__table'>
- 					<tr className = 'profile-view__tr'>
- 						<td className = 'profile-view__td'>Id</td>
- 						<td className = 'profile-view__td'>Date</td>
- 						<td className = 'profile-view__td'>Total</td>
- 						<td className = 'profile-view__td'>Paid</td>
- 						<td className = 'profile-view__td'>Delivered</td>
+			</Col>
+ 			<Col col_9>
+ 				<div className = 'tablebox'> 					
+ 				<Title modifiers = {['large', 'exlight']}>My Orders</Title>
+ 				<Table>
+ 					<Table.Tr>
+ 						<Table.Td modifiers = 'light'>Id</Table.Td>
+ 						<Table.Td modifiers = 'light'>Date</Table.Td>
+ 						<Table.Td modifiers = 'light'>Total</Table.Td>
+ 						<Table.Td modifiers = 'light'>Paid</Table.Td>
+ 						<Table.Td modifiers = 'light'>Delivered</Table.Td>
  						<th></th>
- 					</tr>
- 					<tbody>
- 						{renderUserOrders(orders)}
- 					</tbody>
- 				</table>
+ 					</Table.Tr>
+ 					<Table.Body>
+ 						{renderUserOrders(userOrders)}
+ 					</Table.Body>
+ 				</Table>
  				</div>
- 			</div>
-		</div>
-		</div>
+ 			</Col>
+		</Row>
+		</Container>
 		)
 }
 
-export default UserOrder;
+
+
+
+
+export default styled(UserOrder)`
+
+	&__form{
+		width: 70%;
+		margin: 2.5rem auto;
+	}
+	.tablebox{
+		width: 70%;
+		 margin: 2.5rem auto;
+	}
+	
+`;

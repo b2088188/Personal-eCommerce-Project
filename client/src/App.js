@@ -7,6 +7,7 @@ import UserStore from './stores/user/UserStore';
 import ProductStore from './stores/product/ProductStore';
 import CartStore from './stores/cart/CartStore';
 import OrderStore from './stores/order/OrderStore';
+import ReviewStore from './stores/review/ReviewStore';
 import PrivateRoute from './routes/PrivateRoutes';
 import ProductView from './components/productView/ProductView';
 import Header from './layout/header/Header';
@@ -42,8 +43,10 @@ const App = ()=> {
          <PrivateRoute path = '/payment' exact component = {SelectPayment} />
          <Route path = '/cart' exact component = {CartView} />
          <ProductStore>
+         <ReviewStore>         
          <Route path = '/products/:id' exact component = {ProductDetail} />
          <Route path = '/' exact component = {ProductView} />
+         </ReviewStore>
          </ProductStore>
       </CartStore>
          <PrivateRoute path = '/order/:id' exact component = {OrderView} />

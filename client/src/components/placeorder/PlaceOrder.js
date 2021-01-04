@@ -1,9 +1,10 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {useCartState} from '../../stores/cart/cartStateContext';
+import {useOrderState} from '../../stores/order/orderStateContext';
+import {useOrderActions} from '../../stores/order/orderActionContext';
 import styled from 'styled-components';
 import {Container, ListGroup, Title} from '../../design/components';
-import OrderContext from '../../stores/order/orderContext';
 import ListGroups from '../../utils/list/ListGroup';
 import Navsteps from '../../layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
@@ -14,18 +15,22 @@ const PlaceOrder = ({
 	className
 }) => {
 	const {cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod} = useCartState();
-	const {currentOrder, createStatus, createOrder} = useContext(OrderContext);
-
+	const {currentOrder} = useOrderState();
+	const {orderHandle} = useOrderActions();
 
 
 	function createOrderHandle(e) {
-		createOrder({
+		orderHandle({
+			method: 'post',
+			Url: '/api/v1/orders',
+			data: {
 			orderItems: cartList,
 			shippingAddress,
 			paymentMethod,
 			itemsPrice,
 			shippingPrice,
 			totalPrice
+			}
 		})
 	}
 

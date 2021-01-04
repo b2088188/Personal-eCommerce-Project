@@ -6,35 +6,27 @@ import useFetch from '../../customhooks/useFetch';
 const ProductStore = ({
 	children
 }) => {
-    const [stateProducts, lazyFetchProducts] = useFetch({
-    initialUrl: null,
-    initialData: {
-      state: [],
-      method: 'get'
-    }
-  });
-   const [stateProduct, lazyFetchProduct] = useFetch({
-       initialUrl: null,
-       initialData: {
-         state: {},
-         method: 'get'
-       }
-     });
+    const [stateProducts, fetchProducts] = useFetch({
+        data: []
+    });
+   const [stateProduct, fetchProduct] = useFetch({
+    data: {}
+   });
 
 
 let valueProducts = useMemo(() => ({
    products: stateProducts.data.products,   
-   loadingProducts: stateProducts.loading,
+   statusProducts: stateProducts.status,
    errorProducts: stateProducts.error,
-   getAllProducts: lazyFetchProducts
-}), [stateProducts, lazyFetchProducts])
+   getAllProducts: fetchProducts
+}), [stateProducts, fetchProducts])
 
 let valueProduct = useMemo(() => ({
    product: stateProduct.data.product,   
-   loadingProduct: stateProduct.loading,
+   statusProduct: stateProduct.status,
    errorProduct: stateProduct.error,
-   getProduct: lazyFetchProduct
-}), [stateProducts, lazyFetchProduct])
+   getProduct: fetchProduct
+}), [stateProduct, fetchProduct])
 
 	return (
       <ProductsProvider value = {valueProducts}>

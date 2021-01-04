@@ -2,6 +2,7 @@ import {createContext} from 'react';
 import useContextFactory from '../../customhooks/useContextFactory';
 
 const CartStateContext = createContext();
+CartStateContext.displayName = 'CartStateContext';
 
 export const CartStateProvider = CartStateContext.Provider;
 

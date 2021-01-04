@@ -6,14 +6,14 @@ import {useProducts} from '../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import Spinner from '../../utils/Spinner';
 import Message from '../../utils/Message';
-
+import axios from 'axios';
 
 const ProductView = ({
     className
 }) => {
-    const {products, loadingProducts, errorProducts, getAllProducts} = useProducts();
+    const {products, statusProducts, errorProducts, getAllProducts} = useProducts();
     useEffect(() =>{
-        getAllProducts({Url: '/api/v1/products'})
+        getAllProducts(axios.get('/api/v1/products'))
     }, [getAllProducts])
 
     function renderProducts(list) {
@@ -24,10 +24,11 @@ const ProductView = ({
 
     
 
-    if (loadingProducts)
+    if (statusProducts === 'idle' ||statusProducts === 'pending')
         return <Spinner  />
-    if (errorProducts)
+    if (statusProducts === 'rejected')
         return <Message alert = {errorProducts} severity = 'error' />
+    if(statusProducts === 'resolved')
     return (
         <Container>            
         <div className = {className}>

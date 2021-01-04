@@ -13,11 +13,12 @@ import globalErrorHandler from './controller/errorController.js';
 import productRouter from './routes/productRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
-
+import reviewRouter from './routes/reviewRoutes.js';
 
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/orders', orderRouter);
+app.use('/api/v1/reviews', reviewRouter);
 app.get('/api/v1/config/paypal', (req, res) => {
 	res.status(200).json({
 		status: 'success',

@@ -1,84 +1,76 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useCallback } from 'react';
 import {
-LOADING_REQUEST,
-REQUEST_SUCCESS,
-REQUEST_FAIL
+REQUEST_PENDING,
+REQUEST_RESOLVED,
+REQUEST_REJECTED 
 } from '../stores/types';
-import axios from 'axios';
+import useSafeDispatch from './useSafeDispatch';
 
 
 const fetchReducer = (currentState, action) => {
   switch (action.type) {
-    case LOADING_REQUEST:
+    case REQUEST_PENDING:
       return {
         ...currentState,
-        loading: true
+        status: 'pending'
       };
-    case REQUEST_SUCCESS:
+    case REQUEST_RESOLVED:
       return {
         ...currentState,
+        status: 'resolved',
         data: action.payload.data,
-        loading: false
+        error: null
       };
-    case REQUEST_FAIL:
+    case REQUEST_REJECTED:
       return {
         ...currentState,
+        status: 'rejected',
         error: action.payload.error
       };
     default:
-      return currentState;
+      throw new Error(`Unhandled action type: ${action.type}`)
   }
 };
 
-const useFetch = ({ initialData }) => {
-  const [ajax, setAjax] = useState(initialData);
-  const [{ data, loading, error }, dispatch] = useReducer(
+
+
+const useFetch = (initialState) => {
+  const [state, unSafeDispatch] = useReducer(
     fetchReducer,
     {
-      data: initialData.state,
-      loading: null,
+      status: 'idle',
+      data: null,      
       error: null,
+      ...initialState
     },
   );
 
-  useEffect(() => {
-        if(ajax.Url)
-   		 fetchData();
-    async function fetchData() {
-      try {
-      dispatch({
-        type: LOADING_REQUEST,
-      });
-         const {data: {data}} = await axios({
-				  method: initialData.method,
-				  url: ajax.Url,
-          data: ajax.data
-				});
-          dispatch({
-            type: REQUEST_SUCCESS,
-            payload: {
-              data,
-            },
-          });
-      } catch ({response: {data}}) {
-          dispatch({
-            type: REQUEST_FAIL,
-            payload: {
-            	error: data.message
-            }
-          });
+  const dispatch = useSafeDispatch(unSafeDispatch);
+  const run = useCallback((promise) => {
+    fetchData();
+   async function fetchData() {
+    unSafeDispatch({type: REQUEST_PENDING});
+    try {
+     const {data: {data}} = await promise;
+     unSafeDispatch({
+      type: REQUEST_RESOLVED,
+      payload: {
+        data
       }
+     })
     }
-  }, [ajax, initialData.method]);
+    catch({response: {data}}) {
+     unSafeDispatch({
+      type: REQUEST_REJECTED,
+      payload: {
+        error: data.message
+      }
+     })       
+    }        
+  }
+  }, [dispatch])
 
-  return [
-    {
-      data,
-      loading,
-      error,
-    },
-    setAjax
-  ];
+  return [state, run];
 };
 
 export default useFetch;
