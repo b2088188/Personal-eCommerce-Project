@@ -100,112 +100,106 @@ const ProductDetail = ({ className }) => {
    if (statusProduct === 'rejected') return <Message alert={errorProduct} severity='error' />;
    if (statusProduct === 'resolved')
       return (
-         <Container>
-            <div className={className}>
-               <div className='container'>
-                  <Button as={ReactLink} to='/' className='home'>
-                     Go Back
-                  </Button>
-                  <Row>
-                     <Col col_4 mx='2.5%'>
-                        <Image src={product.image} alt={product.name} />
-                     </Col>
-                     <Col col_3 mx='2.5%'>
-                        <ListGroup bdbottom>
-                           <Title as='h2' modifiers={['large', 'light']}>
-                              {product.name}
-                           </Title>
-                        </ListGroup>
-                        <ListGroup ycenter bdbottom>
-                           <ListGroup.Item half>
-                              <RatingStar average={product.ratingsAverage} />
-                           </ListGroup.Item>
-                           <ListGroup.Item half>
-                              <Span className='rating'>{product.ratingsQuantity} reviews</Span>
-                           </ListGroup.Item>
-                        </ListGroup>
-                        <ListGroup bdbottom>Price: ${product.price}</ListGroup>
-                        <ListGroup bdbottom>{product.description}</ListGroup>
-                     </Col>
-                     <Col col_3 mx='2.5%'>
-                        <ListGroup bdbottom ycenter>
-                           <ListGroup.Item half>Price:</ListGroup.Item>
-                           <ListGroup.Item half>
-                              <span className='product-detail__col'>${product.price}</span>
-                           </ListGroup.Item>
-                        </ListGroup>
-                        <ListGroup bdbottom ycenter>
-                           <ListGroup.Item half>Status:</ListGroup.Item>
-                           <ListGroup.Item half>
-                              {product.countInStock > 1 ? 'In Stock' : 'Out of Stock'}
-                           </ListGroup.Item>
-                        </ListGroup>
-                        {product.countInStock > 0 && renderSelect(product.countInStock)}
+         <div className={className}>
+            <div className='container'>
+               <Button as={ReactLink} to='/' className='home'>
+                  Go Back
+               </Button>
+               <Row>
+                  <Col width='4' spacing='2.5'>
+                     <Image src={product.image} alt={product.name} />
+                  </Col>
+                  <Col width='3' spacing='2.5'>
+                     <ListGroup bdbottom>
+                        <Title as='h2' modifiers={['large', 'light']}>
+                           {product.name}
+                        </Title>
+                     </ListGroup>
+                     <ListGroup ycenter bdbottom>
+                        <ListGroup.Item half>
+                           <RatingStar average={product.ratingsAverage} />
+                        </ListGroup.Item>
+                        <ListGroup.Item half>
+                           <Span className='rating'>{product.ratingsQuantity} reviews</Span>
+                        </ListGroup.Item>
+                     </ListGroup>
+                     <ListGroup bdbottom>Price: ${product.price}</ListGroup>
+                     <ListGroup bdbottom>{product.description}</ListGroup>
+                  </Col>
+                  <Col width='3' spacing='2.5'>
+                     <ListGroup bdbottom ycenter>
+                        <ListGroup.Item half>Price:</ListGroup.Item>
+                        <ListGroup.Item half>
+                           <span className='product-detail__col'>${product.price}</span>
+                        </ListGroup.Item>
+                     </ListGroup>
+                     <ListGroup bdbottom ycenter>
+                        <ListGroup.Item half>Status:</ListGroup.Item>
+                        <ListGroup.Item half>
+                           {product.countInStock > 1 ? 'In Stock' : 'Out of Stock'}
+                        </ListGroup.Item>
+                     </ListGroup>
+                     {product.countInStock > 0 && renderSelect(product.countInStock)}
+                     <ListGroup bdtop>
+                        <ListGroup.Button
+                           modifiers='full'
+                           onClick={addCartClick(product, selectQty)}
+                        >
+                           Add To Cart
+                        </ListGroup.Button>
+                     </ListGroup>
+                  </Col>
+                  <Col width='6'>
+                     <ListGroup>
+                        <ListGroup.Title modifiers='large'>Reviews</ListGroup.Title>
+                        {statusReviews === 'pending' ? <Spinner /> : null}
+                        {statusReviews === 'resolved' && reviews.length > 0 ? (
+                           renderReviewList(reviews)
+                        ) : (
+                           <Message alert='No Review yet' severity='info' />
+                        )}
                         <ListGroup bdtop>
-                           <ListGroup.Button
-                              modifiers='full'
-                              onClick={addCartClick(product, selectQty)}
-                           >
-                              Add To Cart
-                           </ListGroup.Button>
-                        </ListGroup>
-                     </Col>
-                  </Row>
-                  <Row>
-                     <Col col_6>
-                        <ListGroup>
-                           <ListGroup.Title modifiers='large'>Reviews</ListGroup.Title>
-
-                           {statusReviews === 'pending' ? <Spinner /> : null}
-                           {statusReviews === 'resolved' && reviews.length > 0 ? (
-                              renderReviewList(reviews)
-                           ) : (
-                              <Message alert='No Review yet' severity='info' />
-                           )}
-
-                           <ListGroup bdtop>
-                              {user && user.role === 'user' ? (
-                                 <Form onSubmit={handleSubmit(onSubmit(id))}>
-                                    <Form.Group>
-                                       <Form.Label>Rating</Form.Label>
-                                       <Select name='rating' id='rating' ref={register}>
-                                          <Options
-                                             options={[
-                                                { value: 1, text: '1 - Poor' },
-                                                { value: 2, text: '2 - Fair' },
-                                                { value: 3, text: '3 - OK' },
-                                                { value: 4, text: '4 - Great' },
-                                                { value: 5, text: '5 - Awesome' }
-                                             ]}
-                                          />
-                                       </Select>
-                                    </Form.Group>
-                                    <Form.Group>
-                                       <Form.Label>Review</Form.Label>
-                                       <Form.Input
-                                          name='review'
-                                          as='textarea'
-                                          ref={register({
-                                             required: "Review can't not be empty",
-                                             maxLength: 30
-                                          })}
+                           {user && user.role === 'user' ? (
+                              <Form onSubmit={handleSubmit(onSubmit(id))}>
+                                 <Form.Group>
+                                    <Form.Label>Rating</Form.Label>
+                                    <Select name='rating' id='rating' ref={register}>
+                                       <Options
+                                          options={[
+                                             { value: 1, text: '1 - Poor' },
+                                             { value: 2, text: '2 - Fair' },
+                                             { value: 3, text: '3 - OK' },
+                                             { value: 4, text: '4 - Great' },
+                                             { value: 5, text: '5 - Awesome' }
+                                          ]}
                                        />
-                                    </Form.Group>
-                                    <Form.Button>Submit</Form.Button>
-                                 </Form>
-                              ) : (
-                                 <Message
-                                    alert='Please sign in to write down your review'
-                                    severity='info'
-                                 />
-                              )}
-                           </ListGroup>
+                                    </Select>
+                                 </Form.Group>
+                                 <Form.Group>
+                                    <Form.Label>Review</Form.Label>
+                                    <Form.Input
+                                       name='review'
+                                       as='textarea'
+                                       ref={register({
+                                          required: "Review can't not be empty",
+                                          maxLength: 30
+                                       })}
+                                    />
+                                 </Form.Group>
+                                 <Form.Button>Submit</Form.Button>
+                              </Form>
+                           ) : (
+                              <Message
+                                 alert='Please sign in to write down your review'
+                                 severity='info'
+                              />
+                           )}
                         </ListGroup>
-                     </Col>
-                  </Row>
-               </div>
+                     </ListGroup>
+                  </Col>
+               </Row>
             </div>
-         </Container>
+         </div>
       );
 };
 

@@ -4,7 +4,7 @@ import { Link as Link, useParams } from 'react-router-dom';
 import { useOrderState } from '../../stores/order/orderStateContext';
 import { useOrderActions } from '../../stores/order/orderActionContext';
 import styled from 'styled-components';
-import { Container, ListGroup, Image, Link as SLink, Button } from '../../design/components';
+import { Row, Col, ListGroup, Image, Link as SLink, Button } from '../../design/components';
 import { PayPalButton } from 'react-paypal-button-v2';
 import ListItem from '../../utils/list/ListItem';
 import { Message, Spinner } from '../../design/elements';
@@ -78,11 +78,11 @@ const OrderView = ({ className }) => {
 
 	if (statusOrder === 'resolved')
 		return (
-			<Container>
-				<div className={className}>
+			<Col width='12' className={className}>
+				<div className='container'>
 					<ListGroup.Title modifiers='large'>ORDER {currentOrder._id}</ListGroup.Title>
-					<ListGroup xcenter>
-						<ListGroup.Item p60>
+					<Row>
+						<Col width='7'>
 							<ListGroup bdbottom>
 								<ListGroup>
 									<ListGroup.Title>Shipping</ListGroup.Title>
@@ -110,8 +110,8 @@ const OrderView = ({ className }) => {
 								<ListGroup.Title>Order Items</ListGroup.Title>
 								{renderOrderItems(currentOrder.orderItems)}
 							</ListGroup>
-						</ListGroup.Item>
-						<ListGroup.Item p30 bd yself>
+						</Col>
+						<Col width='4' spacing='2'>
 							<ListGroup.Item full>
 								<ListGroup.Title>Order Summary</ListGroup.Title>
 							</ListGroup.Item>
@@ -136,14 +136,16 @@ const OrderView = ({ className }) => {
 							{currentOrder && !currentOrder.isPaid
 								? renderPayButton(currentOrder.totalPrice)
 								: null}
-						</ListGroup.Item>
-					</ListGroup>
+						</Col>
+					</Row>
 				</div>
-			</Container>
+			</Col>
 		);
 };
 
 export default styled(OrderView)`
-	width: 70%;
-	margin: 2rem auto;
+	.container {
+		width: 70%;
+		margin: 2rem auto;
+	}
 `;

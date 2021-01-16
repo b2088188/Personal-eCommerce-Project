@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container, Title } from '../../design/components';
+import { Container, Col, Title, ListGroup } from '../../design/components';
 import React, { useEffect } from 'react';
 import useFetch from '../../customhooks/useFetch';
 import { useProducts } from '../../stores/product/productsContext';
@@ -23,20 +23,20 @@ const ProductView = ({ className }) => {
    if (statusProducts === 'rejected') return <Message alert={errorProducts} severity='error' />;
    if (statusProducts === 'resolved')
       return (
-         <Container>
-            <div className={className}>
+         <Col width='12' className={className}>
+            <div className='products'>
                <Title modifiers='big'>Latest Products</Title>
-               <div className='itemcontainer'>{renderProducts(products)}</div>
+               <ListGroup flexy='center' wrap>
+                  {renderProducts(products)}
+               </ListGroup>
             </div>
-         </Container>
+         </Col>
       );
 };
 
 export default styled(ProductView)`
-   width: 70%;
-   margin: auto;
-   .itemcontainer {
-      display: flex;
-      flex-wrap: wrap;
+   .products {
+      width: 70%;
+      margin: 2.5rem auto;
    }
 `;

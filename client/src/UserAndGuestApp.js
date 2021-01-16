@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import GlobalStyle from './design/GlobalStyle';
+import { Container, Row } from './design/components';
 import UserStore from './stores/user/UserStore';
 import ProductStore from './stores/product/ProductStore';
 import CartStore from './stores/cart/CartStore';
@@ -28,9 +29,9 @@ const UserAndGuestApp = () => {
          <GlobalStyle />
          <Router>
             <Suspense fallback={<Spinner />}>
-               <div className='container'>
+               <Container>
                   <Header />
-                  <div className='content'>
+                  <Row>
                      <Route path='/signup' exact component={Signup} />
                      <Route path='/login' exact component={Login} />
                      <OrderStore>
@@ -50,9 +51,9 @@ const UserAndGuestApp = () => {
                         <PrivateRoute path='/profile/settings' exact component={UserSettings} />
                         <PrivateRoute path='/profile/orders' exact component={UserOrder} />
                      </OrderStore>
-                  </div>
+                  </Row>
                   <Footer />
-               </div>
+               </Container>
             </Suspense>
          </Router>
       </UserStore>
