@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import {useCartState} from '../../stores/cart/cartStateContext';
 import styled from 'styled-components';
 import {Container, Title, Span, Button} from '../../design/components';
-import {colorGrey, setBorder, setFlex, setFlexWidth} from '../../design/utils';
+import {setBorder, setFlex, setFlexWidth} from '../../design/utils';
 import CartItem from './CartItem';
-import Spinner from '../../utils/Spinner';
+
 
 
 const CartView = ({
@@ -22,8 +22,7 @@ const CartView = ({
     	})
     }
 
-    // if(loading)
-    // 	return <Spinner />
+
     if(toShipping)
       return <Redirect to = '/shipping' />
 

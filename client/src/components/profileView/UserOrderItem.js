@@ -1,13 +1,10 @@
 import React from 'react';
-import {Link as ReactLink} from 'react-router-dom';
-import {Table, Link} from '../../design/components';
+import { Link } from 'react-router-dom';
+import { Table, Link as SLink } from '../../design/components';
 import formatDate from '../../utils/formatDate';
 import CloseIcon from '@material-ui/icons/Close';
 
-const UserOrderItem = ({
-	order
-}) => {
-	
+const UserOrderItem = ({ order }) => {
 	return (
 		<Table.Tr>
 			<Table.Td>{order._id}</Table.Td>
@@ -15,9 +12,13 @@ const UserOrderItem = ({
 			<Table.Td>{order.totalPrice}</Table.Td>
 			<Table.Td>{order.isPaid ? formatDate(order.paidAt) : <CloseIcon />}</Table.Td>
 			<Table.Td>{order.isDelivered ? formatDate(order.deliveredAt) : <CloseIcon />}</Table.Td>
-			<Table.Td><Link as = {ReactLink} to = '/'>Details</Link></Table.Td>
+			<Table.Td>
+				<SLink as={Link} to={`/order/${order._id}`}>
+					Details
+				</SLink>
+			</Table.Td>
 		</Table.Tr>
-		)
-}
+	);
+};
 
 export default UserOrderItem;

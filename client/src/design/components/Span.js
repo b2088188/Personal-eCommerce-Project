@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import {applyStyleModifiers} from 'styled-components-modifiers';
-
+import { applyStyleModifiers } from 'styled-components-modifiers';
 
 const SPAN_MODIFIERS = {
 	huge: () => `
@@ -30,9 +29,9 @@ const SPAN_MODIFIERS = {
 	exlight: () => `
 	 font-weight: 300
 	`
-}
+};
 
-export const Span = styled.span`	
+export const Span = styled.span`
 	text-transform: capitalize;
-  ${applyStyleModifiers(SPAN_MODIFIERS)}
-`
+	${applyStyleModifiers(SPAN_MODIFIERS)}
+`;

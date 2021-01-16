@@ -1,40 +1,50 @@
 import React, { useCallback, useMemo } from 'react';
-import {UserStateProvider} from './userStateContext';
-import {UserActionProvider} from './userActionContext';
+import { UserStateProvider } from './userStateContext';
+import { UserActionProvider } from './userActionContext';
 import userReducer from './userReducer';
 import useFetch from '../../customhooks/useFetch';
+import axios from 'axios';
 
-const UserStore = ({
-    children
-}) => {
-    const [stateUser, fetchUser] = useFetch({
-    data: {}
-  });
-    const [stateUserOrders, fetchUserOrders] = useFetch({
-    data: []
-  });
+const UserStore = ({ children }) => {
+   const [stateUserProfile, fetchUserProfile] = useFetch({
+      data: {}
+   });
+   const [stateUserOrders, fetchUserOrders] = useFetch({
+      data: []
+   });
 
-    const value = useMemo(() => ({
-        user: stateUser.data.user,
-        statusUser: stateUser.status,
-        errorUser: stateUser.error,
-        userOrders: stateUserOrders.data.orders,
-        statusUserOrders: stateUserOrders.status,
-        errorUserOrders: stateUserOrders.error
-    }), [stateUser, stateUserOrders])
+   const getUserProfile = useCallback(
+      async function () {
+         fetchUserProfile(axios.get('/api/v1/users/profile'));
+      },
+      [fetchUserProfile]
+   );
 
-    const actions = useMemo(() => ({
-        userHandle: fetchUser,
-        userOrdersHandle: fetchUserOrders            
-    }), [fetchUser, fetchUserOrders])
+   const value = useMemo(
+      () => ({
+         userProfile: stateUserProfile.data.user,
+         statusUserProfile: stateUserProfile.status,
+         errorUserProfile: stateUserProfile.error,
+         userOrders: stateUserOrders.data.orders,
+         statusUserOrders: stateUserOrders.status,
+         errorUserOrders: stateUserOrders.error
+      }),
+      [stateUserProfile, stateUserOrders]
+   );
 
-    return (
-        <UserStateProvider value = {value}>
-            <UserActionProvider value = {actions}>
-                {children}
-            </UserActionProvider>
-        </UserStateProvider>
-    )
-}
+   const actions = useMemo(
+      () => ({
+         getUserProfile,
+         userOrdersHandle: fetchUserOrders
+      }),
+      [getUserProfile, fetchUserOrders]
+   );
+
+   return (
+      <UserStateProvider value={value}>
+         <UserActionProvider value={actions}>{children}</UserActionProvider>
+      </UserStateProvider>
+   );
+};
 
 export default UserStore;

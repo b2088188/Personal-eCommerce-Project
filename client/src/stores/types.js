@@ -14,9 +14,9 @@ export const SAVE_PAYINFO = 'SAVE_PAYINFO';
 
 //Authentication
 export const LOADING_AUTH = 'LOADING_AUTH';
-export const AUTH_SUCCESS = 'AUTH_SUCCESS';
-export const AUTH_FAIL = 'AUTH_FAIL';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const GET_AUTHINFO = 'GET_AUTHINFO';
+export const UPDATE_USERDATA = 'UPDATE_USERDATA';
+export const LOGOUT_AUTH = 'LOGOUT_AUTH';
 
 //User
 export const LOADING_PROFILE = 'LOADING_PROFILE';
@@ -26,11 +26,9 @@ export const LOADING_USERORDERS = 'LOADING_USERORDERS';
 export const USERORDERS_SUCCESS = 'USERORDERS_SUCCESS';
 export const USERORDERS_FAIL = 'USERORDERS_FAIL';
 
-
 //Order
-export const LOADING_ORDER = 'LOADING_ORDER';
-export const ORDERCREATE_SUCCESS = 'ORDERCREATE_SUCCESS';
-export const ORDERGET_SUCCESS = 'ORDERGET_SUCCESS';
-export const ORDERUPDATE_SUCCESS = 'ORDERUPDATE_SUCCESS';
+export const CREATE_ORDER = 'CREATE_ORDER';
+export const GET_ORDER = 'GET_ORDER';
+export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const ORDER_FAIL = 'ORDER_FAIL';
 export const CLEAR_ORDER = 'CLEAR_ORDER';

@@ -1,58 +1,93 @@
 import * as R from 'ramda';
-import React, {useMemo} from 'react';
-import {AuthStateProvider} from './authStateContext';
-import {AuthActionProvider} from './authActionContext';
+import React, { useEffect, useMemo, useCallback } from 'react';
+import { AuthStateProvider } from './authStateContext';
+import { AuthActionProvider } from './authActionContext';
+import authReducer from './authReducer';
 import useFetch from '../../customhooks/useFetch';
+import axios from 'axios';
+import { GET_AUTHINFO, LOGOUT_AUTH, UPDATE_USERDATA } from '../types';
+import { Spinner } from '../../design/elements';
 
+const AuthStore = ({ children }) => {
+   const [stateAuth, fetchAuth, dispatchAuth] = useFetch(
+      {
+         data: {},
+         user: null,
+         initialAuthCheck: false
+      },
+      authReducer
+   );
 
-const AuthStore = ({
-	children
-}) => {
-	const [stateAuth, fetchAuth] = useFetch({
-    data: {}
-  });
+   const getInitialAuth = useCallback(
+      async function () {
+         const { status } = await fetchAuth(axios.get('/api/v1/users'));
+         if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
+      },
+      [fetchAuth, dispatchAuth]
+   );
 
-// const authHandle = R.curry(async function (action, values) {
-// 	try {
-//             dispatch({type: LOADING_AUTH});
-//    	      const {data: {data}} = await axios.post(`/api/v1/users/${action}`, values);   	      
-//    	      dispatch({
-//    	      	type: AUTH_SUCCESS,
-//    	      	payload: {
-//    	      		user: data.user,
-//    	      		token: data.token
-//    	      	}
-//    	      })
-//    	   }
-//    	   catch({response: {data}}) {
-//    	         dispatch({
-//    	         	type: AUTH_FAIL,
-//    	         	payload: {
-//    	         		error: data.message
-//    	         	}
-//    	         })  
-//    	   }
-// }, 2);
+   useEffect(() => {
+      getInitialAuth();
+   }, [getInitialAuth]);
 
+   const login = useCallback(
+      async function (values) {
+         const { status } = await fetchAuth(axios.post('/api/v1/users/login', values));
+         if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
+      },
+      [fetchAuth, dispatchAuth]
+   );
 
-const value = useMemo(() =>({
-   user: stateAuth.data.user,
-   token: stateAuth.data.token,   
-   statusAuth: stateAuth.status,
-   errorAuth: stateAuth.error   
-}), [stateAuth])
+   const signup = useCallback(
+      async function (values) {
+         const { status } = await fetchAuth(axios.post('/api/v1/users/signup', values));
+         if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
+      },
+      [fetchAuth, dispatchAuth]
+   );
 
-const actions = useMemo(() =>({
-   authHandle: fetchAuth   
-}), [fetchAuth])
+   const updateUserData = useCallback(
+      async function (values) {
+         const { status } = await fetchAuth(axios.patch('/api/v1/users/profile', values));
+         if (status === 'success') dispatchAuth({ type: UPDATE_USERDATA });
+      },
+      [fetchAuth, dispatchAuth]
+   );
 
-	return (
-      <AuthStateProvider value = {value}>
-         <AuthActionProvider value = {actions}>
-            {children}
-         </AuthActionProvider>
+   const logout = useCallback(
+      async function (values) {
+         await fetchAuth(axios.get('/api/v1/auth/logout'));
+         dispatchAuth({ type: LOGOUT_AUTH });
+      },
+      [fetchAuth, dispatchAuth]
+   );
+
+   const value = useMemo(
+      () => ({
+         user: stateAuth.user,
+         statusAuth: stateAuth.status,
+         errorAuth: stateAuth.error
+      }),
+      [stateAuth]
+   );
+
+   const actions = useMemo(
+      () => ({
+         login,
+         signup,
+         logout,
+         updateUserData
+      }),
+      [login, signup, logout, updateUserData]
+   );
+
+   if (!stateAuth.initialAuthCheck) return <Spinner modifiers='dark' />;
+
+   return (
+      <AuthStateProvider value={value}>
+         <AuthActionProvider value={actions}>{children}</AuthActionProvider>
       </AuthStateProvider>
-		)
-}
+   );
+};
 
 export default AuthStore;
