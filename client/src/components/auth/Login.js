@@ -39,7 +39,7 @@ const Login = ({ location }) => {
                   />
                </Form.Group>
                <Form.Group>
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>Password</Form.Label>
                   <Form.Input
                      name='password'
                      type='password'

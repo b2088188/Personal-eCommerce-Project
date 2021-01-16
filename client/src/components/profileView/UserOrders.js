@@ -24,7 +24,7 @@ const UserOrder = ({ className }) => {
 
 	if (statusUserOrders === 'idle' || statusUserOrders === 'pending') return <Spinner />;
 	if (statusUserOrders === 'rejected' && errorUserOrders)
-		return <Message severity='error' alert={errorUserOrders} />;
+		return <Message severity='error' text={errorUserOrders} />;
 	if (statusUserOrders === 'resolved')
 		return (
 			<Container className={className}>

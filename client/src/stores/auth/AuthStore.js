@@ -17,6 +17,7 @@ const AuthStore = ({ children }) => {
       },
       authReducer
    );
+   const isAdmin = stateAuth.user && stateAuth.user.role === 'admin';
 
    const getInitialAuth = useCallback(
       async function () {
@@ -66,9 +67,10 @@ const AuthStore = ({ children }) => {
       () => ({
          user: stateAuth.user,
          statusAuth: stateAuth.status,
-         errorAuth: stateAuth.error
+         errorAuth: stateAuth.error,
+         isAdmin
       }),
-      [stateAuth]
+      [stateAuth, isAdmin]
    );
 
    const actions = useMemo(

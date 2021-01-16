@@ -29,6 +29,7 @@ export const USERORDERS_FAIL = 'USERORDERS_FAIL';
 //Order
 export const CREATE_ORDER = 'CREATE_ORDER';
 export const GET_ORDER = 'GET_ORDER';
+export const GET_ORDERLIST = 'GET_ORDERLIST';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const ORDER_FAIL = 'ORDER_FAIL';
 export const CLEAR_ORDER = 'CLEAR_ORDER';

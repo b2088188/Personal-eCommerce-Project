@@ -1,21 +1,21 @@
 import express from 'express';
 const router = express.Router();
-import { protect } from '../controller/authController.js';
+import { protect, restrictTo } from '../controller/authController.js';
 import {
    createOrder,
    getOrder,
+   getAllOrders,
    updateOrderToPaid,
-   getCheckoutSession,
-   chargeTest,
+   updateOrderToDelivered
 } from '../controller/orderController.js';
 
 router.use(protect);
-router.route('/').post(createOrder);
+router.route('/').post(createOrder).get(restrictTo('admin'), getAllOrders);
+router.route('/:orderId').get(getOrder);
+router.patch('/:orderId/pay', updateOrderToPaid);
+router.patch('/:orderId/deliver', restrictTo('admin'), updateOrderToDelivered);
 
-router.route('/:id').get(getOrder).patch(updateOrderToPaid);
-
-router.get('/checkout-session/:orderId', getCheckoutSession);
-
-router.post('/charge', chargeTest);
+// router.get('/checkout-session/:orderId', getCheckoutSession);
+// router.post('/charge', chargeTest);
 
 export default router;

@@ -2,17 +2,36 @@ import React, { useCallback, useMemo } from 'react';
 import { OrderStateProvider } from './orderStateContext';
 import { OrderActionProvider } from './orderActionContext';
 import orderReducer from './orderReducer';
+import orderListReducer from './orderListReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
-import { CREATE_ORDER, GET_ORDER, UPDATE_ORDER, ORDER_FAIL, CLEAR_ORDER } from '../types';
+import {
+   CREATE_ORDER,
+   GET_ORDER,
+   GET_ORDERLIST,
+   UPDATE_ORDER,
+   ORDER_FAIL,
+   CLEAR_ORDER
+} from '../types';
 
-const OrderStore = ({ children }) => {
+const OrderStore = ({
+   // prettier-ignore
+   children
+}) => {
    const [stateOrder, fetchOrder, dispatchOrder] = useFetch(
       {
          data: {},
          currentOrder: null
       },
       orderReducer
+   );
+
+   const [stateAllOrders, fetchAllOrders, dispatchAllOrders] = useFetch(
+      {
+         data: {},
+         orderList: []
+      },
+      orderListReducer
    );
 
    const createOrder = useCallback(
@@ -36,13 +55,32 @@ const OrderStore = ({ children }) => {
 
    const updateOrderToPaid = useCallback(
       async function (orderId, values) {
-         const { status } = await fetchOrder(axios.patch(`/api/v1/orders/${orderId}`, values));
+         const { status } = await fetchOrder(axios.patch(`/api/v1/orders/${orderId}/pay`, values));
          if (status === 'success')
             dispatchOrder({
                type: UPDATE_ORDER
             });
       },
       [fetchOrder, dispatchOrder]
+   );
+
+   const updateOrderToDeliver = useCallback(
+      async function (orderId) {
+         const { status } = await fetchOrder(axios.patch(`/api/v1/orders/${orderId}/deliver`));
+         if (status === 'success')
+            dispatchOrder({
+               type: UPDATE_ORDER
+            });
+      },
+      [fetchOrder, dispatchOrder]
+   );
+
+   const getAllOrders = useCallback(
+      async function () {
+         const { status } = await fetchAllOrders(axios.get('/api/v1/orders'));
+         if (status === 'success') dispatchAllOrders({ type: GET_ORDERLIST });
+      },
+      [fetchAllOrders, dispatchAllOrders]
    );
 
    //    const clearOrder = useCallback(function () {
@@ -53,18 +91,23 @@ const OrderStore = ({ children }) => {
       () => ({
          currentOrder: stateOrder.currentOrder,
          statusOrder: stateOrder.status,
-         errorOrder: stateOrder.error
+         errorOrder: stateOrder.error,
+         orderList: stateAllOrders.orderList,
+         statusAllOrders: stateAllOrders.status,
+         errorAllOrders: stateAllOrders.error
       }),
-      [stateOrder]
+      [stateOrder, stateAllOrders]
    );
 
    const actions = useMemo(
       () => ({
          createOrder,
          getOrder,
-         updateOrderToPaid
+         updateOrderToPaid,
+         updateOrderToDeliver,
+         getAllOrders
       }),
-      [createOrder, getOrder, updateOrderToPaid]
+      [createOrder, getOrder, updateOrderToPaid, updateOrderToDeliver, getAllOrders]
    );
 
    return (
