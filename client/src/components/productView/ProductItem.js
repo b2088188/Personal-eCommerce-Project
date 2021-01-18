@@ -8,7 +8,7 @@ const ProductItem = ({ product }) => {
 		<ListGroup.Item width='20' spacing='2'>
 			<Card>
 				<Card.Link as={Link} to={`/products/${product._id}`} modifiers='image'>
-					<Image src={product.image} alt={product.name} />
+					<Image src={`http://127.0.0.1:8000/${product.image}`} alt={product.name} />
 				</Card.Link>
 				<div className='details'>
 					<Card.Link as={Link} to={`/products/${product._id}`} modifiers='name'>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useCartState } from '../../stores/cart/cartStateContext';
 import styled from 'styled-components';
-import { Row, Col, Title, Span, Button } from '../../design/components';
+import { Col, Title, Span, Button } from '../../design/components';
 import { setBorder, setFlex, setFlexWidth } from '../../design/utils';
 import CartItem from './CartItem';
 
@@ -21,29 +21,30 @@ const CartView = ({ className }) => {
    return (
       <Col width='12' className={className}>
          <div className='container'>
-            <Row>
-               <Col width='7'>
-                  <Title modifiers='large' className='title'>
-                     Shopping Cart
+            <Col width='7'>
+               <Title modifiers='large' className='title'>
+                  Shopping Cart
+               </Title>
+               {renderCartList(cartList)}
+            </Col>
+            <Col width='4' className='info'>
+               <div className='totalbox'>
+                  <Title as='h2' modifiers={['medium', 'light']} className='subtitle'>
+                     Subtotal ({totalQuantity}) Items
                   </Title>
-                  {renderCartList(cartList)}
-               </Col>
-               <Col width='4' className='info'>
-                  <div className='totalbox'>
-                     <Title as='h2' modifiers={['medium', 'light']} className='subtitle'>
-                        Subtotal ({totalQuantity}) Items
-                     </Title>
-                     <Span modifiers='medium'>${totalPrice}</Span>
-                  </div>
-                  <Button
-                     btop
-                     modifiers={['transparent', 'full']}
-                     onClick={() => setToShipping(true)}
-                  >
-                     Proceed To Check Out
-                  </Button>
-               </Col>
-            </Row>
+                  <Span modifiers='medium'>${totalPrice}</Span>
+               </div>
+               <Button
+                  btop
+                  modifiers={['transparent', 'full']}
+                  disabled={cartList.length < 1}
+                  onClick={() => setToShipping(true)}
+               >
+                  {cartList.length > 0
+                     ? 'Proceed To Check Out'
+                     : "You haven't any item yet, please get one."}
+               </Button>
+            </Col>
          </div>
       </Col>
    );

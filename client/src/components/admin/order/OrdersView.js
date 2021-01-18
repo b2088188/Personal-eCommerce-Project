@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useOrderState } from '../../../stores/order/orderStateContext';
 import { useOrderActions } from '../../../stores/order/orderActionContext';
 import OrderItem from './OrderItem';
-import { Container, Row, Col, Title, Table } from '../../../design/components';
+import { Row, Col, Title, Table } from '../../../design/components';
 import { Spinner } from '../../../design/elements';
 import Message from '../../../utils/Message';
 
@@ -25,36 +25,32 @@ const UserOrder = ({ className }) => {
 		return <Message severity='error' text={errorAllOrders} />;
 	if (statusAllOrders === 'resolved')
 		return (
-			<Container className={className}>
-				<Row>
-					<Col col_9>
-						<div className='tablebox'>
-							<Title modifiers={['large', 'exlight']}>All User Orders</Title>
-							<Table>
-								<Table.Tr>
-									<Table.Td modifiers='light'>Id</Table.Td>
-									<Table.Td modifiers='light'>User</Table.Td>
-									<Table.Td modifiers='light'>Date</Table.Td>
-									<Table.Td modifiers='light'>TotalPrice</Table.Td>
-									<Table.Td modifiers='light'>Paid</Table.Td>
-									<Table.Td modifiers='light'>Delivered</Table.Td>
-									<th></th>
-								</Table.Tr>
-								<Table.Body>{renderUserOrders(orderList)}</Table.Body>
-							</Table>
-						</div>
-					</Col>
-				</Row>
-			</Container>
+			<Col width='12' className={className}>
+				<div className='tablebox'>
+					<Title modifiers={['large', 'exlight']}>All User Orders</Title>
+					<Table>
+						<Table.Tr>
+							<Table.Td modifiers='light'>Id</Table.Td>
+							<Table.Td modifiers='light'>User</Table.Td>
+							<Table.Td modifiers='light'>Date</Table.Td>
+							<Table.Td modifiers='light'>TotalPrice</Table.Td>
+							<Table.Td modifiers='light'>Paid</Table.Td>
+							<Table.Td modifiers='light'>Delivered</Table.Td>
+							<th></th>
+						</Table.Tr>
+						<Table.Body>{renderUserOrders(orderList)}</Table.Body>
+					</Table>
+				</div>
+			</Col>
 		);
 };
 
 export default styled(UserOrder)`
-	&__form {
+	.tablebox {
 		width: 70%;
 		margin: 2.5rem auto;
 	}
-	.tablebox {
+	&__form {
 		width: 70%;
 		margin: 2.5rem auto;
 	}

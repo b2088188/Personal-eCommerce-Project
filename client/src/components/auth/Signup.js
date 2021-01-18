@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useAuthState } from '../../stores/auth/authStateContext';
 import { useAuthActions } from '../../stores/auth/authActionContext';
-import { Container, FormContainer, Form } from '../../design/components';
+import { Col, FormContainer, Form } from '../../design/components';
 import { useForm } from 'react-hook-form';
 import FormError from '../../utils/form/FormError';
 import axios from 'axios';
@@ -18,7 +18,7 @@ const Signup = ({ location }) => {
    if (user) return <Redirect to={location.state?.from || '/'} />;
 
    return (
-      <Container>
+      <Col width='12'>
          <FormContainer>
             <Form.Title modifiers={['big', 'light']}>Sign Up</Form.Title>
             <Form onSubmit={handleSubmit(signup)}>
@@ -64,7 +64,7 @@ const Signup = ({ location }) => {
                <Form.Button>Sign Up</Form.Button>
             </Form>
          </FormContainer>
-      </Container>
+      </Col>
    );
 };
 

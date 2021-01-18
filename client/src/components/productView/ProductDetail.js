@@ -58,9 +58,9 @@ const ProductDetail = ({ className }) => {
 
    function renderSelect(count) {
       return (
-         <ListGroup bbottom ycenter>
-            <ListGroup.Item half>Quantity</ListGroup.Item>
-            <ListGroup.Item half>
+         <ListGroup bbottom flexy='center'>
+            <ListGroup.Item width='50'>Quantity</ListGroup.Item>
+            <ListGroup.Item width='50'>
                <Select onChange={(e) => setSelectQty(e.target.value)}>
                   <Options options={count} />
                </Select>
@@ -115,7 +115,7 @@ const ProductDetail = ({ className }) => {
                            {product.name}
                         </Title>
                      </ListGroup>
-                     <ListGroup ycenter bdbottom>
+                     <ListGroup flexy='center' bdbottom>
                         <ListGroup.Item half>
                            <RatingStar average={product.ratingsAverage} />
                         </ListGroup.Item>
@@ -127,13 +127,13 @@ const ProductDetail = ({ className }) => {
                      <ListGroup bdbottom>{product.description}</ListGroup>
                   </Col>
                   <Col width='3' spacing='2.5'>
-                     <ListGroup bdbottom ycenter>
+                     <ListGroup bdbottom flexy='center'>
                         <ListGroup.Item half>Price:</ListGroup.Item>
                         <ListGroup.Item half>
                            <span className='product-detail__col'>${product.price}</span>
                         </ListGroup.Item>
                      </ListGroup>
-                     <ListGroup bdbottom ycenter>
+                     <ListGroup bdbottom flexy='center'>
                         <ListGroup.Item half>Status:</ListGroup.Item>
                         <ListGroup.Item half>
                            {product.countInStock > 1 ? 'In Stock' : 'Out of Stock'}
@@ -159,7 +159,7 @@ const ProductDetail = ({ className }) => {
                            <Message alert='No Review yet' severity='info' />
                         )}
                         <ListGroup bdtop>
-                           {user && user.role === 'user' ? (
+                           {user ? (
                               <Form onSubmit={handleSubmit(onSubmit(id))}>
                                  <Form.Group>
                                     <Form.Label>Rating</Form.Label>
@@ -190,7 +190,7 @@ const ProductDetail = ({ className }) => {
                               </Form>
                            ) : (
                               <Message
-                                 alert='Please sign in to write down your review'
+                                 text='Please sign in to write down your review'
                                  severity='info'
                               />
                            )}

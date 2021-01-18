@@ -5,6 +5,7 @@ import { useOrderState } from '../../stores/order/orderStateContext';
 import { useOrderActions } from '../../stores/order/orderActionContext';
 import styled from 'styled-components';
 import { Row, Col, ListGroup, Image, Link as SLink, Button } from '../../design/components';
+import { setBorder } from '../../design/utils';
 import { PayPalButton } from 'react-paypal-button-v2';
 import ListItem from '../../utils/list/ListItem';
 import { Message, Spinner } from '../../design/elements';
@@ -111,7 +112,7 @@ const OrderView = ({ className }) => {
 								{renderOrderItems(currentOrder.orderItems)}
 							</ListGroup>
 						</Col>
-						<Col width='4' spacing='2'>
+						<Col width='4' spacing='2' className='order__summary'>
 							<ListGroup.Item full>
 								<ListGroup.Title>Order Summary</ListGroup.Title>
 							</ListGroup.Item>
@@ -147,5 +148,11 @@ export default styled(OrderView)`
 	.container {
 		width: 70%;
 		margin: 2rem auto;
+	}
+	.order {
+		&__summary {
+			${setBorder({})}
+			align-self: flex-start;
+		}
 	}
 `;

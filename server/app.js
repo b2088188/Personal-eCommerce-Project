@@ -1,13 +1,15 @@
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 const app = express();
 
-if(process.env.NODE_ENV === 'development')
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'server/public')));
 
 import globalErrorHandler from './controller/errorController.js';
 import productRouter from './routes/productRoutes.js';
@@ -25,8 +27,12 @@ app.get('/api/v1/config/paypal', (req, res) => {
 		data: {
 			clientId: process.env.PAYPAL_CLIENT_ID
 		}
-	})
-})
+	});
+});
+
+app.all('*', (req, res, next) => {
+	next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));
+});
 
 app.use(globalErrorHandler);
 

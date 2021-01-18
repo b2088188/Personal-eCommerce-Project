@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema({
 	},
 	image: {
 		type: String,
-		required: [true, 'A product must have an image']
+		default: 'images/products/sample.jpg'
 	},
 	brand: {
 		type: String,
@@ -21,7 +21,8 @@ const productSchema = new mongoose.Schema({
 	},
 	category: {
 		type: String,
-		required: [true, 'A product must belong to a category']
+		enum: ['Electronics'],
+		required: [true, 'A product must have a category']
 	},
 	description: {
 		type: String,
@@ -46,7 +47,7 @@ const productSchema = new mongoose.Schema({
 		required: [true, 'A product must have amount of stock'],
 		default: 1
 	}
-})
+});
 
 const Product = mongoose.model('Product', productSchema);
 

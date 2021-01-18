@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import GlobalStyle from './design/GlobalStyle';
+import { Container, Row } from './design/components';
 import OrderStore from './stores/order/OrderStore';
 import AdminHeader from './layout/admin/AdminHeader';
 import Footer from './layout/Footer';
@@ -15,17 +16,17 @@ const AdminApp = () => {
 			<GlobalStyle />
 			<Router>
 				<Suspense fallback={<Spinner />}>
-					<div className='container'>
+					<Container>
 						<AdminHeader />
-						<div className='content'>
+						<Row>
 							<Route path='/login' exact component={Login} />
 							<OrderStore>
 								<Route path='/' exact component={OrdersView} />
 								<Route path='/order/:orderId' exact component={OrderView} />
 							</OrderStore>
-						</div>
+						</Row>
 						<Footer />
-					</div>
+					</Container>
 				</Suspense>
 			</Router>
 		</>

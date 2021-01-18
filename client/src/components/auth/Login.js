@@ -2,7 +2,7 @@ import React from 'react';
 import { Link as ReactLink, Redirect } from 'react-router-dom';
 import { useAuthState } from '../../stores/auth/authStateContext';
 import { useAuthActions } from '../../stores/auth/authActionContext';
-import { Container, FormContainer, Form } from '../../design/components';
+import { Col, FormContainer, Form } from '../../design/components';
 import { useForm } from 'react-hook-form';
 import FormError from '../../utils/form/FormError';
 import Message from '../../utils/Message';
@@ -17,7 +17,7 @@ const Login = ({ location }) => {
    if (user) return <Redirect to={location.state?.from || '/'} />;
 
    return (
-      <Container>
+      <Col width='12'>
          <FormContainer>
             <Form.Title modifiers={['big', 'light']}>Login</Form.Title>
             {statusAuth === 'pending' ? <Spinner /> : null}
@@ -57,7 +57,7 @@ const Login = ({ location }) => {
                </Form.Link>
             </Form.Footer>
          </FormContainer>
-      </Container>
+      </Col>
    );
 };
 

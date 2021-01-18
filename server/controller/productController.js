@@ -1,35 +1,72 @@
+import multer from 'multer';
+import sharp from 'sharp';
 import Product from '../models/productModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+	if (file.mimetype.startsWith('image')) return cb(null, true);
+	cb(new AppError('Not an image, only allowing to upload an image', 400), false);
+};
+
+const upload = multer({
+	storage: multerStorage,
+	fileFilter: multerFilter
+});
+
+export const uploadProductImage = upload.single('image');
+
+export const resizeProductImage = catchAsync(async (req, res, next) => {
+	if (!req.file) return next();
+	req.file.filename = `product-${Date.now()}.jpeg`;
+	await sharp(req.file.buffer)
+		.resize(500, 500)
+		.toFormat('jpeg')
+		.jpeg({ quality: 90 })
+		.toFile(`server/public/images/products/${req.file.filename}`);
+	next();
+});
+
 export const getAllProducts = catchAsync(async (req, res, next) => {
-     const products = await Product.find();
-     res.status(200).json({
-     	status: 'success',
-     	data: {
-     		products
-     	}
-     })
-})
+	const products = await Product.find({ ...req.query });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			products
+		}
+	});
+});
+
+export const getUserProducts = catchAsync(async (req, res, next) => {
+	const products = await Product.find({ user: req.user._id });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			products
+		}
+	});
+});
 
 export const createProduct = catchAsync(async (req, res, next) => {
-	const product = await Product.create(req.body);
+	if (req.file) req.body.image = `images/products/${req.file.filename}`;
+	const product = await Product.create({ user: req.user._id, ...req.body });
 	res.status(201).json({
 		status: 'success',
 		data: {
 			product
 		}
-	})
-})
+	});
+});
 
 export const getProduct = catchAsync(async (req, res, next) => {
-   const product = await Product.findById(req.params.id);
-   if(!product)
-   	return next(new AppError('No product found with that Id', 404));
-   res.status(200).json({
-   	status: 'success',
-   	data: {
-   		product
-   	}
-   })
+	const product = await Product.findById(req.params.id);
+	if (!product) return next(new AppError('No product found with that Id', 404));
+	res.status(200).json({
+		status: 'success',
+		data: {
+			product
+		}
+	});
 });
