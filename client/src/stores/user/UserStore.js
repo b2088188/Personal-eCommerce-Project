@@ -4,7 +4,7 @@ import { UserActionProvider } from './userActionContext';
 import userProductsReducer from './userProductsReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
-import { GET_USERPRODUCTS, CREATE_USERPRODUCT } from '../types';
+import { GET_USERPRODUCTS, CREATE_USERPRODUCT, UPDATE_USERPRODUCT } from '../types';
 
 const UserStore = ({ children }) => {
    const [stateUserProfile, fetchUserProfile] = useFetch({
@@ -31,7 +31,7 @@ const UserStore = ({ children }) => {
 
    const getUserProducts = useCallback(
       async function (userId) {
-         const { status } = await fetchUserProfile(axios.get(`/api/v1/products/?user=${userId}`));
+         const { status } = await fetchUserProducts(axios.get(`/api/v1/products/?user=${userId}`));
          if (status === 'success') dispatchUserProducts({ type: GET_USERPRODUCTS });
       },
       [fetchUserProducts, dispatchUserProducts]
@@ -42,11 +42,31 @@ const UserStore = ({ children }) => {
          const formData = new FormData();
          const fields = Object.keys(values);
          fields.forEach((el) => {
-            if (el === 'image') return formData.append('image', values[el][0]);
-            formData.append(el, values[el]);
+            if (el === 'image' && values[el].length > 0) {
+               formData.append('image', values[el][0]);
+            }
+            if (el !== 'image') formData.append(el, values[el]);
          });
          const { status } = await fetchUserProducts(axios.post('/api/v1/products', formData));
          if (status === 'success') dispatchUserProducts({ type: CREATE_USERPRODUCT });
+      },
+      [fetchUserProducts, dispatchUserProducts]
+   );
+
+   const updateUserProduct = useCallback(
+      async function (productId, values) {
+         const formData = new FormData();
+         const fields = Object.keys(values);
+         fields.forEach((el) => {
+            if (el === 'image' && values[el].length > 0) {
+               formData.append('image', values[el][0]);
+            }
+            if (el !== 'image') formData.append(el, values[el]);
+         });
+         const { status } = await fetchUserProducts(
+            axios.patch(`/api/v1/products/${productId}`, formData)
+         );
+         if (status === 'success') dispatchUserProducts({ type: UPDATE_USERPRODUCT });
       },
       [fetchUserProducts, dispatchUserProducts]
    );
@@ -71,9 +91,10 @@ const UserStore = ({ children }) => {
          getUserProfile,
          userOrdersHandle: fetchUserOrders,
          createUserProduct,
-         getUserProducts
+         getUserProducts,
+         updateUserProduct
       }),
-      [getUserProfile, fetchUserOrders, createUserProduct, getUserProducts]
+      [getUserProfile, fetchUserOrders, createUserProduct, getUserProducts, updateUserProduct]
    );
 
    return (

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
-import { Col, FormContainer, Form } from '../../design/components';
-import { useUserState } from '../../stores/user/userStateContext';
-import { useUserActions } from '../../stores/user/userActionContext';
+import { Col, FormContainer, Form } from '../../../design/components';
+import { useUserState } from '../../../stores/user/userStateContext';
+import { useUserActions } from '../../../stores/user/userActionContext';
 import { useForm } from 'react-hook-form';
-import { Select } from '../../design/components';
-import { Spinner, Message } from '../../design/elements';
+import { Select } from '../../../design/components';
+import { Spinner, Message } from '../../../design/elements';
 import axios from 'axios';
 
 const UserProductEdit = ({ location }) => {

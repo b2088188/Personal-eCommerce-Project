@@ -29,6 +29,12 @@ export const USERORDERS_FAIL = 'USERORDERS_FAIL';
 //User - Products
 export const GET_USERPRODUCTS = 'GET_USERPRODUCTS';
 export const CREATE_USERPRODUCT = 'CREATE_USERPRODUCT';
+export const UPDATE_USERPRODUCT = 'UPDATE_USERPRODUCT';
+
+//Product
+export const GET_PRODUCTS = 'GET_PRODUCTS';
+export const CREATE_PRODUCT = 'CREATE_PRODUCT';
+export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 
 //Order
 export const CREATE_ORDER = 'CREATE_ORDER';

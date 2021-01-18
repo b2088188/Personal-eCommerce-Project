@@ -22,8 +22,6 @@ const Signup = lazy(() => import('./components/auth/Signup'));
 const Login = lazy(() => import('./components/auth/Login'));
 const UserSettings = lazy(() => import('./components/profileView/UserSettings'));
 const UserOrder = lazy(() => import('./components/profileView/UserOrders'));
-const UserProducts = lazy(() => import('./components/profileView/UserProducts'));
-const UserProductEdit = lazy(() => import('./components/profileView/UserProductEdit'));
 
 const UserAndGuestApp = () => {
    return (
@@ -52,12 +50,6 @@ const UserAndGuestApp = () => {
                         <PrivateRoute path='/order/:orderId' exact component={OrderView} />
                         <PrivateRoute path='/profile/settings' exact component={UserSettings} />
                         <PrivateRoute path='/profile/orders' exact component={UserOrder} />
-                        <PrivateRoute path='/profile/products' exact component={UserProducts} />
-                        <PrivateRoute
-                           path='/profile/products/edit'
-                           exact
-                           component={UserProductEdit}
-                        />
                      </OrderStore>
                   </Row>
                   <Footer />

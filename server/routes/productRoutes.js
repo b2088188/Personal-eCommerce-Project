@@ -4,9 +4,9 @@ import reviewRouter from './reviewRoutes.js';
 import { protect, restrictTo } from '../controller/authController.js';
 import {
    getAllProducts,
-   getUserProducts,
    createProduct,
    getProduct,
+   updateProduct,
    uploadProductImage,
    resizeProductImage
 } from '../controller/productController.js';
@@ -14,9 +14,12 @@ import {
 router.use('/:productId/reviews', reviewRouter);
 
 router.route('/').get(getAllProducts);
-router.route('/:id').get(getProduct);
+router
+   .route('/:productId')
+   .get(getProduct)
+   .patch(protect, restrictTo('admin'), uploadProductImage, resizeProductImage, updateProduct);
 
-router.use(protect, restrictTo('user'));
-router.route('/').post(uploadProductImage, resizeProductImage, createProduct).get(getUserProducts);
+router.use(protect, restrictTo('admin'));
+router.route('/').post(uploadProductImage, resizeProductImage, createProduct);
 
 export default router;

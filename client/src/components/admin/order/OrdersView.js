@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useOrderState } from '../../../stores/order/orderStateContext';
 import { useOrderActions } from '../../../stores/order/orderActionContext';
 import OrderItem from './OrderItem';
+import AdminSidebar from '../../../layout/admin/AdminSidebar';
 import { Row, Col, Title, Table } from '../../../design/components';
-import { Spinner } from '../../../design/elements';
-import Message from '../../../utils/Message';
+import { Spinner, Message } from '../../../design/elements';
 
 const UserOrder = ({ className }) => {
 	const { orderList, statusAllOrders, errorAllOrders } = useOrderState();
@@ -25,8 +25,11 @@ const UserOrder = ({ className }) => {
 		return <Message severity='error' text={errorAllOrders} />;
 	if (statusAllOrders === 'resolved')
 		return (
-			<Col width='12' className={className}>
-				<div className='tablebox'>
+			<>
+				<Col width='3'>
+					<AdminSidebar />
+				</Col>
+				<Col width='8' className={className}>
 					<Title modifiers={['large', 'exlight']}>All User Orders</Title>
 					<Table>
 						<Table.Tr>
@@ -40,16 +43,12 @@ const UserOrder = ({ className }) => {
 						</Table.Tr>
 						<Table.Body>{renderUserOrders(orderList)}</Table.Body>
 					</Table>
-				</div>
-			</Col>
+				</Col>
+			</>
 		);
 };
 
 export default styled(UserOrder)`
-	.tablebox {
-		width: 70%;
-		margin: 2.5rem auto;
-	}
 	&__form {
 		width: 70%;
 		margin: 2.5rem auto;

@@ -1,41 +1,37 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Row, Col, Title, Table, Button } from '../../design/components';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useUserState } from '../../stores/user/userStateContext';
-import { useUserActions } from '../../stores/user/userActionContext';
-import Sidebar from '../../layout/Sidebar';
-import UserProductItem from './UserProductItem';
-import { Spinner, Message } from '../../design/elements';
+import { Row, Col, Title, Table, Button } from '../../../design/components';
+import { useProducts } from '../../../stores/product/productsContext';
+import ProductItem from './ProductItem';
+import AdminSidebar from '../../../layout/admin/AdminSidebar';
+import { Spinner, Message } from '../../../design/elements';
 import axios from 'axios';
 
 const UserProducts = ({ className }) => {
-	const { user } = useAuthState();
-	const { userProducts, statusUserProducts, errorUserProducts } = useUserState();
-	const { getUserProducts } = useUserActions();
+	const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
 	const { url } = useRouteMatch();
 	const history = useHistory();
 
 	useEffect(() => {
-		if (user) getUserProducts(user._id);
-	}, [getUserProducts, user]);
+		getAllProducts();
+	}, [getAllProducts]);
 
 	function renderUserProducts(list) {
 		return list?.map(function generateItem(product) {
-			return <UserProductItem key={product._id} product={product} />;
+			return <ProductItem key={product._id} product={product} />;
 		});
 	}
 
-	if (statusUserProducts === 'idle' || statusUserProducts === 'pending')
+	if (statusProducts === 'idle' || statusProducts === 'pending')
 		return <Spinner modifiers='dark' />;
-	if (statusUserProducts === 'rejected' && errorUserProducts)
-		return <Message severity='error' text={errorUserProducts} />;
-	if (statusUserProducts === 'resolved')
+	if (statusProducts === 'rejected' && errorProducts)
+		return <Message severity='error' text={errorProducts} />;
+	if (statusProducts === 'resolved')
 		return (
 			<>
 				<Col width='3'>
-					<Sidebar />
+					<AdminSidebar />
 				</Col>
 				<Col width='8' className={className}>
 					<div className='tablebox'>
@@ -52,7 +48,7 @@ const UserProducts = ({ className }) => {
 								<Table.Td modifiers='light'>Brand</Table.Td>
 								<th></th>
 							</Table.Tr>
-							<Table.Body>{renderUserProducts(userProducts)}</Table.Body>
+							<Table.Body>{renderUserProducts(products)}</Table.Body>
 						</Table>
 					</div>
 				</Col>

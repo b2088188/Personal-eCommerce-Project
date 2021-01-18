@@ -1,22 +1,28 @@
 import React, { useReducer, useCallback, useMemo } from 'react';
 import { ProductProvider } from './productContext';
 import { ProductsProvider } from './productsContext';
+import productsReducer from './productsReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
+import { GET_PRODUCTS, CREATE_PRODUCT, UPDATE_PRODUCT } from '../types';
 
 const ProductStore = ({ children }) => {
-   const [stateProducts, fetchProducts] = useFetch({
-      data: []
-   });
+   const [stateProducts, fetchProducts, dispatchProducts] = useFetch(
+      {
+         products: []
+      },
+      productsReducer
+   );
    const [stateProduct, fetchProduct] = useFetch({
       data: {}
    });
 
    const getAllProducts = useCallback(
       async function () {
-         fetchProducts(axios.get('/api/v1/products'));
+         const { status } = await fetchProducts(axios.get('/api/v1/products'));
+         if (status === 'success') dispatchProducts({ type: GET_PRODUCTS });
       },
-      [fetchProducts]
+      [fetchProducts, dispatchProducts]
    );
 
    const getProduct = useCallback(
@@ -26,14 +32,50 @@ const ProductStore = ({ children }) => {
       [fetchProduct]
    );
 
+   const createProduct = useCallback(
+      async function (values) {
+         const formData = new FormData();
+         const fields = Object.keys(values);
+         fields.forEach((el) => {
+            if (el === 'image' && values[el].length > 0) {
+               formData.append('image', values[el][0]);
+            }
+            if (el !== 'image') formData.append(el, values[el]);
+         });
+         const { status } = await fetchProducts(axios.post('/api/v1/products', formData));
+         if (status === 'success') dispatchProducts({ type: CREATE_PRODUCT });
+      },
+      [fetchProducts, dispatchProducts]
+   );
+
+   const updateProduct = useCallback(
+      async function (productId, values) {
+         const formData = new FormData();
+         const fields = Object.keys(values);
+         fields.forEach((el) => {
+            if (el === 'image' && values[el].length > 0) {
+               formData.append('image', values[el][0]);
+            }
+            if (el !== 'image') formData.append(el, values[el]);
+         });
+         const { status } = await fetchProducts(
+            axios.patch(`/api/v1/products/${productId}`, formData)
+         );
+         if (status === 'success') dispatchProducts({ type: UPDATE_PRODUCT });
+      },
+      [fetchProducts, dispatchProducts]
+   );
+
    let valueProducts = useMemo(
       () => ({
-         products: stateProducts.data.products,
+         products: stateProducts.products,
          statusProducts: stateProducts.status,
          errorProducts: stateProducts.error,
-         getAllProducts
+         getAllProducts,
+         createProduct,
+         updateProduct
       }),
-      [stateProducts, getAllProducts]
+      [stateProducts, getAllProducts, createProduct, updateProduct]
    );
 
    let valueProduct = useMemo(

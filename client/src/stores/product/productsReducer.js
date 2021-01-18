@@ -1,13 +1,7 @@
 import * as R from 'ramda';
-import {
-   REQUEST_RESOLVED,
-   CREATE_USERPRODUCT,
-   GET_USERPRODUCTS,
-   UPDATE_USERPRODUCT
-} from '../types';
 import { fetchReducer } from '../../customhooks/useFetch';
-
-function userReducer(currentState, action) {
+import { REQUEST_RESOLVED, GET_PRODUCTS, CREATE_PRODUCT, UPDATE_PRODUCT } from '../types';
+function productReducer(currentState, action) {
    switch (action.type) {
       case REQUEST_RESOLVED:
          return {
@@ -15,25 +9,25 @@ function userReducer(currentState, action) {
             data: action.payload.data,
             error: null
          };
-      case GET_USERPRODUCTS:
+      case GET_PRODUCTS:
          return {
             ...currentState,
-            userProducts: currentState.data.products,
+            products: currentState.data.products,
             status: 'resolved'
          };
-      case CREATE_USERPRODUCT:
+      case CREATE_PRODUCT:
          return {
             ...currentState,
-            userProducts: [...currentState.userProducts, currentState.data.product],
+            products: [...currentState.userProducts, currentState.data.product],
             status: 'resolved'
          };
-      case UPDATE_USERPRODUCT:
+      case UPDATE_PRODUCT:
          return {
             ...currentState,
-            userProducts: R.update(
+            products: R.update(
                (el) => el._id === currentState.data.product._id,
                currentState.data.product,
-               currentState.userProducts
+               currentState.products
             ),
             status: 'resolved'
          };
@@ -41,4 +35,4 @@ function userReducer(currentState, action) {
    return fetchReducer(currentState, action);
 }
 
-export default userReducer;
+export default productReducer;

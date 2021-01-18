@@ -45,13 +45,13 @@ const useAsync = (initialState, reducer = fetchReducer) => {
             dispatch({ type: REQUEST_PENDING });
             try {
                const { data } = await promise;
-               console.log(data);
                dispatch({
                   type: REQUEST_RESOLVED,
                   payload: {
                      data: data.data
                   }
                });
+               console.log(data);
                return data;
             } catch ({ response: { data } }) {
                dispatch({
