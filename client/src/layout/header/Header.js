@@ -15,7 +15,7 @@ const Header = ({ className }) => {
    const { logout } = useAuthActions();
    const history = useHistory();
    function onSearchClick() {
-      if (q) history.push(`/?q=${q}`);
+      if (q) history.push(`/search/?q=${q}`);
    }
 
    return (

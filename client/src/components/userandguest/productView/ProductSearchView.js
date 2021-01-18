@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Container, Col, Title, ListGroup } from '../../../design/components';
+import { useLocation } from 'react-router-dom';
 import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
@@ -11,10 +12,13 @@ import Message from '../../../utils/Message';
 import axios from 'axios';
 const ProductView = ({ className }) => {
    const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
+   const { search } = useLocation();
+   const searchParams = new URLSearchParams(search);
+   const q = searchParams.get('q');
    const [page, setPage] = useState(1);
    useEffect(() => {
-      getAllProducts();
-   }, [getAllProducts]);
+      getAllProducts(q);
+   }, [getAllProducts, q]);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -45,7 +49,7 @@ const ProductView = ({ className }) => {
       return (
          <Col width='12' className={className}>
             <div className='products'>
-               <Title modifiers='big'>All Products</Title>
+               <Title modifiers='big'>Search Results</Title>
                <ListGroup flexy='center' wrap>
                   {renderProducts(products, page)}
                </ListGroup>

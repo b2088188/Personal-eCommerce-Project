@@ -18,8 +18,9 @@ const ProductStore = ({ children }) => {
    });
 
    const getAllProducts = useCallback(
-      async function () {
-         const { status } = await fetchProducts(axios.get('/api/v1/products'));
+      async function (q) {
+         const url = q ? `/api/v1/products/?q=${q}` : '/api/v1/products';
+         const { status } = await fetchProducts(axios.get(url));
          if (status === 'success') dispatchProducts({ type: GET_PRODUCTS });
       },
       [fetchProducts, dispatchProducts]

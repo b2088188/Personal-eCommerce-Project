@@ -12,6 +12,9 @@ import ProductView from './components/userandguest/productView/ProductView';
 import Header from './layout/header/Header';
 import Footer from './layout/Footer';
 import Spinner from './utils/Spinner';
+const ProductSearchView = lazy(() =>
+   import('./components/userandguest/productView/ProductSearchView')
+);
 const ProductDetail = lazy(() => import('./components/userandguest/productView/ProductDetail'));
 const CartView = lazy(() => import('./components/userandguest/cartView/CartView'));
 const ShippingInfo = lazy(() => import('./components/userandguest/placeorder/ShippingInfo'));
@@ -42,8 +45,9 @@ const UserAndGuestApp = () => {
                            <Route path='/cart' exact component={CartView} />
                            <ProductStore>
                               <ReviewStore>
-                                 <Route path='/products/:id' exact component={ProductDetail} />
                                  <Route path='/' exact component={ProductView} />
+                                 <Route path='/search' exact component={ProductSearchView} />
+                                 <Route path='/products/:id' exact component={ProductDetail} />
                               </ReviewStore>
                            </ProductStore>
                         </CartStore>

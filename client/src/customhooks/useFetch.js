@@ -51,7 +51,6 @@ const useAsync = (initialState, reducer = fetchReducer) => {
                      data: data.data
                   }
                });
-               console.log(data);
                return data;
             } catch ({ response: { data } }) {
                dispatch({

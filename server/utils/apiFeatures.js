@@ -5,7 +5,7 @@ class APIFeatures {
 	}
 	filter() {
 		let queryTitle = this.queryString.q
-			? { title: { $regex: `${this.queryString.q}`, $options: 'i' } }
+			? { name: { $regex: `${this.queryString.q}`, $options: 'i' } }
 			: {};
 		const queryObj = { ...this.queryString, ...queryTitle, q: null };
 		const excludedFields = ['page', 'sort', 'limit', 'fields'];
