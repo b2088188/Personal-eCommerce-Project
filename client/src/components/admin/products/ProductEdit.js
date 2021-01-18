@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { Col, FormContainer, Form } from '../../../design/components';
-import { useUserState } from '../../../stores/user/userStateContext';
-import { useUserActions } from '../../../stores/user/userActionContext';
+import { useProducts } from '../../../stores/product/productsContext';
 import { useForm } from 'react-hook-form';
 import { Select } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import axios from 'axios';
 
-const UserProductEdit = ({ location }) => {
-   const { userProducts, statusUserProducts, errorUserProducts } = useUserState();
-   const { createUserProduct, updateUserProduct } = useUserActions();
+const ProductEdit = ({ location }) => {
+   const { products, statusProducts, errorProducts, createProduct, updateProduct } = useProducts();
    const { register, handleSubmit, setValue, errors } = useForm();
    const { productId } = useParams();
    const history = useHistory();
-   const product = userProducts.find((el) => el._id === productId);
+   const product = products.find((el) => el._id === productId);
 
    useEffect(() => {
       if (product) {
@@ -29,14 +27,14 @@ const UserProductEdit = ({ location }) => {
 
    async function onEditHandle(values) {
       if (!product) {
-         await createUserProduct(values);
+         await createProduct(values);
       } else {
-         await updateUserProduct(productId, values);
+         await updateProduct(productId, values);
       }
-      history.push('/profile/products');
+      history.push('/products');
    }
 
-   if (statusUserProducts === 'pending') return <Spinner modifiers='dark' />;
+   if (statusProducts === 'pending') return <Spinner modifiers='dark' />;
 
    return (
       <Col width='12'>
@@ -110,6 +108,6 @@ const UserProductEdit = ({ location }) => {
    );
 };
 
-export default UserProductEdit;
+export default ProductEdit;
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}

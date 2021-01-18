@@ -36,18 +36,20 @@ const UserProducts = ({ className }) => {
 				<Col width='8' className={className}>
 					<div className='tablebox'>
 						<div className='products__titlebox'>
-							<Title modifiers={['large', 'exlight']}>My Products</Title>
+							<Title modifiers={['large', 'exlight']}>Products</Title>
 							<Button onClick={() => history.push(`${url}/edit`)}>Create Product</Button>
 						</div>
 						<Table>
-							<Table.Tr>
-								<Table.Td modifiers='light'>Id</Table.Td>
-								<Table.Td modifiers='light'>Name</Table.Td>
-								<Table.Td modifiers='light'>Price</Table.Td>
-								<Table.Td modifiers='light'>Category</Table.Td>
-								<Table.Td modifiers='light'>Brand</Table.Td>
-								<th></th>
-							</Table.Tr>
+							<Table.Head>
+								<Table.Tr>
+									<Table.Td modifiers='light'>Id</Table.Td>
+									<Table.Td modifiers='light'>Name</Table.Td>
+									<Table.Td modifiers='light'>Price</Table.Td>
+									<Table.Td modifiers='light'>Category</Table.Td>
+									<Table.Td modifiers='light'>Brand</Table.Td>
+									<th></th>
+								</Table.Tr>
+							</Table.Head>
 							<Table.Body>{renderUserProducts(products)}</Table.Body>
 						</Table>
 					</div>
@@ -57,6 +59,7 @@ const UserProducts = ({ className }) => {
 };
 
 export default styled(UserProducts)`
+	margin: 2rem 0;
 	&__form {
 		width: 70%;
 		margin: 2.5rem auto;

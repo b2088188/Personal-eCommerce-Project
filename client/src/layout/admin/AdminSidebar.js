@@ -14,10 +14,8 @@ const AdminSidebar = ({ className }) => {
             <li className='item'>
                <Link
                   as={ReactLink}
-                  to='/orders'
-                  className={`link ${
-                     useRouteMatch({ path: '/orders', exact: true }) ? 'active' : ''
-                  }`}
+                  to='/'
+                  className={`link ${useRouteMatch({ path: '/', exact: true }) ? 'active' : ''}`}
                   modifiers={['big', 'exlight']}
                >
                   <Icon as={FormatListBulleted} />

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Table, Link as SLink, Icon, Button } from '../../../design/components';
+import { Wrapper, Table, Link as SLink, Icon, Button, Title } from '../../../design/components';
 import formatDate from '../../../utils/formatDate';
 import { Edit, Delete } from '@material-ui/icons';
+import { Modal } from '../../../design/elements';
 
 const UserProductItem = ({ product }) => {
 	const history = useHistory();
 	const { url } = useRouteMatch();
+	const [open, setOpen] = useState(false);
 	return (
 		<Table.Tr>
 			<Table.Td>{product._id}</Table.Td>
@@ -21,9 +23,20 @@ const UserProductItem = ({ product }) => {
 				>
 					<Icon as={Edit} />
 				</Button>
-				<Button modifiers='transparent'>
-					<Icon as={Delete} />
-				</Button>
+				<Modal
+					toggleButton={
+						<Button modifiers='transparent' onClick={() => setOpen(true)}>
+							<Icon as={Delete} />
+						</Button>
+					}
+					open={open}
+					setOpen={setOpen}
+				>
+					<Wrapper direction='column' y='center'>
+						<Title>Confirm this action</Title>
+						<Button modifiers='outline'>Delete</Button>
+					</Wrapper>
+				</Modal>
 			</Table.Td>
 		</Table.Tr>
 	);

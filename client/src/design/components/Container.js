@@ -66,3 +66,26 @@ export const Col = styled.div`
   ${(props) => props.col_3 && setFlexWidth({ width: '25' })}
   ${(props) => props.col_2 && setFlexWidth({ width: '16.6' })}
 `;
+
+export const Wrapper = styled.div`
+	// align-items
+	${({ y }) => (y && typeof y === 'string' ? setFlex({ y }) : null)}
+	${({ y }) => (y && y.desktop ? setFlex({ y: y.desktop }) : null)}
+   ${({ y }) => (y && y.tabland ? media.tabland(setFlex({ y: y.tabland })) : null)}
+   ${({ y }) => (y && y.tabport ? media.tabport(setFlex({ y: y.tabport })) : null)}
+   ${({ y }) => (y && y.phone ? media.phone(setFlex({ y: y.phone })) : null)}
+   	// flex-direction
+	${({ direction }) => (direction && typeof direction === 'string' ? setFlex({ direction }) : null)}
+	${({ direction }) =>
+		direction && direction.desktop ? setFlex({ direction: direction.desktop }) : null}
+   ${({ direction }) =>
+		direction && direction.tabland
+			? media.tabland(setFlex({ direction: direction.tabland }))
+			: null}
+   ${({ direction }) =>
+		direction && direction.tabport
+			? media.tabport(setFlex({ direction: direction.tabport }))
+			: null}
+   ${({ direction }) =>
+		direction && direction.phone ? media.phone(setFlex({ direction: direction.phone })) : null}
+`;

@@ -4,9 +4,10 @@ import reviewRouter from './reviewRoutes.js';
 import { protect, restrictTo } from '../controller/authController.js';
 import {
    getAllProducts,
-   createProduct,
    getProduct,
+   createProduct,
    updateProduct,
+   deleteProduct,
    uploadProductImage,
    resizeProductImage
 } from '../controller/productController.js';
@@ -17,7 +18,8 @@ router.route('/').get(getAllProducts);
 router
    .route('/:productId')
    .get(getProduct)
-   .patch(protect, restrictTo('admin'), uploadProductImage, resizeProductImage, updateProduct);
+   .patch(protect, restrictTo('admin'), uploadProductImage, resizeProductImage, updateProduct)
+   .delete(protect, restrictTo('admin'), deleteProduct);
 
 router.use(protect, restrictTo('admin'));
 router.route('/').post(uploadProductImage, resizeProductImage, createProduct);

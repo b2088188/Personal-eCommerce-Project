@@ -30,17 +30,19 @@ const UserOrder = ({ className }) => {
 					<AdminSidebar />
 				</Col>
 				<Col width='8' className={className}>
-					<Title modifiers={['large', 'exlight']}>All User Orders</Title>
+					<Title modifiers={['large', 'exlight']}>Orders</Title>
 					<Table>
-						<Table.Tr>
-							<Table.Td modifiers='light'>Id</Table.Td>
-							<Table.Td modifiers='light'>User</Table.Td>
-							<Table.Td modifiers='light'>Date</Table.Td>
-							<Table.Td modifiers='light'>TotalPrice</Table.Td>
-							<Table.Td modifiers='light'>Paid</Table.Td>
-							<Table.Td modifiers='light'>Delivered</Table.Td>
-							<th></th>
-						</Table.Tr>
+						<Table.Head>
+							<Table.Tr>
+								<Table.Td modifiers='light'>Id</Table.Td>
+								<Table.Td modifiers='light'>User</Table.Td>
+								<Table.Td modifiers='light'>Date</Table.Td>
+								<Table.Td modifiers='light'>TotalPrice</Table.Td>
+								<Table.Td modifiers='light'>Paid</Table.Td>
+								<Table.Td modifiers='light'>Delivered</Table.Td>
+								<th></th>
+							</Table.Tr>
+						</Table.Head>
 						<Table.Body>{renderUserOrders(orderList)}</Table.Body>
 					</Table>
 				</Col>
@@ -49,6 +51,7 @@ const UserOrder = ({ className }) => {
 };
 
 export default styled(UserOrder)`
+	margin: 2rem 0;
 	&__form {
 		width: 70%;
 		margin: 2.5rem auto;

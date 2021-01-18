@@ -14,6 +14,11 @@ const BUTTON_MODIFIERS = {
    disabled: () => `
         background: ${colorGrey.light4};        
         cursor: not-allowed;
+    `,
+   outline: () => `
+    background: none;
+     color: ${colorGrey.dark1};
+    border: solid .1rem currentColor;
     `
 };
 
