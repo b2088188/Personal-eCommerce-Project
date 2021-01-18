@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import Product from '../models/productModel.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
+import APIFeatures from '../utils/apiFeatures.js';
 
 const multerStorage = multer.memoryStorage();
 
@@ -30,7 +31,8 @@ export const resizeProductImage = catchAsync(async (req, res, next) => {
 });
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
-	const products = await Product.find({ ...req.query });
+	const features = new APIFeatures(Product.find(), req.query).paginate();
+	const products = await features.query;
 	res.status(200).json({
 		status: 'success',
 		data: {
@@ -52,7 +54,9 @@ export const getProduct = catchAsync(async (req, res, next) => {
 
 export const createProduct = catchAsync(async (req, res, next) => {
 	if (req.file) req.body.image = `images/products/${req.file.filename}`;
+	console.log(req.body);
 	const product = await Product.create({ user: req.user._id, ...req.body }, { new: true });
+	console.log(product);
 	res.status(201).json({
 		status: 'success',
 		data: {

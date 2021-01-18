@@ -3,24 +3,34 @@ import { Link, useHistory } from 'react-router-dom';
 import { useAuthState } from '../../stores/auth/authStateContext';
 import { useAuthActions } from '../../stores/auth/authActionContext';
 import styled from 'styled-components';
-import { Span, Link as SLink } from '../../design/components';
+import { Wrapper, Span, Link as SLink, Input, Button } from '../../design/components';
 import { colorGrey } from '../../design/utils';
 import { ShoppingCart, Person } from '@material-ui/icons';
 import Menu from '../../utils/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const Header = ({ className }) => {
+   const [q, setQ] = useState('');
    const { user } = useAuthState();
    const { logout } = useAuthActions();
    const history = useHistory();
+   function onSearchClick() {
+      if (q) history.push(`/?q=${q}`);
+   }
 
    return (
       <header className={className}>
          <div className='container'>
-            <SLink as={Link} to='/' className='home'>
+            <SLink as={Link} to='/' className='header__link' modifiers='exlight'>
                eCommerce
             </SLink>
-            <SLink as={Link} to='/cart' className='cart'>
+            <Wrapper direction='row' y='center' className='header__searchbox'>
+               <Input type='text' value={q} onChange={(e) => setQ(e.target.value)} />
+               <Button modifiers='natural' onClick={onSearchClick}>
+                  Search
+               </Button>
+            </Wrapper>
+            <SLink as={Link} to='/cart' className='header__link' modifiers='exlight'>
                <ShoppingCart className='icon' />
                <Span>Cart</Span>
             </SLink>
@@ -43,7 +53,15 @@ const Header = ({ className }) => {
 export default styled(Header)`
    background: ${colorGrey.dark1};
    height: 7rem;
-
+   .header {
+      &__searchbox {
+         margin-right: auto;
+         margin-left: 1rem;
+      }
+      &__link {
+         color: var(--color-grey-light-1);
+      }
+   }
    .container {
       width: 70%;
       height: 100%;
@@ -51,20 +69,6 @@ export default styled(Header)`
       display: flex;
       align-items: center;
       font-size: 1.7rem;
-   }
-
-   .home {
-      color: #fff;
-      margin-right: auto;
-      font-weight: 300;
-   }
-
-   .cart {
-      color: var(--color-grey-light-4);
-
-      &:hover {
-         color: #fff;
-      }
    }
 
    .signin {

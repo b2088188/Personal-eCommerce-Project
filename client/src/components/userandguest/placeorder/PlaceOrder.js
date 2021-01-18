@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useCartState } from '../../stores/cart/cartStateContext';
-import { useOrderState } from '../../stores/order/orderStateContext';
-import { useOrderActions } from '../../stores/order/orderActionContext';
+import { useCartState } from '../../../stores/cart/cartStateContext';
+import { useOrderState } from '../../../stores/order/orderStateContext';
+import { useOrderActions } from '../../../stores/order/orderActionContext';
 import styled from 'styled-components';
-import { Row, Col, ListGroup, Title, Paragraph, Span, Button } from '../../design/components';
-import ListGroups from '../../utils/list/ListGroup';
-import Navsteps from '../../layout/NavSteps';
+import { Row, Col, ListGroup, Title, Paragraph, Span, Button } from '../../../design/components';
+import ListGroups from '../../../utils/list/ListGroup';
+import Navsteps from '../../../layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
-import { Spinner } from '../../design/elements';
+import { Spinner } from '../../../design/elements';
 
 const PlaceOrder = ({ history, className }) => {
 	const {

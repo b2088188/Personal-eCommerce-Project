@@ -1,6 +1,12 @@
 import * as R from 'ramda';
 import { fetchReducer } from '../../customhooks/useFetch';
-import { REQUEST_RESOLVED, GET_PRODUCTS, CREATE_PRODUCT, UPDATE_PRODUCT } from '../types';
+import {
+   REQUEST_RESOLVED,
+   GET_PRODUCTS,
+   CREATE_PRODUCT,
+   UPDATE_PRODUCT,
+   DELETE_PRODUCT
+} from '../types';
 function productReducer(currentState, action) {
    switch (action.type) {
       case REQUEST_RESOLVED:
@@ -29,6 +35,12 @@ function productReducer(currentState, action) {
                currentState.data.product,
                currentState.products
             ),
+            status: 'resolved'
+         };
+      case DELETE_PRODUCT:
+         return {
+            ...currentState,
+            products: R.reject((el) => el._id === action.payload.productId, currentState.products),
             status: 'resolved'
          };
    }

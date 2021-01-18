@@ -8,20 +8,20 @@ import CartStore from './stores/cart/CartStore';
 import OrderStore from './stores/order/OrderStore';
 import ReviewStore from './stores/review/ReviewStore';
 import PrivateRoute from './routes/PrivateRoutes';
-import ProductView from './components/productView/ProductView';
+import ProductView from './components/userandguest/productView/ProductView';
 import Header from './layout/header/Header';
 import Footer from './layout/Footer';
 import Spinner from './utils/Spinner';
-const ProductDetail = lazy(() => import('./components/productView/ProductDetail'));
-const CartView = lazy(() => import('./components/cartView/CartView'));
-const ShippingInfo = lazy(() => import('./components/placeorder/ShippingInfo'));
-const SelectPayment = lazy(() => import('./components/placeorder/SelectPayment'));
-const PlaceOrder = lazy(() => import('./components/placeorder/PlaceOrder'));
-const OrderView = lazy(() => import('./components/order/OrderView'));
+const ProductDetail = lazy(() => import('./components/userandguest/productView/ProductDetail'));
+const CartView = lazy(() => import('./components/userandguest/cartView/CartView'));
+const ShippingInfo = lazy(() => import('./components/userandguest/placeorder/ShippingInfo'));
+const SelectPayment = lazy(() => import('./components/userandguest/placeorder/SelectPayment'));
+const PlaceOrder = lazy(() => import('./components/userandguest/placeorder/PlaceOrder'));
+const OrderView = lazy(() => import('./components/userandguest/order/OrderView'));
 const Signup = lazy(() => import('./components/auth/Signup'));
 const Login = lazy(() => import('./components/auth/Login'));
-const UserSettings = lazy(() => import('./components/profileView/UserSettings'));
-const UserOrder = lazy(() => import('./components/profileView/UserOrders'));
+const UserSettings = lazy(() => import('./components/userandguest/profileView/UserSettings'));
+const UserOrder = lazy(() => import('./components/userandguest/profileView/UserOrders'));
 
 const UserAndGuestApp = () => {
    return (

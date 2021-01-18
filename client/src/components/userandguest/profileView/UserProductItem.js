@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Table, Link as SLink, Icon, Button } from '../../design/components';
-import formatDate from '../../utils/formatDate';
+import { Table, Link as SLink, Icon, Button } from '../../../design/components';
+import formatDate from '../../../utils/formatDate';
 import { Edit, Delete } from '@material-ui/icons';
 
 const UserProductItem = ({ product }) => {

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Redirect, Prompt } from 'react-router-dom';
-import { useCartState } from '../../stores/cart/cartStateContext';
-import { useCartActions } from '../../stores/cart/cartActionContext';
-import { Col, FormContainer, Form } from '../../design/components';
+import { useCartState } from '../../../stores/cart/cartStateContext';
+import { useCartActions } from '../../../stores/cart/cartActionContext';
+import { Col, FormContainer, Form } from '../../../design/components';
 import { useForm } from 'react-hook-form';
-import Navsteps from '../../layout/NavSteps';
-import FormGroup from '../../utils/form/FormGroup';
-import FormError from '../../utils/form/FormError';
-import Message from '../../utils/Message';
-import Spinner from '../../utils/Spinner';
+import Navsteps from '../../../layout/NavSteps';
+import FormGroup from '../../../utils/form/FormGroup';
+import FormError from '../../../utils/form/FormError';
+import Message from '../../../utils/Message';
+import Spinner from '../../../utils/Spinner';
 
 const ShippingInfo = () => {
    const { cartList } = useCartState();

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colorGrey, colorNormal, setBorder } from '../utils';
+import { colorGrey, colorNormal, colorNatural, setBorder } from '../utils';
 import { applyStyleModifiers } from 'styled-components-modifiers';
 
 const BUTTON_MODIFIERS = {
@@ -19,6 +19,15 @@ const BUTTON_MODIFIERS = {
     background: none;
      color: ${colorGrey.dark1};
     border: solid .1rem currentColor;
+    `,
+   natural: () => `
+    color: ${colorNatural.default};
+    border: solid .1rem ${colorNatural.default};
+    transition: all .3s;
+    &:hover{
+      color: ${colorNormal.white};
+      background: ${colorNatural.default};
+    }
     `
 };
 

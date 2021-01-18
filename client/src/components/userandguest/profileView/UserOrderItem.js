@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Link as SLink } from '../../design/components';
-import formatDate from '../../utils/formatDate';
+import { Table, Link as SLink } from '../../../design/components';
+import formatDate from '../../../utils/formatDate';
 import CloseIcon from '@material-ui/icons/Close';
 
 const UserOrderItem = ({ order }) => {

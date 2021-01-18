@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useUserState } from '../../stores/user/userStateContext';
-import { useUserActions } from '../../stores/user/userActionContext';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useAuthActions } from '../../stores/auth/authActionContext';
+import { useUserState } from '../../../stores/user/userStateContext';
+import { useUserActions } from '../../../stores/user/userActionContext';
+import { useAuthState } from '../../../stores/auth/authStateContext';
+import { useAuthActions } from '../../../stores/auth/authActionContext';
 import { useForm } from 'react-hook-form';
-import { FormContainer, Form, Row, Col } from '../../design/components';
-import Sidebar from '../../layout/Sidebar';
-import FormGroup from '../../utils/form/FormGroup';
-import FormError from '../../utils/form/FormError';
-import Message from '../../utils/Message';
-import Spinner from '../../utils/Spinner';
-import useFetch from '../../customhooks/useFetch';
+import { FormContainer, Form, Row, Col } from '../../../design/components';
+import Sidebar from '../../../layout/Sidebar';
+import FormGroup from '../../../utils/form/FormGroup';
+import FormError from '../../../utils/form/FormError';
+import Message from '../../../utils/Message';
+import Spinner from '../../../utils/Spinner';
+import useFetch from '../../../customhooks/useFetch';
 
 const UserSettings = () => {
 	const { userProfile, statusUserProfile, errorUserProfile } = useUserState();

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useUserState } from '../../stores/user/userStateContext';
-import { useUserActions } from '../../stores/user/userActionContext';
+import { useUserState } from '../../../stores/user/userStateContext';
+import { useUserActions } from '../../../stores/user/userActionContext';
 import styled from 'styled-components';
-import { Row, Col, Title, Table } from '../../design/components';
-import Sidebar from '../../layout/Sidebar';
+import { Row, Col, Title, Table } from '../../../design/components';
+import Sidebar from '../../../layout/Sidebar';
 import UserOrderItem from './UserOrderItem';
-import Spinner from '../../utils/Spinner';
-import Message from '../../utils/Message';
+import Spinner from '../../../utils/Spinner';
+import Message from '../../../utils/Message';
 import axios from 'axios';
 
 const UserOrder = ({ className }) => {

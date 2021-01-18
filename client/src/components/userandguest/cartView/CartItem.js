@@ -1,20 +1,11 @@
 import React, { useState } from 'react';
 import { Link as ReactLink } from 'react-router-dom';
-import {
-   deleteFromCartList,
-   changeQuantity,
-} from '../../stores/cart/CartStore';
-import { useCartActions } from '../../stores/cart/cartActionContext';
+import { deleteFromCartList, changeQuantity } from '../../../stores/cart/CartStore';
+import { useCartActions } from '../../../stores/cart/cartActionContext';
 import styled from 'styled-components';
-import {
-   ListGroup,
-   Button,
-   Image,
-   Link,
-   Select,
-} from '../../design/components';
+import { ListGroup, Button, Image, Link, Select } from '../../../design/components';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Options } from '../../design/elements';
+import { Options } from '../../../design/elements';
 
 const CartItem = ({ item }) => {
    const { dispatchCart } = useCartActions();
@@ -37,11 +28,7 @@ const CartItem = ({ item }) => {
             <Image src={item.image} alt={item.name} className='image' />
          </ListGroup.Item>
          <ListGroup.Item p15>
-            <Link
-               as={ReactLink}
-               to={`/products/${item.product}`}
-               className='link'
-            >
+            <Link as={ReactLink} to={`/products/${item.product}`} className='link'>
                {item.name}
             </Link>
          </ListGroup.Item>

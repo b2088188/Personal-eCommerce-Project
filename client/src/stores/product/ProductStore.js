@@ -4,7 +4,7 @@ import { ProductsProvider } from './productsContext';
 import productsReducer from './productsReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
-import { GET_PRODUCTS, CREATE_PRODUCT, UPDATE_PRODUCT } from '../types';
+import { GET_PRODUCTS, CREATE_PRODUCT, UPDATE_PRODUCT, DELETE_PRODUCT } from '../types';
 
 const ProductStore = ({ children }) => {
    const [stateProducts, fetchProducts, dispatchProducts] = useFetch(
@@ -66,6 +66,14 @@ const ProductStore = ({ children }) => {
       [fetchProducts, dispatchProducts]
    );
 
+   const deleteProduct = useCallback(
+      async function (productId) {
+         await fetchProducts(axios.delete(`/api/v1/products/${productId}`));
+         dispatchProducts({ type: DELETE_PRODUCT, payload: { productId } });
+      },
+      [fetchProducts, dispatchProducts]
+   );
+
    let valueProducts = useMemo(
       () => ({
          products: stateProducts.products,
@@ -73,9 +81,10 @@ const ProductStore = ({ children }) => {
          errorProducts: stateProducts.error,
          getAllProducts,
          createProduct,
-         updateProduct
+         updateProduct,
+         deleteProduct
       }),
-      [stateProducts, getAllProducts, createProduct, updateProduct]
+      [stateProducts, getAllProducts, createProduct, updateProduct, deleteProduct]
    );
 
    let valueProduct = useMemo(

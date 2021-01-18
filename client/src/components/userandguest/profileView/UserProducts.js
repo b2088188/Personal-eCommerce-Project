@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Row, Col, Title, Table, Button } from '../../design/components';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useUserState } from '../../stores/user/userStateContext';
-import { useUserActions } from '../../stores/user/userActionContext';
-import Sidebar from '../../layout/Sidebar';
+import { Row, Col, Title, Table, Button } from '../../../design/components';
+import { useAuthState } from '../../../stores/auth/authStateContext';
+import { useUserState } from '../../../stores/user/userStateContext';
+import { useUserActions } from '../../../stores/user/userActionContext';
+import Sidebar from '../../../layout/Sidebar';
 import UserProductItem from './UserProductItem';
-import { Spinner, Message } from '../../design/elements';
+import { Spinner, Message } from '../../../design/elements';
 import axios from 'axios';
 
 const UserProducts = ({ className }) => {

@@ -14,17 +14,17 @@ import {
    Col,
    Form,
    Select
-} from '../../design/components';
-import { Message, Options } from '../../design/elements';
-import { useProduct } from '../../stores/product/productContext';
-import { useReviewState } from '../../stores/review/reviewStateContext';
-import { useReviewActions } from '../../stores/review/reviewActionContext';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useCartActions } from '../../stores/cart/cartActionContext';
-import { addToCartList } from '../../stores/cart/CartStore';
-import RatingStar from '../../utils/RatingStar';
-import Spinner from '../../utils/Spinner';
-import formatDate from '../../utils/formatDate';
+} from '../../../design/components';
+import { Message, Options } from '../../../design/elements';
+import { useProduct } from '../../../stores/product/productContext';
+import { useReviewState } from '../../../stores/review/reviewStateContext';
+import { useReviewActions } from '../../../stores/review/reviewActionContext';
+import { useAuthState } from '../../../stores/auth/authStateContext';
+import { useCartActions } from '../../../stores/cart/cartActionContext';
+import { addToCartList } from '../../../stores/cart/CartStore';
+import RatingStar from '../../../utils/RatingStar';
+import Spinner from '../../../utils/Spinner';
+import formatDate from '../../../utils/formatDate';
 import axios from 'axios';
 
 const ProductDetail = ({ className }) => {

@@ -15,6 +15,12 @@ export const colorSecondary = {
    dark: '#0053B6'
 };
 
+export const colorNatural = {
+   light: '#55c57a',
+   default: '#20bf6b',
+   dark: '#28b487'
+};
+
 export const colorGrey = {
    light1: '#faf9f9',
    light2: '#f4f2f2',

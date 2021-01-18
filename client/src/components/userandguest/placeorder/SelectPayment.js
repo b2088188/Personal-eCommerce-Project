@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useCartState } from '../../stores/cart/cartStateContext';
-import { useCartActions } from '../../stores/cart/cartActionContext';
+import { useCartState } from '../../../stores/cart/cartStateContext';
+import { useCartActions } from '../../../stores/cart/cartActionContext';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Col, Title, Form } from '../../design/components';
-import { setFlex } from '../../design/utils';
+import { Col, Title, Form } from '../../../design/components';
+import { setFlex } from '../../../design/utils';
 import { useForm } from 'react-hook-form';
-import Navsteps from '../../layout/NavSteps';
-import FormRadio from '../../utils/form/FormRadio';
+import Navsteps from '../../../layout/NavSteps';
+import FormRadio from '../../../utils/form/FormRadio';
 
 const SelectPayment = ({ className }) => {
 	const { savePayInfo } = useCartActions();

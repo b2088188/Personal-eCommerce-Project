@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, Image, ListGroup } from '../../design/components';
+import { Card, Image, ListGroup } from '../../../design/components';
 import { Link } from 'react-router-dom';
-import RatingStar from '../../utils/RatingStar';
+import RatingStar from '../../../utils/RatingStar';
 
 const ProductItem = ({ product }) => {
 	return (
