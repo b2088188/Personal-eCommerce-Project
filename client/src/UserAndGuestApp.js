@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import GlobalStyle from './design/GlobalStyle';
-import { Container, Row } from './design/components';
+import { Container, Row, Footer } from './design/components';
 import { Spinner } from './design/elements';
 import UserStore from './stores/user/UserStore';
 import ProductStore from './stores/product/ProductStore';
@@ -11,7 +11,6 @@ import ReviewStore from './stores/review/ReviewStore';
 import PrivateRoute from './routes/PrivateRoutes';
 import ProductView from './components/userandguest/productView/ProductView';
 import Header from './layout/header/Header';
-import Footer from './layout/Footer';
 const ProductSearchView = lazy(() =>
    import('./components/userandguest/productView/ProductSearchView')
 );
@@ -31,7 +30,13 @@ const UserAndGuestApp = () => {
       <UserStore>
          <GlobalStyle />
          <Router>
-            <Suspense fallback={<Spinner />}>
+            <Suspense
+               fallback={
+                  <Row>
+                     <Spinner modifiers='dark' />
+                  </Row>
+               }
+            >
                <Container>
                   <Header />
                   <Route path='/signup' exact component={Signup} />
@@ -54,7 +59,7 @@ const UserAndGuestApp = () => {
                      <PrivateRoute path='/profile/settings' exact component={UserSettings} />
                      <PrivateRoute path='/profile/orders' exact component={UserOrder} />
                   </OrderStore>
-                  <Footer />
+                  <Footer>Copyright &copy; Shunze Lin</Footer>
                </Container>
             </Suspense>
          </Router>

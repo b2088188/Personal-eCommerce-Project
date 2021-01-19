@@ -22,6 +22,7 @@ const AdminHeader = ({ className }) => {
             </SLink>
             <Menu username={user.name}>
                <MenuItem onClick={() => history.push('/')}>Orders</MenuItem>
+               <MenuItem onClick={() => history.push('/products')}>Products</MenuItem>
                <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
          </div>

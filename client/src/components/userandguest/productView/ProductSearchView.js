@@ -1,14 +1,27 @@
 import * as R from 'ramda';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Container, Wrapper, Button, Col, Title, ListGroup } from '../../../design/components';
+import {
+   Row,
+   Col,
+   Wrapper,
+   CenterWrapper,
+   Button,
+   Title,
+   ListGroup,
+   Icon,
+   Span
+} from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import { useLocation } from 'react-router-dom';
 import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
+import { FilterList } from '@material-ui/icons';
+import Menu from '../../../utils/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import axios from 'axios';
 const ProductView = ({ className }) => {
@@ -16,10 +29,13 @@ const ProductView = ({ className }) => {
    const { search } = useLocation();
    const searchParams = new URLSearchParams(search);
    const q = searchParams.get('q');
+   const [sort, setSort] = useState(null);
    const [page, setPage] = useState(1);
+   const [open, setOpen] = useState(false);
+   const anchorRef = useRef(null);
    useEffect(() => {
-      getAllProducts(q);
-   }, [getAllProducts, q]);
+      getAllProducts(q, sort);
+   }, [getAllProducts, q, sort]);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -39,44 +55,72 @@ const ProductView = ({ className }) => {
       setPage(value);
    }
 
-   if (statusProducts === 'idle' || statusProducts === 'pending') return <Spinner />;
-   if (statusProducts === 'rejected')
+   function onSortClick(sortBy) {
+      return function () {
+         setSort(sortBy);
+         setOpen(false);
+      };
+   }
+
+   if (statusProducts === 'idle' || statusProducts === 'pending')
       return (
-         <Col width='12'>
-            <Message alert={errorProducts} severity='error' />;
-         </Col>
+         <Row>
+            <Spinner modifiers='dark' />
+         </Row>
+      );
+   if (statusProducts === 'rejected' && errorProducts)
+      return (
+         <Row>
+            <Message text={errorProducts} severity='error' />;
+         </Row>
       );
    if (statusProducts === 'resolved')
       return (
-         <Col width='12' className={className}>
-            <div className='products'>
-               <Wrapper className='products__titlebox'>
-                  <Title className='products__title' modifiers='big'>
-                     Search Results
-                  </Title>
-                  <Button as={Link} to='/' className='home'>
-                     Go Back
-                  </Button>
-               </Wrapper>
-               <ListGroup flexy='center' wrap>
-                  {renderProducts(products, page)}
-               </ListGroup>
-               {Math.ceil(products.length / 8) > 1 ? (
-                  <Pagination
-                     count={Math.ceil(products.length / 8)}
-                     page={page}
-                     onChange={onPageChange}
-                  />
-               ) : null}
-            </div>
-         </Col>
+         <Row className={className}>
+            <Col width='12'>
+               <CenterWrapper width='70' my='2' className='products'>
+                  <Wrapper className='products__titlebox'>
+                     <Title className='products__title' modifiers='big'>
+                        Search Results
+                     </Title>
+                     <Button as={Link} to='/' className='home'>
+                        Go Back
+                     </Button>
+                     <>
+                        <Button
+                           ref={anchorRef}
+                           onClick={() => setOpen((prev) => !prev)}
+                           modifiers='transparent'
+                           className='products__button'
+                        >
+                           <Icon as={FilterList} />
+                           <Span>Sort By</Span>
+                        </Button>
+                        <Menu open={open} setOpen={setOpen} anchorRef={anchorRef}>
+                           <MenuItem onClick={onSortClick('price')}>Price (Low -> High)</MenuItem>
+                           <MenuItem onClick={onSortClick('-price')}>Price (High -> Low)</MenuItem>
+                           <MenuItem onClick={onSortClick('-ratingsAverage')}>Top Rating</MenuItem>
+                        </Menu>
+                     </>
+                  </Wrapper>
+                  <ListGroup flexy='center' wrap>
+                     {renderProducts(products, page)}
+                  </ListGroup>
+                  {Math.ceil(products.length / 8) > 1 ? (
+                     <Pagination
+                        count={Math.ceil(products.length / 8)}
+                        page={page}
+                        onChange={onPageChange}
+                     />
+                  ) : null}
+               </CenterWrapper>
+            </Col>
+         </Row>
       );
 };
 
 export default styled(ProductView)`
    .products {
-      width: 70%;
-      margin: 2.5rem auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -86,6 +130,10 @@ export default styled(ProductView)`
       }
       &__title {
          margin-bottom: 1rem;
+      }
+      &__button {
+         color: #333;
+         margin-left: 1rem;
       }
    }
 `;

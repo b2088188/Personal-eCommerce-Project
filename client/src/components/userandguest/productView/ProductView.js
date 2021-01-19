@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Row, Col, Title, ListGroup } from '../../../design/components';
+import { media } from '../../../design/utils';
 import { Spinner, Message } from '../../../design/elements';
 import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
@@ -36,7 +37,7 @@ const ProductView = ({ className }) => {
    if (statusProducts === 'idle' || statusProducts === 'pending')
       return (
          <Row>
-            <Spinner />
+            <Spinner modifiers='dark' />
          </Row>
       );
    if (statusProducts === 'rejected')
@@ -72,10 +73,15 @@ const ProductView = ({ className }) => {
 export default styled(ProductView)`
    .products {
       width: 70%;
+      min-height: 90%;
       margin: 2.5rem auto;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
+      ${media.phone(`
+         min-height: auto;
+         `)}
       &__title {
          align-self: flex-start;
       }

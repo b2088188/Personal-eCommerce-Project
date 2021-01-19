@@ -25,7 +25,7 @@ const BUTTON_MODIFIERS = {
     `,
    disabled: () => `
         background: ${colorGrey.light4};        
-        cursor: not-allowed;
+        cursor: default;
     `,
    outline: () => `
     background: none;

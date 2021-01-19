@@ -14,7 +14,6 @@ import {
 	Span,
 	Button
 } from '../../../design/components';
-import ListGroups from '../../../utils/list/ListGroup';
 import Navsteps from '../../../layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
 import { Spinner, Message } from '../../../design/elements';

@@ -4,9 +4,18 @@ import { Link as Link, useParams } from 'react-router-dom';
 import { useOrderState } from '../../../stores/order/orderStateContext';
 import { useOrderActions } from '../../../stores/order/orderActionContext';
 import styled from 'styled-components';
-import { Row, Col, ListGroup, Image, Link as SLink, Button } from '../../../design/components';
+import {
+	Row,
+	Col,
+	ListGroup,
+	ImageContainer,
+	Image,
+	Link as SLink,
+	Button,
+	Title,
+	Span
+} from '../../../design/components';
 import { setBorder } from '../../../design/utils';
-import ListItem from '../../../utils/list/ListItem';
 import { Message, Spinner } from '../../../design/elements';
 import formatDate from '../../../utils/formatDate';
 import axios from 'axios';
@@ -23,16 +32,18 @@ const OrderView = ({ className }) => {
 	function renderOrderItems(list) {
 		return list?.map(function generateItem(order) {
 			return (
-				<ListGroup key={order._id} x center>
-					<ListGroup.Item p20>
-						<Image src={order.image} alt={order.name} />
+				<ListGroup key={order._id} flexy='center'>
+					<ListGroup.Item width='20' spacing='3.5'>
+						<ImageContainer>
+							<Image src={`http://127.0.0.1:8000/${order.image}`} alt={order.name} />
+						</ImageContainer>
 					</ListGroup.Item>
-					<ListGroup.Item p35>
+					<ListGroup.Item width='35' spacing='3.5'>
 						<SLink as={Link} to={`/products/${order._id}`}>
 							{order.name}
 						</SLink>
 					</ListGroup.Item>
-					<ListGroup.Item p30>
+					<ListGroup.Item width='30'>
 						{order.quantity} x ${order.price} = ${order.quantity * order.price}
 					</ListGroup.Item>
 				</ListGroup>
@@ -101,38 +112,37 @@ const OrderView = ({ className }) => {
 								</ListGroup>
 							</Col>
 							<Col width='4' spacing='2' className='order__summary'>
-								<ListGroup.Item full>
-									<ListGroup.Title>Order Summary</ListGroup.Title>
-								</ListGroup.Item>
-								<ListGroup xcenter bdtop>
-									<ListGroup.Item half>Items</ListGroup.Item>
-									<ListGroup.Item half>
-										<ListGroup.Span>${currentOrder.itemsPrice}</ListGroup.Span>
+								<ListGroup>
+									<Title>Order Summary</Title>
+								</ListGroup>
+								<ListGroup flexy='center' bdtop>
+									<ListGroup.Item width='50'>Items</ListGroup.Item>
+									<ListGroup.Item>
+										<Span>${currentOrder.itemsPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
-								<ListGroup xcenter bdtop>
-									<ListGroup.Item half>Shipping</ListGroup.Item>
-									<ListGroup.Item half>
-										<ListGroup.Span>${currentOrder.shippingPrice}</ListGroup.Span>
+								<ListGroup flexy='center' bdtop>
+									<ListGroup.Item width='50'>Shipping</ListGroup.Item>
+									<ListGroup.Item>
+										<Span>${currentOrder.shippingPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
-								<ListGroup xcenter bdtop>
-									<ListGroup.Item half>Total</ListGroup.Item>
-									<ListGroup.Item half>
-										<ListGroup.Span>${currentOrder.totalPrice}</ListGroup.Span>
+								<ListGroup flexy='center' bdtop>
+									<ListGroup.Item width='50'>Total</ListGroup.Item>
+									<ListGroup.Item>
+										<Span>${currentOrder.totalPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
 								{currentOrder.isDelivered ? null : (
-									<ListGroup bdtop xcenter>
-										<ListGroup.Item full className='order__deliverbtnbox'>
-											<Button
-												onClick={onDeliverClick}
-												modifiers={!currentOrder.isPaid ? 'disabled' : null}
-												disabled={!currentOrder.isPaid}
-											>
-												Mark as Delivered
-											</Button>
-										</ListGroup.Item>
+									<ListGroup flexy='center' bdtop>
+										<Button
+											onClick={onDeliverClick}
+											modifiers={!currentOrder.isPaid ? 'disabled' : null}
+											disabled={!currentOrder.isPaid}
+											className='order__button'
+										>
+											Mark as Delivered
+										</Button>
 									</ListGroup>
 								)}
 							</Col>
@@ -153,9 +163,8 @@ export default styled(OrderView)`
 			${setBorder({})}
 			align-self: flex-start;
 		}
-		&__deliverbtnbox {
-			display: flex;
-			justify-content: center;
+		&__button {
+			margin: auto;
 		}
 	}
 `;

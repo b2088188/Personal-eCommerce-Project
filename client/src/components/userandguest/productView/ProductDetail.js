@@ -16,7 +16,7 @@ import {
    Form,
    Select
 } from '../../../design/components';
-import { Message, Options, Spinner } from '../../../design/elements';
+import { Message, Options, Spinner, RatingStar } from '../../../design/elements';
 import { media } from '../../../design/utils';
 import { useProduct } from '../../../stores/product/productContext';
 import { useReviewState } from '../../../stores/review/reviewStateContext';
@@ -24,7 +24,6 @@ import { useReviewActions } from '../../../stores/review/reviewActionContext';
 import { useAuthState } from '../../../stores/auth/authStateContext';
 import { useCartActions } from '../../../stores/cart/cartActionContext';
 import { addToCartList } from '../../../stores/cart/CartStore';
-import RatingStar from '../../../utils/RatingStar';
 import formatDate from '../../../utils/formatDate';
 
 const ProductDetail = ({ className }) => {

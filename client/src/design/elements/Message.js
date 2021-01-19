@@ -17,6 +17,7 @@ export default styled(Message)`
 	margin: 2.5rem auto;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	align-self: flex-start;
 	${media.phone(`
 		width: 90%;

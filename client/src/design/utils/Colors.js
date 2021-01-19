@@ -15,6 +15,10 @@ export const colorSecondary = {
    dark: '#0053B6'
 };
 
+export const colorTertiary = {
+   default: '#ffc733'
+};
+
 export const colorNatural = {
    light: '#55c57a',
    default: '#20bf6b',

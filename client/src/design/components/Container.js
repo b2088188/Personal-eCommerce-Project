@@ -154,3 +154,7 @@ export const ImageContainer = styled.div`
    ${({ mr }) => (mr && mr.tabport ? media.tabport(`margin-right: ${mr.tabport};`) : null)}
    ${({ mr }) => (mr && mr.phone ? media.phone(`margin-right: ${mr.phone};`) : null)}
 `;
+
+export const Footer = styled.footer`
+	text-align: center;
+`;

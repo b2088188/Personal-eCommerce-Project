@@ -18,9 +18,7 @@ const Spinner = ({ className }) => {
 };
 
 export default styled(Spinner)`
-   margin-left: 50%;
-   margin-top: 5rem;
-   margin-bottom: 5rem;
+   margin: 5rem auto;
    ${(props) => (props.color ? `color: ${props.color};` : null)}
    ${applyStyleModifiers(SPINNER_MODIFIERS)}
 `;
