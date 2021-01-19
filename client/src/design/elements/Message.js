@@ -1,23 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Span } from '../components';
-import { setFlex } from '../utils';
+import { setFlex, media } from '../utils';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 const Message = ({ variant, text, severity = 'warning', full, className }) => {
 	return (
-		<div className={className}>
-			<Alert variant={variant} severity={severity} className='alert'>
-				<Span modifiers={['large', 'light']}>{text}</Span>
-			</Alert>
-		</div>
+		<Alert variant={variant} severity={severity} className={className}>
+			<Span modifiers={['large', 'light']}>{text}</Span>
+		</Alert>
 	);
 };
 
 export default styled(Message)`
-	.alert {
-		${setFlex({ x: 'center', y: 'center' })}
-		width: 50%;
-		margin: 2.5rem auto;
-	}
+	width: 50%;
+	margin: 2.5rem auto;
+	display: flex;
+	justify-content: center;
+	align-self: flex-start;
+	${media.phone(`
+		width: 90%;
+		`)}
 `;

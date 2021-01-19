@@ -57,7 +57,7 @@ const AuthStore = ({ children }) => {
 
    const logout = useCallback(
       async function (values) {
-         await fetchAuth(axios.get('/api/v1/auth/logout'));
+         await fetchAuth(axios.get('/api/v1/users/logout'));
          dispatchAuth({ type: LOGOUT_AUTH });
       },
       [fetchAuth, dispatchAuth]

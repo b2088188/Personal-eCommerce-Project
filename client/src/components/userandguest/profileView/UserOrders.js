@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { useUserState } from '../../../stores/user/userStateContext';
 import { useUserActions } from '../../../stores/user/userActionContext';
 import styled from 'styled-components';
-import { Row, Col, Title, Table } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title, Table } from '../../../design/components';
+import { Spinner, Message } from '../../../design/elements';
 import Sidebar from '../../../layout/Sidebar';
 import UserOrderItem from './UserOrderItem';
-import Spinner from '../../../utils/Spinner';
-import Message from '../../../utils/Message';
 import axios from 'axios';
 
 const UserOrder = ({ className }) => {
@@ -22,17 +21,27 @@ const UserOrder = ({ className }) => {
 		});
 	}
 
-	if (statusUserOrders === 'idle' || statusUserOrders === 'pending') return <Spinner />;
+	if (statusUserOrders === 'idle' || statusUserOrders === 'pending')
+		return (
+			<Row>
+				<Spinner />
+			</Row>
+		);
+
 	if (statusUserOrders === 'rejected' && errorUserOrders)
-		return <Message severity='error' text={errorUserOrders} />;
+		return (
+			<Row>
+				<Message severity='error' text={errorUserOrders} />
+			</Row>
+		);
 	if (statusUserOrders === 'resolved')
 		return (
-			<>
+			<Row direction={{ tabport: 'column' }}>
 				<Col width='3'>
 					<Sidebar />
 				</Col>
 				<Col width='8'>
-					<div className='tablebox'>
+					<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
 						<Title modifiers={['large', 'exlight']}>My Orders</Title>
 						<Table>
 							<Table.Tr>
@@ -45,19 +54,10 @@ const UserOrder = ({ className }) => {
 							</Table.Tr>
 							<Table.Body>{renderUserOrders(userOrders)}</Table.Body>
 						</Table>
-					</div>
+					</CenterWrapper>
 				</Col>
-			</>
+			</Row>
 		);
 };
 
-export default styled(UserOrder)`
-	&__form {
-		width: 70%;
-		margin: 2.5rem auto;
-	}
-	.tablebox {
-		width: 70%;
-		margin: 2.5rem auto;
-	}
-`;
+export default styled(UserOrder)``;

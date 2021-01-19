@@ -4,7 +4,7 @@ import { useAuthState } from '../../stores/auth/authStateContext';
 import { useAuthActions } from '../../stores/auth/authActionContext';
 import styled from 'styled-components';
 import { Wrapper, Span, Link as SLink, Input, Button } from '../../design/components';
-import { colorGrey } from '../../design/utils';
+import { colorGrey, media } from '../../design/utils';
 import { ShoppingCart, Person } from '@material-ui/icons';
 import Menu from '../../utils/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,12 +21,17 @@ const Header = ({ className }) => {
    return (
       <header className={className}>
          <div className='container'>
-            <SLink as={Link} to='/' className='header__link' modifiers='exlight'>
+            <SLink as={Link} to='/' className='header__link header__link--home' modifiers='exlight'>
                eCommerce
             </SLink>
             <Wrapper direction='row' y='center' className='header__searchbox'>
-               <Input type='text' value={q} onChange={(e) => setQ(e.target.value)} />
-               <Button modifiers='natural' onClick={onSearchClick}>
+               <Input
+                  type='text'
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  className='header__input'
+               />
+               <Button className='header__button' modifiers='natural' onClick={onSearchClick}>
                   Search
                </Button>
             </Wrapper>
@@ -57,9 +62,30 @@ export default styled(Header)`
       &__searchbox {
          margin-right: auto;
          margin-left: 1rem;
+         ${media.tabport(`
+            order: 1;
+            flex: 0 0 100%;
+            margin-left: 0;
+            `)}
       }
       &__link {
          color: var(--color-grey-light-1);
+         margin-right: 1rem;
+         &--home {
+            ${media.tabport(`
+            margin-right: auto;
+            `)}
+         }
+      }
+      &__input {
+         ${media.tabport(`
+            flex: 0 0 90%;
+            `)}
+      }
+      &__button {
+         ${media.tabport(`
+            flex: 0 0 10%;
+            `)}
       }
    }
    .container {
@@ -68,7 +94,11 @@ export default styled(Header)`
       margin: auto;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       font-size: 1.7rem;
+      ${media.tabport(`
+            width: 100%;
+            `)}
    }
 
    .signin {

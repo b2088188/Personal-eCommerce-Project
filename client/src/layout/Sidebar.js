@@ -1,79 +1,75 @@
 import React from 'react';
-import { Link as ReactLink, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { Settings, FormatListBulleted, Storefront } from '@material-ui/icons';
-import { Link, Span, Icon } from '../design/components';
-import { setFlex, setTransition, colorGrey } from '../design/utils';
+import { Link as SLink, Span, Icon, List } from '../design/components';
+import { setFlex, setTransition, colorGrey, media } from '../design/utils';
 
 const Sidebar = ({ className }) => {
    const location = useLocation();
 
    return (
       <nav className={className}>
-         <ul className='list'>
-            <li className='item'>
-               <Link
-                  as={ReactLink}
+         <List direction={{ tabport: 'row' }} flexx={{ tabport: 'center' }}>
+            <List.Item className='sidebar__item'>
+               <SLink
+                  as={Link}
                   to='/profile/settings'
-                  className={`link ${
-                     useRouteMatch({ path: '/profile/settings', exact: true }) ? 'active' : ''
+                  className={`sidebar__link ${
+                     useRouteMatch({ path: '/profile/settings', exact: true })
+                        ? 'sidebar__link--active'
+                        : ''
                   }`}
                   modifiers={['big', 'exlight']}
                >
-                  <Icon as={Settings} />
+                  <Icon as={Settings} className='sidebar__icon' />
                   <Span>Settings</Span>
-               </Link>
-            </li>
-            <li className='item'>
-               <Link
-                  as={ReactLink}
+               </SLink>
+            </List.Item>
+            <List.Item className='sidebar__item'>
+               <SLink
+                  as={Link}
                   to='/profile/orders'
-                  className={`link ${
-                     useRouteMatch({ path: '/profile/orders', exact: true }) ? 'active' : ''
+                  className={`sidebar__link ${
+                     useRouteMatch({ path: '/profile/orders', exact: true })
+                        ? 'sidebar__link--active'
+                        : ''
                   }`}
                   modifiers={['big', 'exlight']}
                >
-                  <Icon as={FormatListBulleted} />
+                  <Icon as={FormatListBulleted} className='sidebar__icon' />
                   <Span>My Orders</Span>
-               </Link>
-            </li>
-            <li className='item'>
-               <Link
-                  as={ReactLink}
-                  to='/profile/products'
-                  className={`link ${
-                     useRouteMatch({ path: '/profile/products', exact: true }) ? 'active' : ''
-                  }`}
-                  modifiers={['big', 'exlight']}
-               >
-                  <Icon as={Storefront} />
-                  <Span>My Products</Span>
-               </Link>
-            </li>
-         </ul>
+               </SLink>
+            </List.Item>
+         </List>
       </nav>
    );
 };
 
 export default styled(Sidebar)`
    margin: 2.5rem 0;
-   .list {
-      ${setFlex({ direction: 'column' })}
-   }
-   .item {
-      width: 100%;
-      margin: 1rem auto;
-      ${setFlex({ direction: 'column', y: 'center' })}
-   }
-   .link {
-      flex: 0 0 100%;
-      color: ${colorGrey.light4};
-      ${setTransition()}
-      &:hover {
-         color: ${colorGrey.dark2};
+   .sidebar {
+      &__item {
+         ${media.tabport(`
+            margin: 0 1rem;
+            `)}
       }
-   }
-   .active {
-      color: ${colorGrey.dark2};
+      &__link {
+         width: 100%;
+         color: ${colorGrey.light4};
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         ${setTransition()}
+         &:hover {
+            color: ${colorGrey.dark2};
+         }
+         &--active {
+            color: ${colorGrey.dark2};
+         }
+      }
+      &__icon {
+         margin-right: 0.5rem;
+      }
    }
 `;

@@ -1,23 +1,25 @@
 import React from 'react';
-import { Link as ReactLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ListGroup, Image, Link } from '../../../design/components';
+import { ListGroup, ImageContainer, Image, Link as SLink, Span } from '../../../design/components';
 
 const PlaceOrderItem = ({ item }) => {
 	return (
-		<ListGroup ycenter>
-			<ListGroup.Item p15>
-				<Image src={item.image} alt={item.name} className='placeorder-view__img' />
+		<ListGroup flexy='center'>
+			<ListGroup.Item width='15' spacing='3.5'>
+				<ImageContainer>
+					<Image src={item.image} alt={item.name} />
+				</ImageContainer>
 			</ListGroup.Item>
-			<ListGroup.Item p40>
-				<Link as={ReactLink} to={`/product/${item._id}`}>
-					<ListGroup.Span modifiers='medium'>{item.name}</ListGroup.Span>
-				</Link>
+			<ListGroup.Item width='40' spacing='3.5'>
+				<SLink as={Link} to={`/product/${item._id}`}>
+					<Span modifiers='medium'>{item.name}</Span>
+				</SLink>
 			</ListGroup.Item>
-			<ListGroup.Item p30>
-				<ListGroup.Span modifiers='medium'>
+			<ListGroup.Item width='30'>
+				<Span modifiers='medium'>
 					{item.quantity} x ${item.price} = ${item.quantity * item.price}
-				</ListGroup.Span>
+				</Span>
 			</ListGroup.Item>
 		</ListGroup>
 	);

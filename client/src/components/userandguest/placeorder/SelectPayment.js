@@ -3,9 +3,10 @@ import { useCartState } from '../../../stores/cart/cartStateContext';
 import { useCartActions } from '../../../stores/cart/cartActionContext';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Col, Title, Form } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title, Form, Button, Radio } from '../../../design/components';
+import { RadioGroup } from '@material-ui/core';
 import { setFlex } from '../../../design/utils';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import Navsteps from '../../../layout/NavSteps';
 import FormRadio from '../../../utils/form/FormRadio';
 
@@ -13,7 +14,7 @@ const SelectPayment = ({ className }) => {
 	const { savePayInfo } = useCartActions();
 	const { shippingAddress } = useCartState();
 	const [toPlaceOrder, setToPlaceOrder] = useState(false);
-	const { register, handleSubmit, errors } = useForm();
+	const { register, handleSubmit, errors, control } = useForm();
 
 	function onSubmit({ payment }) {
 		savePayInfo('paymentMethod', payment);
@@ -25,47 +26,32 @@ const SelectPayment = ({ className }) => {
 	if (toPlaceOrder) return <Redirect to='/placeorder' />;
 
 	return (
-		<Col width='12' className={className}>
-			<div className='container'>
-				<Navsteps step1 step2 />
-				<Title modifiers={['large', 'light']}>Payment Method</Title>
-				<Form onSubmit={handleSubmit(onSubmit)}>
-					<Form.Title as='h2' modifiers={['medium', 'exlight']}>
-						Select Method
-					</Form.Title>
-					<Form.RadioGroup>
-						<Form.Input
-							name='payment'
-							type='radio'
-							value='Paypal'
-							id='paypal'
-							ref={register}
-							modifiers='radio'
-							defaultChecked
-						/>
-						<Form.Label htmlFor='paypal'>PayPal</Form.Label>
-					</Form.RadioGroup>
-					<Form.RadioGroup>
-						<Form.Input
-							name='payment'
-							type='radio'
-							value='Credit'
-							id='credit'
-							ref={register}
-							modifiers='radio'
-						/>
-						<Form.Label htmlFor='credit'>Credit</Form.Label>
-					</Form.RadioGroup>
-					<Form.Button>Continue</Form.Button>
-				</Form>
-			</div>
-		</Col>
+		<Row className={className}>
+			<Col width='12'>
+				<CenterWrapper width='40' my='2'>
+					<Navsteps step1 step2 />
+					<Title modifiers={['large', 'light']}>Payment Method</Title>
+					<Form onSubmit={handleSubmit(onSubmit)}>
+						<Title as='h2' modifiers={['medium', 'exlight']}>
+							Select Method
+						</Title>
+						<Form.Group>
+							<Controller
+								as={RadioGroup}
+								name='payment'
+								control={control}
+								defaultValue='Paypal'
+							>
+								<Radio.Label value='Paypal' control={<Radio />} label='Paypal' />
+								<Radio.Label value='Credit' control={<Radio />} label='Credit' />
+							</Controller>
+						</Form.Group>
+						<Button>Continue</Button>
+					</Form>
+				</CenterWrapper>
+			</Col>
+		</Row>
 	);
 };
 
-export default styled(SelectPayment)`
-	.container {
-		width: 40%;
-		margin: 2rem auto;
-	}
-`;
+export default SelectPayment;

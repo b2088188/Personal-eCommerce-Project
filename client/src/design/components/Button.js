@@ -3,13 +3,25 @@ import { colorGrey, colorNormal, colorNatural, setBorder } from '../utils';
 import { applyStyleModifiers } from 'styled-components-modifiers';
 
 const BUTTON_MODIFIERS = {
-   full: () => `
-    width: 100%;
-    height: 100%;
-    `,
+   huge: () => `
+    font-size: 3rem;
+  `,
+   big: () => `
+    font-size: 2.5rem;
+  `,
+   large: () => `
+    font-size: 2rem;
+  `,
+   medium: () => `
+    font-size: 1.5rem;
+  `,
+   small: () => `
+    font-size: 1rem;
+  `,
    transparent: () => `
      background: none;
-     color: ${colorGrey.dark1};
+     color: ${colorGrey.light1};
+     padding: 0;
     `,
    disabled: () => `
         background: ${colorGrey.light4};        

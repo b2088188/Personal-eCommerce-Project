@@ -44,91 +44,102 @@ const OrderView = ({ className }) => {
 		updateOrderToDeliver(orderId);
 	}
 
-	if (statusOrder === 'idle' || statusOrder === 'pending') return <Spinner modifiers='dark' />;
+	if (statusOrder === 'idle' || statusOrder === 'pending')
+		return (
+			<Row>
+				<Spinner modifiers='dark' />
+			</Row>
+		);
 	if (statusOrder === 'rejected' && errorOrder)
-		return <Message severity='error' text={errorOrder} />;
+		return (
+			<Row>
+				<Message severity='error' text={errorOrder} />
+			</Row>
+		);
 
 	if (statusOrder === 'resolved')
 		return (
-			<Col width='12' className={className}>
-				<div className='order__container'>
-					<ListGroup.Title modifiers='large'>ORDER {currentOrder._id}</ListGroup.Title>
-					<Row>
-						<Col width='7'>
-							<ListGroup bdbottom>
-								<ListGroup>
-									<ListGroup.Title>Shipping</ListGroup.Title>
-									<ListGroup.Paragraph modifiers='exlight'>
-										{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`}
-									</ListGroup.Paragraph>
+			<Row>
+				<Col width='12' className={className}>
+					<div className='order__container'>
+						<ListGroup.Title modifiers='large'>ORDER {currentOrder._id}</ListGroup.Title>
+						<Row>
+							<Col width='7'>
+								<ListGroup bdbottom>
+									<ListGroup>
+										<ListGroup.Title>Shipping</ListGroup.Title>
+										<ListGroup.Paragraph modifiers='exlight'>
+											{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`}
+										</ListGroup.Paragraph>
+									</ListGroup>
+									{currentOrder.isDelivered ? (
+										<Message
+											text={`Delivered on ${formatDate(currentOrder.deliveredAt)}`}
+											severity='success'
+										/>
+									) : (
+										<Message text='Not Delivered' severity='error' />
+									)}
 								</ListGroup>
-								{currentOrder.isDelivered ? (
-									<Message
-										text={`Delivered on ${formatDate(currentOrder.deliveredAt)}`}
-										severity='success'
+								<ListGroup bdbottom>
+									<ListGroup
+										title='Payment Method'
+										info={`Method: ${currentOrder.paymentMethod}`}
 									/>
-								) : (
-									<Message text='Not Delivered' severity='error' />
-								)}
-							</ListGroup>
-							<ListGroup bdbottom>
-								<ListGroup
-									title='Payment Method'
-									info={`Method: ${currentOrder.paymentMethod}`}
-								/>
-								{currentOrder.isPaid ? (
-									<Message
-										text={`Paid on ${formatDate(currentOrder.paidAt)}`}
-										severity='success'
-									/>
-								) : (
-									<Message text='Not Paid' severity='error' />
-								)}
-							</ListGroup>
-							<ListGroup bdbottom>
-								<ListGroup.Title>Order Items</ListGroup.Title>
-								{renderOrderItems(currentOrder.orderItems)}
-							</ListGroup>
-						</Col>
-						<Col width='4' spacing='2' className='order__summary'>
-							<ListGroup.Item full>
-								<ListGroup.Title>Order Summary</ListGroup.Title>
-							</ListGroup.Item>
-							<ListGroup xcenter bdtop>
-								<ListGroup.Item half>Items</ListGroup.Item>
-								<ListGroup.Item half>
-									<ListGroup.Span>${currentOrder.itemsPrice}</ListGroup.Span>
+									{currentOrder.isPaid ? (
+										<Message
+											text={`Paid on ${formatDate(currentOrder.paidAt)}`}
+											severity='success'
+										/>
+									) : (
+										<Message text='Not Paid' severity='error' />
+									)}
+								</ListGroup>
+								<ListGroup bdbottom>
+									<ListGroup.Title>Order Items</ListGroup.Title>
+									{renderOrderItems(currentOrder.orderItems)}
+								</ListGroup>
+							</Col>
+							<Col width='4' spacing='2' className='order__summary'>
+								<ListGroup.Item full>
+									<ListGroup.Title>Order Summary</ListGroup.Title>
 								</ListGroup.Item>
-							</ListGroup>
-							<ListGroup xcenter bdtop>
-								<ListGroup.Item half>Shipping</ListGroup.Item>
-								<ListGroup.Item half>
-									<ListGroup.Span>${currentOrder.shippingPrice}</ListGroup.Span>
-								</ListGroup.Item>
-							</ListGroup>
-							<ListGroup xcenter bdtop>
-								<ListGroup.Item half>Total</ListGroup.Item>
-								<ListGroup.Item half>
-									<ListGroup.Span>${currentOrder.totalPrice}</ListGroup.Span>
-								</ListGroup.Item>
-							</ListGroup>
-							{currentOrder.isDelivered ? null : (
-								<ListGroup bdtop xcenter>
-									<ListGroup.Item full className='order__deliverbtnbox'>
-										<Button
-											onClick={onDeliverClick}
-											modifiers={!currentOrder.isPaid ? 'disabled' : null}
-											disabled={!currentOrder.isPaid}
-										>
-											Mark as Delivered
-										</Button>
+								<ListGroup xcenter bdtop>
+									<ListGroup.Item half>Items</ListGroup.Item>
+									<ListGroup.Item half>
+										<ListGroup.Span>${currentOrder.itemsPrice}</ListGroup.Span>
 									</ListGroup.Item>
 								</ListGroup>
-							)}
-						</Col>
-					</Row>
-				</div>
-			</Col>
+								<ListGroup xcenter bdtop>
+									<ListGroup.Item half>Shipping</ListGroup.Item>
+									<ListGroup.Item half>
+										<ListGroup.Span>${currentOrder.shippingPrice}</ListGroup.Span>
+									</ListGroup.Item>
+								</ListGroup>
+								<ListGroup xcenter bdtop>
+									<ListGroup.Item half>Total</ListGroup.Item>
+									<ListGroup.Item half>
+										<ListGroup.Span>${currentOrder.totalPrice}</ListGroup.Span>
+									</ListGroup.Item>
+								</ListGroup>
+								{currentOrder.isDelivered ? null : (
+									<ListGroup bdtop xcenter>
+										<ListGroup.Item full className='order__deliverbtnbox'>
+											<Button
+												onClick={onDeliverClick}
+												modifiers={!currentOrder.isPaid ? 'disabled' : null}
+												disabled={!currentOrder.isPaid}
+											>
+												Mark as Delivered
+											</Button>
+										</ListGroup.Item>
+									</ListGroup>
+								)}
+							</Col>
+						</Row>
+					</div>
+				</Col>
+			</Row>
 		);
 };
 

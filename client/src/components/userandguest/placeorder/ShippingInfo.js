@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Redirect, Prompt } from 'react-router-dom';
 import { useCartState } from '../../../stores/cart/cartStateContext';
 import { useCartActions } from '../../../stores/cart/cartActionContext';
-import { Col, FormContainer, Form } from '../../../design/components';
+import { Row, Col, FormContainer, Form } from '../../../design/components';
+import { Spinner, Message } from '../../../design/elements';
 import { useForm } from 'react-hook-form';
 import Navsteps from '../../../layout/NavSteps';
 import FormGroup from '../../../utils/form/FormGroup';
 import FormError from '../../../utils/form/FormError';
-import Message from '../../../utils/Message';
-import Spinner from '../../../utils/Spinner';
 
 const ShippingInfo = () => {
    const { cartList } = useCartState();
@@ -37,49 +36,58 @@ const ShippingInfo = () => {
    if (toPayment) return <Redirect to='/payment' />;
 
    return (
-      <Col width='12'>
-         <Prompt when={isTyping} message={`Are you sure you want to leave this page?`} />
-         <FormContainer>
-            <Navsteps step1 />
-            <Form.Title modifiers={['big', 'light']}>Shipping</Form.Title>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-               <FormError errors={errors} />
-               <Form.Label>Address</Form.Label>
-               <Form.Input
-                  name='address'
-                  type='text'
-                  ref={register({
-                     required: 'Please provide your address'
-                  })}
-               />
-               <Form.Label>City</Form.Label>
-               <Form.Input
-                  name='city'
-                  type='text'
-                  ref={register({
-                     required: 'Please provide your city'
-                  })}
-               />
-               <Form.Label>PostalCode</Form.Label>
-               <Form.Input
-                  name='postalCode'
-                  type='text'
-                  ref={register({
-                     required: 'Please provide your postalCode'
-                  })}
-               />
-               <Form.Label>Country</Form.Label>
-               <Form.Input
-                  name='country'
-                  type='text'
-                  ref={register({
-                     required: 'Please provide your country'
-                  })}
-               />
-               <Form.Button>Continue</Form.Button>
-            </Form>
-         </FormContainer>
-      </Col>
+      <Row>
+         <Col width='12'>
+            <Prompt when={isTyping} message={`Are you sure you want to leave this page?`} />
+            <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
+               <Navsteps step1 />
+               <Form.Title modifiers={['big', 'light']}>Shipping</Form.Title>
+               <Form onSubmit={handleSubmit(onSubmit)}>
+                  <Form.Group direction='column'>
+                     <Form.Label>Address</Form.Label>
+                     <Form.Input
+                        name='address'
+                        type='text'
+                        ref={register({
+                           required: 'Please provide your address'
+                        })}
+                     />
+                  </Form.Group>
+                  <Form.Group direction='column'>
+                     <Form.Label>City</Form.Label>
+                     <Form.Input
+                        name='city'
+                        type='text'
+                        ref={register({
+                           required: 'Please provide your city'
+                        })}
+                     />
+                  </Form.Group>
+                  <Form.Group direction='column'>
+                     <Form.Label>PostalCode</Form.Label>
+                     <Form.Input
+                        name='postalCode'
+                        type='text'
+                        ref={register({
+                           required: 'Please provide your postalCode'
+                        })}
+                     />
+                  </Form.Group>
+                  <Form.Group direction='column'>
+                     <Form.Label>Country</Form.Label>
+                     <Form.Input
+                        name='country'
+                        type='text'
+                        ref={register({
+                           required: 'Please provide your country'
+                        })}
+                     />
+                  </Form.Group>
+                  <Form.Button>Continue</Form.Button>
+               </Form>
+            </FormContainer>
+         </Col>
+      </Row>
    );
 };
 

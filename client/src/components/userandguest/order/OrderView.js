@@ -4,11 +4,23 @@ import { Link as Link, useParams } from 'react-router-dom';
 import { useOrderState } from '../../../stores/order/orderStateContext';
 import { useOrderActions } from '../../../stores/order/orderActionContext';
 import styled from 'styled-components';
-import { Row, Col, ListGroup, Image, Link as SLink, Button } from '../../../design/components';
+import {
+	Row,
+	Col,
+	CenterWrapper,
+	ListGroup,
+	ImageContainer,
+	Image,
+	Link as SLink,
+	Title,
+	Paragraph,
+	Button,
+	Span
+} from '../../../design/components';
 import { setBorder } from '../../../design/utils';
 import { PayPalButton } from 'react-paypal-button-v2';
-import ListItem from '../../../utils/list/ListItem';
 import { Message, Spinner } from '../../../design/elements';
+import { media } from '../../../design/utils';
 import formatDate from '../../../utils/formatDate';
 import axios from 'axios';
 const OrderView = ({ className }) => {
@@ -48,16 +60,18 @@ const OrderView = ({ className }) => {
 	function renderOrderItems(list) {
 		return list.map(function generateItem(order) {
 			return (
-				<ListGroup key={order._id} x center>
-					<ListGroup.Item p20>
-						<Image src={order.image} alt={order.name} />
+				<ListGroup key={order._id} flexy='center'>
+					<ListGroup.Item width='20' spacing='3.5'>
+						<ImageContainer>
+							<Image src={`http://127.0.0.1:8000/${order.image}`} alt={order.name} />
+						</ImageContainer>
 					</ListGroup.Item>
-					<ListGroup.Item p35>
+					<ListGroup.Item width='35' spacing='3.5'>
 						<SLink as={Link} to={`/products/${order._id}`}>
 							{order.name}
 						</SLink>
 					</ListGroup.Item>
-					<ListGroup.Item p30>
+					<ListGroup.Item width='30'>
 						{order.quantity} x ${order.price} = ${order.quantity * order.price}
 					</ListGroup.Item>
 				</ListGroup>
@@ -68,91 +82,115 @@ const OrderView = ({ className }) => {
 	function renderPayButton(totalPrice) {
 		return (
 			<ListGroup bdtop>
-				<PayPalButton amount={totalPrice} onSuccess={onSuccessPayHandler} />
+				<PayPalButton
+					amount={totalPrice}
+					onSuccess={onSuccessPayHandler}
+					className='order__button'
+				/>
 			</ListGroup>
 		);
 	}
 
-	if (statusOrder === 'idle' || statusOrder === 'pending') return <Spinner modifiers='dark' />;
+	if (statusOrder === 'idle' || statusOrder === 'pending')
+		return (
+			<Row>
+				<Spinner modifiers='dark' />
+			</Row>
+		);
 	if (statusOrder === 'rejected' && errorOrder)
-		return <Message severity='error' text={errorOrder} />;
+		return (
+			<Row>
+				<Message severity='error' text={errorOrder} />
+			</Row>
+		);
 
 	if (statusOrder === 'resolved')
 		return (
-			<Col width='12' className={className}>
-				<div className='container'>
-					<ListGroup.Title modifiers='large'>ORDER {currentOrder._id}</ListGroup.Title>
-					<Row>
-						<Col width='7'>
-							<ListGroup bdbottom>
-								<ListGroup>
-									<ListGroup.Title>Shipping</ListGroup.Title>
-									<ListGroup.Paragraph modifiers='exlight'>
-										{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`}
-									</ListGroup.Paragraph>
+			<Row className={className}>
+				<Col width='12'>
+					<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
+						<Title modifiers='large'>ORDER {currentOrder._id}</Title>
+						<Row direction={{ tabport: 'column' }}>
+							<Col width='7'>
+								<ListGroup bdbottom>
+									<ListGroup.Item>
+										<Title>Shipping</Title>
+										<Paragraph modifiers='exlight'>
+											{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`}
+										</Paragraph>
+									</ListGroup.Item>
+									<Message text='Not Delivered' severity='error' />
 								</ListGroup>
-								<Message text='Not Delivered' severity='error' />
-							</ListGroup>
-							<ListGroup bdbottom>
-								<ListGroup
-									title='Payment Method'
-									info={`Method: ${currentOrder.paymentMethod}`}
-								/>
-								{currentOrder.isPaid ? (
-									<Message
-										text={`Paid on ${formatDate(currentOrder.paidAt)}`}
-										severity='success'
-									/>
-								) : (
-									<Message text='Not Paid' severity='error' />
-								)}
-							</ListGroup>
-							<ListGroup bdbottom>
-								<ListGroup.Title>Order Items</ListGroup.Title>
-								{renderOrderItems(currentOrder.orderItems)}
-							</ListGroup>
-						</Col>
-						<Col width='4' spacing='2' className='order__summary'>
-							<ListGroup.Item full>
-								<ListGroup.Title>Order Summary</ListGroup.Title>
-							</ListGroup.Item>
-							<ListGroup xcenter bdtop>
-								<ListGroup.Item half>Items</ListGroup.Item>
-								<ListGroup.Item half>
-									<ListGroup.Span>${currentOrder.itemsPrice}</ListGroup.Span>
-								</ListGroup.Item>
-							</ListGroup>
-							<ListGroup xcenter bdtop>
-								<ListGroup.Item half>Shipping</ListGroup.Item>
-								<ListGroup.Item half>
-									<ListGroup.Span>${currentOrder.shippingPrice}</ListGroup.Span>
-								</ListGroup.Item>
-							</ListGroup>
-							<ListGroup xcenter bdtop>
-								<ListGroup.Item half>Total</ListGroup.Item>
-								<ListGroup.Item half>
-									<ListGroup.Span>${currentOrder.totalPrice}</ListGroup.Span>
-								</ListGroup.Item>
-							</ListGroup>
-							{currentOrder && !currentOrder.isPaid
-								? renderPayButton(currentOrder.totalPrice)
-								: null}
-						</Col>
-					</Row>
-				</div>
-			</Col>
+								<ListGroup bdbottom>
+									<ListGroup.Item>
+										<Title>Payment Method</Title>
+										<Paragraph modifiers='exlight'>
+											{`Method: ${currentOrder.paymentMethod}`}
+										</Paragraph>
+									</ListGroup.Item>
+									{currentOrder.isPaid ? (
+										<Message
+											text={`Paid on ${formatDate(currentOrder.paidAt)}`}
+											severity='success'
+										/>
+									) : (
+										<Message text='Not Paid' severity='error' />
+									)}
+								</ListGroup>
+								<ListGroup bdbottom>
+									<Title>Order Items</Title>
+									{renderOrderItems(currentOrder.orderItems)}
+								</ListGroup>
+							</Col>
+							<Col width='4' spacing='2' className='order__summary'>
+								<ListGroup>
+									<Title>Order Summary</Title>
+								</ListGroup>
+								<ListGroup flexy='center' bdtop>
+									<ListGroup.Item width='50'>Items</ListGroup.Item>
+									<ListGroup.Item>
+										<Span>${currentOrder.itemsPrice}</Span>
+									</ListGroup.Item>
+								</ListGroup>
+								<ListGroup flexy='center' bdtop>
+									<ListGroup.Item width='50'>Shipping</ListGroup.Item>
+									<ListGroup.Item>
+										<Span>${currentOrder.shippingPrice}</Span>
+									</ListGroup.Item>
+								</ListGroup>
+								<ListGroup flexy='center' bdtop>
+									<ListGroup.Item width='50'>Total</ListGroup.Item>
+									<ListGroup.Item>
+										<Span>${currentOrder.totalPrice}</Span>
+									</ListGroup.Item>
+								</ListGroup>
+								{currentOrder && !currentOrder.isPaid
+									? renderPayButton(currentOrder.totalPrice)
+									: null}
+							</Col>
+						</Row>
+					</CenterWrapper>
+				</Col>
+			</Row>
 		);
 };
 
 export default styled(OrderView)`
-	.container {
-		width: 70%;
-		margin: 2rem auto;
-	}
 	.order {
 		&__summary {
 			${setBorder({})}
 			align-self: flex-start;
+			${media.tabport(`
+				align-self: center;
+				width: 50%;
+				margin: 2rem auto;
+				`)}
+			${media.phone(`
+				width: 90%;
+				`)}
+		}
+		&__buttton {
+			width: 100%;
 		}
 	}
 `;

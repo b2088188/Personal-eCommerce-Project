@@ -10,3 +10,5 @@ export * from './Form';
 export * from './Paragraph';
 export * from './Table';
 export * from './Icon';
+export * from './Radio';
+export * from './List';

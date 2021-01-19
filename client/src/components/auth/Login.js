@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link as ReactLink, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useAuthState } from '../../stores/auth/authStateContext';
 import { useAuthActions } from '../../stores/auth/authActionContext';
-import { Col, FormContainer, Form } from '../../design/components';
+import { Col, FormContainer, Form, Link as SLink, Title, Button } from '../../design/components';
+import { Message, Spinner } from '../../design/elements';
 import { useForm } from 'react-hook-form';
 import FormError from '../../utils/form/FormError';
-import Message from '../../utils/Message';
-import Spinner from '../../utils/Spinner';
 import axios from 'axios';
 
 const Login = ({ location }) => {
@@ -18,11 +17,10 @@ const Login = ({ location }) => {
 
    return (
       <Col width='12'>
-         <FormContainer>
-            <Form.Title modifiers={['big', 'light']}>Login</Form.Title>
+         <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
+            <Title modifiers={['big', 'light']}>Login</Title>
             {statusAuth === 'pending' ? <Spinner /> : null}
-            {errorAuth ? <Message alert={errorAuth} severity='error' /> : null}
-            <FormError errors={errors} />
+            {errorAuth ? <Message text={errorAuth} severity='error' /> : null}
             <Form onSubmit={handleSubmit(login)}>
                <Form.Group>
                   <Form.Label>Email</Form.Label>
@@ -48,13 +46,13 @@ const Login = ({ location }) => {
                      })}
                   />
                </Form.Group>
-               <Form.Button>Login</Form.Button>
+               <Button>Login</Button>
             </Form>
             <Form.Footer>
                <Form.Label modifiers='footer'>New Customer?</Form.Label>
-               <Form.Link as={ReactLink} to='/signup' modifiers='exlight'>
+               <SLink as={Link} to='/signup' modifiers={['medium', 'exlight']}>
                   Register
-               </Form.Link>
+               </SLink>
             </Form.Footer>
          </FormContainer>
       </Col>

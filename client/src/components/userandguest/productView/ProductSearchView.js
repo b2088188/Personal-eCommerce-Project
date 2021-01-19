@@ -1,14 +1,15 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Container, Col, Title, ListGroup } from '../../../design/components';
+import { Container, Wrapper, Button, Col, Title, ListGroup } from '../../../design/components';
+import { Spinner, Message } from '../../../design/elements';
 import { useLocation } from 'react-router-dom';
 import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
-import Spinner from '../../../utils/Spinner';
-import Message from '../../../utils/Message';
+
 import axios from 'axios';
 const ProductView = ({ className }) => {
    const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
@@ -49,7 +50,14 @@ const ProductView = ({ className }) => {
       return (
          <Col width='12' className={className}>
             <div className='products'>
-               <Title modifiers='big'>Search Results</Title>
+               <Wrapper className='products__titlebox'>
+                  <Title className='products__title' modifiers='big'>
+                     Search Results
+                  </Title>
+                  <Button as={Link} to='/' className='home'>
+                     Go Back
+                  </Button>
+               </Wrapper>
                <ListGroup flexy='center' wrap>
                   {renderProducts(products, page)}
                </ListGroup>
@@ -69,5 +77,15 @@ export default styled(ProductView)`
    .products {
       width: 70%;
       margin: 2.5rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &__titlebox {
+         align-self: flex-start;
+         margin-bottom: 1rem;
+      }
+      &__title {
+         margin-bottom: 1rem;
+      }
    }
 `;

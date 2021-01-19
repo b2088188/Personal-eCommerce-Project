@@ -4,11 +4,20 @@ import { useCartState } from '../../../stores/cart/cartStateContext';
 import { useOrderState } from '../../../stores/order/orderStateContext';
 import { useOrderActions } from '../../../stores/order/orderActionContext';
 import styled from 'styled-components';
-import { Row, Col, ListGroup, Title, Paragraph, Span, Button } from '../../../design/components';
+import {
+	CenterWrapper,
+	Row,
+	Col,
+	ListGroup,
+	Title,
+	Paragraph,
+	Span,
+	Button
+} from '../../../design/components';
 import ListGroups from '../../../utils/list/ListGroup';
 import Navsteps from '../../../layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
-import { Spinner } from '../../../design/elements';
+import { Spinner, Message } from '../../../design/elements';
 
 const PlaceOrder = ({ history, className }) => {
 	const {
@@ -19,7 +28,7 @@ const PlaceOrder = ({ history, className }) => {
 		shippingAddress,
 		paymentMethod
 	} = useCartState();
-	const { currentOrder, statusOrder } = useOrderState();
+	const { currentOrder, statusOrder, errorOrder } = useOrderState();
 	const { createOrder } = useOrderActions();
 
 	function createOrderHandle(e) {
@@ -40,76 +49,90 @@ const PlaceOrder = ({ history, className }) => {
 	}
 
 	if (!shippingAddress || !paymentMethod) return <Redirect to='/' />;
-
+	if (statusOrder === 'pending')
+		return (
+			<Row>
+				<Spinner />
+			</Row>
+		);
+	if (statusOrder === 'rejected' && errorOrder)
+		return (
+			<Row>
+				<Message text={errorOrder} severity='error' />
+			</Row>
+		);
 	if (statusOrder === 'resolved' && currentOrder)
 		return <Redirect to={`/order/${currentOrder._id}`} />;
 
 	return (
-		<Col width='12' className={className}>
-			<div className='container'>
-				<Navsteps step1 step2 step3 />
-				<Row>
-					<Col width='7'>
-						<ListGroup>
-							<Title modifiers='light'>Shipping</Title>
-							<Paragraph modifiers='exlight'>{`Address: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, ${shippingAddress.country}`}</Paragraph>
-						</ListGroup>
-						<ListGroup>
-							<Title modifiers='light'>Payment Method</Title>
-							<Paragraph modifiers='exlight'>{`Method: ${paymentMethod}`}</Paragraph>
-						</ListGroup>
-						<ListGroup>
-							<Title modifiers='light'>Order Items</Title>
-							{renderPlaceOrderItem(cartList)}
-						</ListGroup>
-					</Col>
-					<Col width='4'>
-						<ListGroup>
-							<Title modifiers='light'>Order Summary</Title>
-						</ListGroup>
-						<ListGroup xcenter bdtop>
-							<ListGroup.Item half>
-								<Span modifiers={['medium', 'light']}>Items</Span>
-							</ListGroup.Item>
-							<ListGroup.Item half>
-								<Span modifiers={['medium', 'light']}>${itemsPrice}</Span>
-							</ListGroup.Item>
-						</ListGroup>
-						<ListGroup xcenter bdtop>
-							<ListGroup.Item half>
-								<Span modifiers={['medium', 'light']}>Shipping</Span>
-							</ListGroup.Item>
-							<ListGroup.Item half>
-								<Span modifiers={['medium', 'light']}>${shippingPrice}</Span>
-							</ListGroup.Item>
-						</ListGroup>
-						<ListGroup xcenter bdtop>
-							<ListGroup.Item half>
-								<Span modifiers={['medium', 'light']}>Total</Span>
-							</ListGroup.Item>
-							<ListGroup.Item half>
-								<Span modifiers={['medium', 'light']}>${totalPrice}</Span>
-							</ListGroup.Item>
-						</ListGroup>
-						<ListGroup bdtop>
-							{statusOrder === 'pending' ? (
-								<Spinner modifiers='dark' />
-							) : (
-								<Button modifiers='full' onClick={createOrderHandle}>
-									Place Order
-								</Button>
-							)}
-						</ListGroup>
-					</Col>
-				</Row>
-			</div>
-		</Col>
+		<Row className={className}>
+			<Col width='12'>
+				<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
+					<Navsteps step1 step2 step3 />
+					<Row direction={{ tabport: 'column' }}>
+						<Col width='7'>
+							<ListGroup>
+								<Title modifiers='light'>Shipping</Title>
+								<Paragraph modifiers='exlight'>{`Address: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.postalCode}, ${shippingAddress.country}`}</Paragraph>
+							</ListGroup>
+							<ListGroup>
+								<Title modifiers='light'>Payment Method</Title>
+								<Paragraph modifiers='exlight'>{`Method: ${paymentMethod}`}</Paragraph>
+							</ListGroup>
+							<ListGroup>
+								<Title modifiers='light'>Order Items</Title>
+								{renderPlaceOrderItem(cartList)}
+							</ListGroup>
+						</Col>
+						<Col width='4'>
+							<ListGroup>
+								<Title modifiers='light'>Order Summary</Title>
+							</ListGroup>
+							<ListGroup flexy='center' bdtop>
+								<ListGroup.Item width='50'>
+									<Span modifiers={['medium', 'light']}>Items</Span>
+								</ListGroup.Item>
+								<ListGroup.Item>
+									<Span modifiers={['medium', 'light']}>${itemsPrice}</Span>
+								</ListGroup.Item>
+							</ListGroup>
+							<ListGroup flexy='center' bdtop>
+								<ListGroup.Item width='50'>
+									<Span modifiers={['medium', 'light']}>Shipping</Span>
+								</ListGroup.Item>
+								<ListGroup.Item>
+									<Span modifiers={['medium', 'light']}>${shippingPrice}</Span>
+								</ListGroup.Item>
+							</ListGroup>
+							<ListGroup flexy='center' bdtop>
+								<ListGroup.Item width='50'>
+									<Span modifiers={['medium', 'light']}>Total</Span>
+								</ListGroup.Item>
+								<ListGroup.Item>
+									<Span modifiers={['medium', 'light']}>${totalPrice}</Span>
+								</ListGroup.Item>
+							</ListGroup>
+							<ListGroup bdtop>
+								{statusOrder === 'pending' ? (
+									<Spinner modifiers='dark' />
+								) : (
+									<Button onClick={createOrderHandle} className='placeorder__button'>
+										Place Order
+									</Button>
+								)}
+							</ListGroup>
+						</Col>
+					</Row>
+				</CenterWrapper>
+			</Col>
+		</Row>
 	);
 };
 
 export default styled(PlaceOrder)`
-	.container {
-		width: 70%;
-		margin: 2rem auto;
+	.placeorder {
+		&__button {
+			width: 100%;
+		}
 	}
 `;

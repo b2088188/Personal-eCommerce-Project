@@ -3,6 +3,7 @@ import { applyStyleModifiers } from 'styled-components-modifiers';
 
 //table
 export const Table = styled.table`
+	table-layout: auto;
 	width: 100%;
 	color: var(--color-grey-dark-2);
 	font-size: 1.7rem;
@@ -31,6 +32,7 @@ const TABLETD_MODIFIERS = {
 };
 const TableTd = styled.td`
 	padding: 0.75rem;
+
 	${applyStyleModifiers(TABLETD_MODIFIERS)}
 `;
 Table.Td = TableTd;

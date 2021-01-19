@@ -15,11 +15,15 @@ export const ListGroup = styled.div`
    ${({ flexy }) => (flexy && flexy.tabland ? media.tabland(setFlex({ y: flexy.tabland })) : null)}
    ${({ flexy }) => (flexy && flexy.tabport ? media.tabport(setFlex({ y: flexy.tabport })) : null)}
    ${({ flexy }) => (flexy && flexy.phone ? media.phone(setFlex({ y: flexy.phone })) : null)}
-    //Position
-    ${(props) => props.xcenter && setFlex({ x: 'center' })}
-    ${(props) => props.ycenter && setFlex({ y: 'center' })}
-    ${(props) => props.center && setFlex({ x: 'center', y: 'center' })}
-    ${(props) => props.ystart && setFlex({ y: 'flex-start' })}
+   // justify-content
+   ${({ flexx }) => (flexx && typeof flexx === 'string' ? `justify-content: ${flexx}` : null)}
+   ${({ flexx }) => (flexx && flexx.desktop ? `justify-content: ${flexx.desktop}` : null)}
+   ${({ flexx }) =>
+      flexx && flexx.tabland ? media.tabland(`justify-content: ${flexx.tabland}`) : null}
+   ${({ flexx }) =>
+      flexx && flexx.tabport ? media.tabport(`justify-content: ${flexx.tabport}`) : null}
+   ${({ flexx }) => (flexx && flexx.phone ? media.phone(`justify-content: ${flexx.phone}`) : null)}
+    // border
     ${(props) => props.bdbottom && setBorder({ position: 'border-bottom' })}
     ${(props) => props.bdtop && setBorder({ position: 'border-top' })}
 `;
@@ -50,17 +54,7 @@ const ListGroupItem = styled.div`
          ? media.tabport(setMargin({ x: `${spacing.tabport}%`, y: 0 }))
          : null}
    ${({ spacing }) =>
-      spacing && spacing.phone ? media.phone(setMargin({ x: `${spacing.phone}%`, y: 0 })) : null}
-   // Width
-   ${(props) => props.full && setFlexWidth({ width: '95', mx: '2.5%' })}
-   ${(props) => props.p60 && setFlexWidth({ width: '60', mx: '2.5%' })}
-    ${(props) => props.half && setFlexWidth({ mx: '2.5%' })}
-    ${(props) => props.p40 && setFlexWidth({ width: '40', mx: '2.5%' })}
-    ${(props) => props.p35 && setFlexWidth({ width: '35', mx: '2.5%' })}
-    ${(props) => props.p30 && setFlexWidth({ width: '30', mx: '2.5%' })}
-    ${(props) => props.p25 && setFlexWidth({ width: '25', mx: '2.5%' })}
-    ${(props) => props.p20 && setFlexWidth({ width: '20', mx: '2.5%' })}
-    ${(props) => props.p15 && setFlexWidth({ width: '15', mx: '2.5%' })}
+      spacing && spacing.phone ? media.phone(setMargin({ x: `${spacing.phone}%`, y: 0 })) : null}   
     //Border
     ${(props) => props.bd && setBorder()}
     ${(props) => props.bdtop && setBorder({ position: 'border-top' })}

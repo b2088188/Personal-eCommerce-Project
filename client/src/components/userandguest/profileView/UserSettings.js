@@ -5,12 +5,11 @@ import { useUserActions } from '../../../stores/user/userActionContext';
 import { useAuthState } from '../../../stores/auth/authStateContext';
 import { useAuthActions } from '../../../stores/auth/authActionContext';
 import { useForm } from 'react-hook-form';
-import { FormContainer, Form, Row, Col } from '../../../design/components';
+import { FormContainer, Form, Row, Col, Title, Button } from '../../../design/components';
+import { Spinner, Message } from '../../../design/elements';
 import Sidebar from '../../../layout/Sidebar';
 import FormGroup from '../../../utils/form/FormGroup';
 import FormError from '../../../utils/form/FormError';
-import Message from '../../../utils/Message';
-import Spinner from '../../../utils/Spinner';
 import useFetch from '../../../customhooks/useFetch';
 
 const UserSettings = () => {
@@ -34,21 +33,28 @@ const UserSettings = () => {
 		updateUserData(values);
 	}
 	if (statusUserProfile === 'idle' || statusUserProfile === 'pending')
-		return <Spinner modifiers='dark' />;
+		return (
+			<Row>
+				<Spinner modifiers='dark' />
+			</Row>
+		);
 	if (statusUserProfile === 'rejected' && errorUserProfile)
-		return <Message text={errorUserProfile} severity='error' />;
+		return (
+			<Row>
+				<Message text={errorUserProfile} severity='error' />
+			</Row>
+		);
 	if (statusUserProfile === 'resolved')
 		return (
-			<>
+			<Row direction={{ tabport: 'column' }}>
 				<Col width='3'>
 					<Sidebar />
 				</Col>
 				<Col width='9'>
 					{statusAuth === 'pending' ? <Spinner modifiers='dark' /> : null}
 					{statusAuth === 'rejected' ? <Message text={errorAuth} severity='error' /> : null}
-					<FormContainer>
-						<Form.Title modifiers={['big', 'light']}>User Profile</Form.Title>
-						<FormError errors={errors} />
+					<FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
+						<Title modifiers={['big', 'light']}>User Profile</Title>
 						<Form onSubmit={handleSubmit(onSubmit)}>
 							<Form.Group>
 								<Form.Label>Name</Form.Label>
@@ -74,11 +80,11 @@ const UserSettings = () => {
 									})}
 								/>
 							</Form.Group>
-							<Form.Button>Save Changes</Form.Button>
+							<Button>Save Changes</Button>
 						</Form>
 					</FormContainer>
 				</Col>
-			</>
+			</Row>
 		);
 };
 

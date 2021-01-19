@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import GlobalStyle from './design/GlobalStyle';
 import { Container, Row } from './design/components';
+import { Spinner } from './design/elements';
 import UserStore from './stores/user/UserStore';
 import ProductStore from './stores/product/ProductStore';
 import CartStore from './stores/cart/CartStore';
@@ -11,7 +12,6 @@ import PrivateRoute from './routes/PrivateRoutes';
 import ProductView from './components/userandguest/productView/ProductView';
 import Header from './layout/header/Header';
 import Footer from './layout/Footer';
-import Spinner from './utils/Spinner';
 const ProductSearchView = lazy(() =>
    import('./components/userandguest/productView/ProductSearchView')
 );
@@ -34,28 +34,26 @@ const UserAndGuestApp = () => {
             <Suspense fallback={<Spinner />}>
                <Container>
                   <Header />
-                  <Row>
-                     <Route path='/signup' exact component={Signup} />
-                     <Route path='/login' exact component={Login} />
-                     <OrderStore>
-                        <CartStore>
-                           <PrivateRoute path='/placeorder' exact component={PlaceOrder} />
-                           <PrivateRoute path='/shipping' exact component={ShippingInfo} />
-                           <PrivateRoute path='/payment' exact component={SelectPayment} />
-                           <Route path='/cart' exact component={CartView} />
-                           <ProductStore>
-                              <ReviewStore>
-                                 <Route path='/' exact component={ProductView} />
-                                 <Route path='/search' exact component={ProductSearchView} />
-                                 <Route path='/products/:id' exact component={ProductDetail} />
-                              </ReviewStore>
-                           </ProductStore>
-                        </CartStore>
-                        <PrivateRoute path='/order/:orderId' exact component={OrderView} />
-                        <PrivateRoute path='/profile/settings' exact component={UserSettings} />
-                        <PrivateRoute path='/profile/orders' exact component={UserOrder} />
-                     </OrderStore>
-                  </Row>
+                  <Route path='/signup' exact component={Signup} />
+                  <Route path='/login' exact component={Login} />
+                  <OrderStore>
+                     <CartStore>
+                        <PrivateRoute path='/placeorder' exact component={PlaceOrder} />
+                        <PrivateRoute path='/shipping' exact component={ShippingInfo} />
+                        <PrivateRoute path='/payment' exact component={SelectPayment} />
+                        <Route path='/cart' exact component={CartView} />
+                        <ProductStore>
+                           <ReviewStore>
+                              <Route path='/' exact component={ProductView} />
+                              <Route path='/search' exact component={ProductSearchView} />
+                              <Route path='/products/:productId' exact component={ProductDetail} />
+                           </ReviewStore>
+                        </ProductStore>
+                     </CartStore>
+                     <PrivateRoute path='/order/:orderId' exact component={OrderView} />
+                     <PrivateRoute path='/profile/settings' exact component={UserSettings} />
+                     <PrivateRoute path='/profile/orders' exact component={UserOrder} />
+                  </OrderStore>
                   <Footer />
                </Container>
             </Suspense>

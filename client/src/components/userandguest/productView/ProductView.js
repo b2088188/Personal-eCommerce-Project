@@ -1,13 +1,12 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Container, Col, Title, ListGroup } from '../../../design/components';
+import { Row, Col, Title, ListGroup } from '../../../design/components';
+import { Spinner, Message } from '../../../design/elements';
 import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
-import Spinner from '../../../utils/Spinner';
-import Message from '../../../utils/Message';
 import axios from 'axios';
 const ProductView = ({ className }) => {
    const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
@@ -34,30 +33,39 @@ const ProductView = ({ className }) => {
       setPage(value);
    }
 
-   if (statusProducts === 'idle' || statusProducts === 'pending') return <Spinner />;
+   if (statusProducts === 'idle' || statusProducts === 'pending')
+      return (
+         <Row>
+            <Spinner />
+         </Row>
+      );
    if (statusProducts === 'rejected')
       return (
-         <Col width='12'>
+         <Row>
             <Message alert={errorProducts} severity='error' />;
-         </Col>
+         </Row>
       );
    if (statusProducts === 'resolved')
       return (
-         <Col width='12' className={className}>
-            <div className='products'>
-               <Title modifiers='big'>All Products</Title>
-               <ListGroup flexy='center' wrap>
-                  {renderProducts(products, page)}
-               </ListGroup>
-               {Math.ceil(products.length / 8) > 1 ? (
-                  <Pagination
-                     count={Math.ceil(products.length / 8)}
-                     page={page}
-                     onChange={onPageChange}
-                  />
-               ) : null}
-            </div>
-         </Col>
+         <Row>
+            <Col width='12' className={className}>
+               <div className='products'>
+                  <Title className='products__title' modifiers='big'>
+                     All Products
+                  </Title>
+                  <ListGroup flexy='center' wrap>
+                     {renderProducts(products, page)}
+                  </ListGroup>
+                  {Math.ceil(products.length / 8) > 1 ? (
+                     <Pagination
+                        count={Math.ceil(products.length / 8)}
+                        page={page}
+                        onChange={onPageChange}
+                     />
+                  ) : null}
+               </div>
+            </Col>
+         </Row>
       );
 };
 
@@ -65,5 +73,11 @@ export default styled(ProductView)`
    .products {
       width: 70%;
       margin: 2.5rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &__title {
+         align-self: flex-start;
+      }
    }
 `;

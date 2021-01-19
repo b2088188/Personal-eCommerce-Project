@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { applyStyleModifiers } from 'styled-components-modifiers';
-import { colorGrey, setFlex } from '../utils';
+import { colorGrey, setFlex, media } from '../utils';
 import { Title } from '../components/Title';
 import { Button } from '../components/Button';
 import { Span } from '../components/Span';
@@ -42,6 +42,21 @@ export const Form = styled.form`
 export const FormGroup = styled.div`
    margin-bottom: 1rem;
    ${setFlex({ direction: 'column' })}
+   // flex-direction
+   ${({ direction }) =>
+      direction && typeof direction === 'string' ? setFlex({ direction }) : null}
+   ${({ direction }) =>
+      direction && direction.desktop ? setFlex({ direction: direction.desktop }) : null}
+   ${({ direction }) =>
+      direction && direction.tabland
+         ? media.tabland(setFlex({ direction: direction.tabland }))
+         : null}
+   ${({ direction }) =>
+      direction && direction.tabport
+         ? media.tabport(setFlex({ direction: direction.tabport }))
+         : null}
+   ${({ direction }) =>
+      direction && direction.phone ? media.phone(setFlex({ direction: direction.phone })) : null}
 `;
 Form.Group = FormGroup;
 
@@ -82,24 +97,16 @@ const FORMLABEL_MODIFIERS = {
 const FormLabel = styled.label`
    font-size: 1.7rem;
    font-weight: 300;
-   margin-bottom: 1rem;
    ${applyStyleModifiers(FORMLABEL_MODIFIERS)}
 `;
 Form.Label = FormLabel;
 
 //Form Input
-const FORMINPUT_MODIFIERS = {
-   radio: () => `
-    &:focus {
-            outline: none;
-        }
-    `
-};
+const FORMINPUT_MODIFIERS = {};
 const FormInput = styled(Input)`
    color: ${colorGrey.dark2};
    background: ${colorGrey.light2};
    border: ${colorGrey.dark2};
-   margin-bottom: 1rem;
    &:focus {
       outline: solid 0.2rem ${colorGrey.light4};
    }

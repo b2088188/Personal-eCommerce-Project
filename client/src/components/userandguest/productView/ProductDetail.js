@@ -1,11 +1,12 @@
 import * as R from 'ramda';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link as ReactLink, Redirect, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 import {
-   Container,
+   CenterWrapper,
    Button,
+   ImageContainer,
    Image,
    Span,
    Title,
@@ -15,7 +16,8 @@ import {
    Form,
    Select
 } from '../../../design/components';
-import { Message, Options } from '../../../design/elements';
+import { Message, Options, Spinner } from '../../../design/elements';
+import { media } from '../../../design/utils';
 import { useProduct } from '../../../stores/product/productContext';
 import { useReviewState } from '../../../stores/review/reviewStateContext';
 import { useReviewActions } from '../../../stores/review/reviewActionContext';
@@ -23,25 +25,23 @@ import { useAuthState } from '../../../stores/auth/authStateContext';
 import { useCartActions } from '../../../stores/cart/cartActionContext';
 import { addToCartList } from '../../../stores/cart/CartStore';
 import RatingStar from '../../../utils/RatingStar';
-import Spinner from '../../../utils/Spinner';
 import formatDate from '../../../utils/formatDate';
-import axios from 'axios';
 
 const ProductDetail = ({ className }) => {
    const { user } = useAuthState();
    const { product, statusProduct, errorProduct, getProduct } = useProduct();
    const { dispatchCart } = useCartActions();
-   const { reviewsHandle } = useReviewActions();
+   const { getReviews, createReview } = useReviewActions();
    const { reviews, statusReviews } = useReviewState();
-   const { id } = useParams();
+   const { productId } = useParams();
    const { register, handleSubmit, errors } = useForm();
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
    useEffect(() => {
-      if (!id) return;
-      getProduct(id);
-      reviewsHandle(axios.get(`/api/v1/products/${id}/reviews`));
-   }, [id, getProduct, reviewsHandle]);
+      if (!productId) return;
+      getProduct(productId);
+      getReviews(productId);
+   }, [productId, getProduct, getReviews]);
 
    function addCartClick(item, quantity) {
       return function () {
@@ -50,17 +50,15 @@ const ProductDetail = ({ className }) => {
       };
    }
 
-   const onSubmit = R.curry(function (productId, { rating, review }) {
-      reviewsHandle(
-         axios.post(`/api/v1/products/${productId}/reviews`, { rating: +rating, review })
-      );
-   }, 2);
+   function onReviewCreate({ rating, review }) {
+      createReview(productId, +rating, review);
+   }
 
    function renderSelect(count) {
       return (
          <ListGroup bbottom flexy='center'>
             <ListGroup.Item width='50'>Quantity</ListGroup.Item>
-            <ListGroup.Item width='50'>
+            <ListGroup.Item>
                <Select onChange={(e) => setSelectQty(e.target.value)}>
                   <Options options={count} />
                </Select>
@@ -96,20 +94,32 @@ const ProductDetail = ({ className }) => {
 
    if (toCart) return <Redirect to='/cart' />;
 
-   if (statusProduct === 'idle' || statusProduct === 'pending') return <Spinner />;
-   if (statusProduct === 'rejected') return <Message alert={errorProduct} severity='error' />;
+   if (statusProduct === 'idle' || statusProduct === 'pending')
+      return (
+         <Row>
+            <Spinner />
+         </Row>
+      );
+   if (statusProduct === 'rejected')
+      return (
+         <Row>
+            <Message text={errorProduct} severity='error' />
+         </Row>
+      );
    if (statusProduct === 'resolved')
       return (
-         <div className={className}>
-            <div className='container'>
-               <Button as={ReactLink} to='/' className='home'>
+         <Row className={className}>
+            <CenterWrapper width='70' className='product'>
+               <Button as={Link} to='/' className='product__link'>
                   Go Back
                </Button>
-               <Row>
-                  <Col width='4' spacing='2.5'>
-                     <Image src={product.image} alt={product.name} />
+               <Row direction={{ tabport: 'column' }}>
+                  <Col width='4' spacing='2.5' className='product__group'>
+                     <ImageContainer>
+                        <Image src={`http://127.0.0.1:8000/${product.image}`} alt={product.name} />
+                     </ImageContainer>
                   </Col>
-                  <Col width='3' spacing='2.5'>
+                  <Col width='3' spacing='2.5' className='product__group'>
                      <ListGroup bdbottom>
                         <Title as='h2' modifiers={['large', 'light']}>
                            {product.name}
@@ -120,47 +130,48 @@ const ProductDetail = ({ className }) => {
                            <RatingStar average={product.ratingsAverage} />
                         </ListGroup.Item>
                         <ListGroup.Item half>
-                           <Span className='rating'>{product.ratingsQuantity} reviews</Span>
+                           <Span className='product__span'>{product.ratingsQuantity} reviews</Span>
                         </ListGroup.Item>
                      </ListGroup>
                      <ListGroup bdbottom>Price: ${product.price}</ListGroup>
                      <ListGroup bdbottom>{product.description}</ListGroup>
                   </Col>
-                  <Col width='3' spacing='2.5'>
+                  <Col width='3' spacing='2.5' className='product__group'>
                      <ListGroup bdbottom flexy='center'>
-                        <ListGroup.Item half>Price:</ListGroup.Item>
-                        <ListGroup.Item half>
-                           <span className='product-detail__col'>${product.price}</span>
+                        <ListGroup.Item width='50'>Price:</ListGroup.Item>
+                        <ListGroup.Item>
+                           <Span className='product__span'>${product.price}</Span>
                         </ListGroup.Item>
                      </ListGroup>
                      <ListGroup bdbottom flexy='center'>
-                        <ListGroup.Item half>Status:</ListGroup.Item>
-                        <ListGroup.Item half>
+                        <ListGroup.Item width='50'>Status:</ListGroup.Item>
+                        <ListGroup.Item>
                            {product.countInStock > 1 ? 'In Stock' : 'Out of Stock'}
                         </ListGroup.Item>
                      </ListGroup>
-                     {product.countInStock > 0 && renderSelect(product.countInStock)}
+                     {product.countInStock > 0 ? renderSelect(product.countInStock) : null}
                      <ListGroup bdtop>
-                        <ListGroup.Button
-                           modifiers='full'
+                        <Button
                            onClick={addCartClick(product, selectQty)}
+                           className='product__button'
                         >
                            Add To Cart
-                        </ListGroup.Button>
+                        </Button>
                      </ListGroup>
                   </Col>
                   <Col width='6'>
                      <ListGroup>
-                        <ListGroup.Title modifiers='large'>Reviews</ListGroup.Title>
-                        {statusReviews === 'pending' ? <Spinner /> : null}
-                        {statusReviews === 'resolved' && reviews.length > 0 ? (
+                        <Title modifiers='large'>Reviews</Title>
+                        {statusReviews === 'pending' ? (
+                           <Spinner />
+                        ) : statusReviews === 'resolved' && reviews.length > 0 ? (
                            renderReviewList(reviews)
                         ) : (
-                           <Message alert='No Review yet' severity='info' />
+                           <Message text='No Review yet' severity='info' />
                         )}
-                        <ListGroup bdtop>
+                        <ListGroup.Item>
                            {user ? (
-                              <Form onSubmit={handleSubmit(onSubmit(id))}>
+                              <Form onSubmit={handleSubmit(onReviewCreate)}>
                                  <Form.Group>
                                     <Form.Label>Rating</Form.Label>
                                     <Select name='rating' id='rating' ref={register}>
@@ -186,7 +197,7 @@ const ProductDetail = ({ className }) => {
                                        })}
                                     />
                                  </Form.Group>
-                                 <Form.Button>Submit</Form.Button>
+                                 <Button>Submit</Button>
                               </Form>
                            ) : (
                               <Message
@@ -194,38 +205,33 @@ const ProductDetail = ({ className }) => {
                                  severity='info'
                               />
                            )}
-                        </ListGroup>
+                        </ListGroup.Item>
                      </ListGroup>
                   </Col>
                </Row>
-            </div>
-         </div>
+            </CenterWrapper>
+         </Row>
       );
 };
 
 export default styled(ProductDetail)`
-   .container {
-      width: 70%;
-      margin: auto;
+   .product {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-   }
-
-   .row {
-      width: 100%;
-      display: flex;
-   }
-
-   .home {
-      margin: 2rem 0;
-   }
-
-   .imagebox {
-      box-shadow: var(--shadow-dark-shallow);
-   }
-
-   .rating {
-      margin-left: 1rem;
+      &__group {
+         ${media.tabport(`
+            margin-bottom: 5rem;
+            `)}
+      }
+      &__link {
+         margin: 2rem 0;
+      }
+      &__span {
+         margin-left: 1rem;
+      }
+      &__button {
+         width: 100%;
+      }
    }
 `;

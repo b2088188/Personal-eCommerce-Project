@@ -1,42 +1,43 @@
 import styled from 'styled-components';
-import {colorGrey} from '../utils';
-import {applyStyleModifiers} from 'styled-components-modifiers';
-
+import { colorGrey } from '../utils';
+import { applyStyleModifiers } from 'styled-components-modifiers';
 
 const LINK_MODIFIERS = {
-  huge: () => `
+   huge: () => `
     font-size: 3rem;
   `,
-  big: () => `
+   big: () => `
     font-size: 2.5rem;
   `,
-  large: () => `
+   large: () => `
     font-size: 2rem;
   `,
-  medium: () => `
+   medium: () => `
     font-size: 1.5rem;
   `,
-  small: () => `
+   small: () => `
     font-size: 1rem;
   `,
-  bold: () => `
+   bold: () => `
     font-weight: 700
   `,
-  regular: () => `
+   regular: () => `
      font-weight: 500 
   `,
-  light: () => `
+   light: () => `
     font-weight: 400
   `,
-  exlight: () => `
+   exlight: () => `
    font-weight: 300
+  `,
+   disabled: () => `
+  color: ${colorGrey.light4};
+  cursor: default;
   `
-}
+};
 
 export const Link = styled.a`
-
-  color: ${colorGrey.dark1};
-  text-transform: uppercase;
-  text-decoration: none;		
-  ${applyStyleModifiers(LINK_MODIFIERS)}
+   color: ${colorGrey.dark1};
+   text-decoration: none;
+   ${applyStyleModifiers(LINK_MODIFIERS)}
 `;

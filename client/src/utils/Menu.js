@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Button, Span } from '../design/components';
+import { Button, Span, Icon } from '../design/components';
+import { Person } from '@material-ui/icons';
 import MenuList from '@material-ui/core/MenuList';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -22,7 +23,8 @@ const Menu = ({ username, children, className }) => {
 
    return (
       <>
-         <Button ref={anchorRef} onClick={handleToggle} className={className}>
+         <Button ref={anchorRef} onClick={handleToggle} modifiers='transparent'>
+            <Icon as={Person} />
             <Span>{username}</Span>
          </Button>
          <Popper open={open} anchorEl={anchorRef.current} transition>

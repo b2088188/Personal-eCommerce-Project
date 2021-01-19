@@ -5,7 +5,10 @@ import RatingStar from '../../../utils/RatingStar';
 
 const ProductItem = ({ product }) => {
 	return (
-		<ListGroup.Item width='20' spacing='2'>
+		<ListGroup.Item
+			width={{ desktop: '20', tabland: '30', tabport: '45', phone: '90' }}
+			spacing={{ desktop: '2', tabland: '1.5', tabport: '2.5', phone: '5' }}
+		>
 			<Card>
 				<Card.Link as={Link} to={`/products/${product._id}`} modifiers='image'>
 					<Image src={`http://127.0.0.1:8000/${product.image}`} alt={product.name} />

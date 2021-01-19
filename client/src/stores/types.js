@@ -37,6 +37,10 @@ export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 
+//Review
+export const GET_REVIEWS = 'GET_REVIEWS';
+export const CREATE_REVIEW = 'CREATE_REVIEW';
+
 //Order
 export const CREATE_ORDER = 'CREATE_ORDER';
 export const GET_ORDER = 'GET_ORDER';

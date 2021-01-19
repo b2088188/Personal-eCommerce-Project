@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Row, Col, Title, Table, Button } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title, Table, Button } from '../../../design/components';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import AdminSidebar from '../../../layout/admin/AdminSidebar';
@@ -24,17 +24,25 @@ const UserProducts = ({ className }) => {
 	}
 
 	if (statusProducts === 'idle' || statusProducts === 'pending')
-		return <Spinner modifiers='dark' />;
+		return (
+			<Row>
+				<Spinner modifiers='dark' />
+			</Row>
+		);
 	if (statusProducts === 'rejected' && errorProducts)
-		return <Message severity='error' text={errorProducts} />;
+		return (
+			<Row>
+				<Message severity='error' text={errorProducts} />
+			</Row>
+		);
 	if (statusProducts === 'resolved')
 		return (
-			<>
+			<Row direction={{ tabport: 'column' }} className={className}>
 				<Col width='3'>
 					<AdminSidebar />
 				</Col>
-				<Col width='8' className={className}>
-					<div className='tablebox'>
+				<Col width='8'>
+					<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2.5'>
 						<div className='products__titlebox'>
 							<Title modifiers={['large', 'exlight']}>Products</Title>
 							<Button onClick={() => history.push(`${url}/edit`)}>Create Product</Button>
@@ -52,22 +60,13 @@ const UserProducts = ({ className }) => {
 							</Table.Head>
 							<Table.Body>{renderUserProducts(products)}</Table.Body>
 						</Table>
-					</div>
+					</CenterWrapper>
 				</Col>
-			</>
+			</Row>
 		);
 };
 
 export default styled(UserProducts)`
-	margin: 2rem 0;
-	&__form {
-		width: 70%;
-		margin: 2.5rem auto;
-	}
-	.tablebox {
-		width: 70%;
-		margin: 2.5rem auto;
-	}
 	.products {
 		&__titlebox {
 			display: flex;

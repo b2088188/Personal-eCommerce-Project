@@ -1,9 +1,16 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
+import { media } from './utils';
 
 const GlobalStyle = createGlobalStyle`
 html {
     font-size: 62.5%;
     font-family: 'Roboto', sans-serif;
+    ${media.tabland(`
+        font-size: 56.25%;
+      `)}
+     ${media.tabport(`
+        font-size: 50%;
+      `)}
 }
 *,
 *::after,

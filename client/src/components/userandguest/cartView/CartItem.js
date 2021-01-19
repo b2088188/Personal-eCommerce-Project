@@ -3,11 +3,20 @@ import { Link as ReactLink } from 'react-router-dom';
 import { deleteFromCartList, changeQuantity } from '../../../stores/cart/CartStore';
 import { useCartActions } from '../../../stores/cart/cartActionContext';
 import styled from 'styled-components';
-import { ListGroup, Button, Image, Link, Select } from '../../../design/components';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {
+   ListGroup,
+   Button,
+   ImageContainer,
+   Image,
+   Link,
+   Select,
+   Icon
+} from '../../../design/components';
+import { colorGrey, setBorder } from '../../../design/utils';
+import { Delete } from '@material-ui/icons';
 import { Options } from '../../../design/elements';
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, className }) => {
    const { dispatchCart } = useCartActions();
    const [selectQty, setSelectQty] = useState(item.quantity);
 
@@ -23,28 +32,32 @@ const CartItem = ({ item }) => {
    }
 
    return (
-      <ListGroup ycenter>
-         <ListGroup.Item p15>
-            <Image src={item.image} alt={item.name} className='image' />
+      <ListGroup flexy='center' className={className}>
+         <ListGroup.Item width='15' spacing='3'>
+            <ImageContainer>
+               <Image src={item.image} alt={item.name} />
+            </ImageContainer>
          </ListGroup.Item>
-         <ListGroup.Item p15>
-            <Link as={ReactLink} to={`/products/${item.product}`} className='link'>
+         <ListGroup.Item width='30' spacing='3'>
+            <Link as={ReactLink} to={`/products/${item.product}`} className='cart__link'>
                {item.name}
             </Link>
          </ListGroup.Item>
-         <ListGroup.Item p15>${item.price}</ListGroup.Item>
-         <ListGroup.Item p15>
+         <ListGroup.Item width='15' spacing='3'>
+            ${item.price}
+         </ListGroup.Item>
+         <ListGroup.Item width='15' spacing='3'>
             <Select onChange={onSelectChange} value={selectQty}>
                <Options options={item.countInStock} />
             </Select>
          </ListGroup.Item>
-         <ListGroup.Item p15>
+         <ListGroup.Item>
             <Button
-               className='delete'
+               className='cart__button--delete'
                modifiers='transparent'
                onClick={deleteFromCart(item.product)}
             >
-               <DeleteIcon fontSize='large' />
+               <Icon as={Delete} />
             </Button>
          </ListGroup.Item>
       </ListGroup>
@@ -52,18 +65,20 @@ const CartItem = ({ item }) => {
 };
 
 export default styled(CartItem)`
-   .link {
-      transition: border-bottom 0.25s;
-      border-bottom: solid 0.1rem currentColor;
-      &:hover {
-         border-bottom: solid 0.1rem currentColor;
+   .cart {
+      &__link {
+         transition: border-bottom 0.25s;
+         ${setBorder({ position: 'border-bottom' })}
+         &:hover {
+            ${setBorder({ position: 'border-bottom', color: colorGrey.dark2 })}
+         }
       }
-   }
-
-   .delete {
-      transition: background 0.25s;
-      &:hover {
-         background: var(--color-grey-light-4);
+      &__button--delete {
+         color: ${colorGrey.light4};
+         transition: color 0.25s;
+         &:hover {
+            color: ${colorGrey.dark2};
+         }
       }
    }
 `;
