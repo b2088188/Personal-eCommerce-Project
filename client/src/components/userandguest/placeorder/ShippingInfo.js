@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect, Prompt } from 'react-router-dom';
-import { useCartState } from '../../../stores/cart/cartStateContext';
-import { useCartActions } from '../../../stores/cart/cartActionContext';
+import useCart from '../../../stores/cart/cartContext';
 import { Row, Col, FormContainer, Form } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import { useForm } from 'react-hook-form';
@@ -10,8 +9,7 @@ import FormGroup from '../../../utils/form/FormGroup';
 import FormError from '../../../utils/form/FormError';
 
 const ShippingInfo = () => {
-   const { cartList } = useCartState();
-   const { dispatchCart, savePayInfo } = useCartActions();
+   const [{ cartList }, { dispatchCart, savePayInfo }] = useCart();
    const [toPayment, setToPayment] = useState(false);
    const {
       register,

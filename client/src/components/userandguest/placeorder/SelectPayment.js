@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useCartState } from '../../../stores/cart/cartStateContext';
-import { useCartActions } from '../../../stores/cart/cartActionContext';
+import useCart from '../../../stores/cart/cartContext';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { Row, Col, CenterWrapper, Title, Form, Button, Radio } from '../../../design/components';
@@ -11,8 +10,7 @@ import Navsteps from '../../../layout/NavSteps';
 import FormRadio from '../../../utils/form/FormRadio';
 
 const SelectPayment = ({ className }) => {
-	const { savePayInfo } = useCartActions();
-	const { shippingAddress } = useCartState();
+	const [{ shippingAddress }, { savePayInfo }] = useCart();
 	const [toPlaceOrder, setToPlaceOrder] = useState(false);
 	const { register, handleSubmit, errors, control } = useForm();
 

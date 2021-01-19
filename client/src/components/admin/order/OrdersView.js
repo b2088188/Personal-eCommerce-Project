@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useOrderState } from '../../../stores/order/orderStateContext';
-import { useOrderActions } from '../../../stores/order/orderActionContext';
+import useOrder from '../../../stores/order/orderContext';
 import OrderItem from './OrderItem';
 import AdminSidebar from '../../../layout/admin/AdminSidebar';
 import { Row, Col, CenterWrapper, Title, Table } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 
 const UserOrder = ({ className }) => {
-	const { orderList, statusAllOrders, errorAllOrders } = useOrderState();
-	const { getAllOrders } = useOrderActions();
+	const [{ orderList, statusAllOrders, errorAllOrders }, { getAllOrders }] = useOrder();
 	useEffect(() => {
 		getAllOrders();
 	}, [getAllOrders]);

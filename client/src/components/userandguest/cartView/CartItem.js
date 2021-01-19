@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link as ReactLink } from 'react-router-dom';
 import { deleteFromCartList, changeQuantity } from '../../../stores/cart/CartStore';
-import { useCartActions } from '../../../stores/cart/cartActionContext';
+import useCart from '../../../stores/cart/cartContext';
 import styled from 'styled-components';
 import {
    ListGroup,
@@ -17,7 +17,7 @@ import { Delete } from '@material-ui/icons';
 import { Options } from '../../../design/elements';
 
 const CartItem = ({ item, className }) => {
-   const { dispatchCart } = useCartActions();
+   const [, { dispatchCart }] = useCart();
    const [selectQty, setSelectQty] = useState(item.quantity);
 
    function onSelectChange(e) {

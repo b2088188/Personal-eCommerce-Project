@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { OrderStateProvider } from './orderStateContext';
-import { OrderActionProvider } from './orderActionContext';
+import { OrderStateProvider, OrderActionProvider } from './orderContext';
 import orderReducer from './orderReducer';
 import orderListReducer from './orderListReducer';
 import useFetch from '../../customhooks/useFetch';

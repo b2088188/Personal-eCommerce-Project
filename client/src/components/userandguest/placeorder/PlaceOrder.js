@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useCartState } from '../../../stores/cart/cartStateContext';
-import { useOrderState } from '../../../stores/order/orderStateContext';
-import { useOrderActions } from '../../../stores/order/orderActionContext';
+import useCart from '../../../stores/cart/cartContext';
+import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';
 import {
 	CenterWrapper,
@@ -19,16 +18,10 @@ import PlaceOrderItem from './PlaceOrderItem';
 import { Spinner, Message } from '../../../design/elements';
 
 const PlaceOrder = ({ history, className }) => {
-	const {
-		cartList,
-		itemsPrice,
-		shippingPrice,
-		totalPrice,
-		shippingAddress,
-		paymentMethod
-	} = useCartState();
-	const { currentOrder, statusOrder, errorOrder } = useOrderState();
-	const { createOrder } = useOrderActions();
+	const [
+		{ cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod }
+	] = useCart();
+	const [{ currentOrder, statusOrder, errorOrder }, { createOrder }] = useOrder();
 
 	function createOrderHandle(e) {
 		createOrder({

@@ -14,10 +14,22 @@ const Header = ({ className }) => {
    const [open, setOpen] = useState(false);
    const { user } = useAuthState();
    const { logout } = useAuthActions();
-   const history = useHistory();
+   let history = useHistory();
    const anchorRef = useRef(null);
    function onSearchClick() {
       if (q) history.push(`/search/?q=${q}`);
+   }
+
+   function onNavigationClick(url) {
+      return function () {
+         setOpen(false);
+         history.push(url);
+      };
+   }
+
+   function onLogoutClick() {
+      setOpen(false);
+      logout();
    }
 
    return (
@@ -59,8 +71,9 @@ const Header = ({ className }) => {
                      <Span>{user.name}</Span>
                   </Button>
                   <Menu open={open} setOpen={setOpen} anchorRef={anchorRef}>
-                     <MenuItem onClick={() => history.push('/profile/settings')}>Profile</MenuItem>
-                     <MenuItem onClick={logout}>Logout</MenuItem>
+                     <MenuItem onClick={onNavigationClick('/profile/settings')}>Profile</MenuItem>
+                     <MenuItem onClick={onNavigationClick('/profile/orders')}>Orders</MenuItem>
+                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
                   </Menu>
                </>
             ) : (

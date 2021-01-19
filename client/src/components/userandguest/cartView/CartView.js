@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { useCartState } from '../../../stores/cart/cartStateContext';
+import useCart from '../../../stores/cart/cartContext';
 import styled from 'styled-components';
 import { CenterWrapper, Row, Col, Title, Span, Button } from '../../../design/components';
 import { setBorder, setFlex, setFlexWidth, colorGrey, media } from '../../../design/utils';
 import CartItem from './CartItem';
 
 const CartView = ({ className }) => {
-   const { cartList, totalPrice, totalQuantity } = useCartState();
+   const [{ cartList, totalPrice, totalQuantity }] = useCart();
    const [toShipping, setToShipping] = useState(false);
 
    function renderCartList(list) {

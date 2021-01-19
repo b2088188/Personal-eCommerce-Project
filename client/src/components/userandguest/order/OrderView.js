@@ -1,8 +1,7 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import { Link as Link, useParams } from 'react-router-dom';
-import { useOrderState } from '../../../stores/order/orderStateContext';
-import { useOrderActions } from '../../../stores/order/orderActionContext';
+import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';
 import {
 	Row,
@@ -25,8 +24,7 @@ import formatDate from '../../../utils/formatDate';
 import axios from 'axios';
 const OrderView = ({ className }) => {
 	const [sdkReady, setSdkReady] = useState(false);
-	const { currentOrder, statusOrder, errorOrder } = useOrderState();
-	const { getOrder, updateOrderToPaid } = useOrderActions();
+	const [{ currentOrder, statusOrder, errorOrder }, { getOrder, updateOrderToPaid }] = useOrder();
 	const { orderId } = useParams();
 
 	useEffect(() => {

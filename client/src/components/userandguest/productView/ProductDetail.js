@@ -19,19 +19,17 @@ import {
 import { Message, Options, Spinner, RatingStar } from '../../../design/elements';
 import { media } from '../../../design/utils';
 import { useProduct } from '../../../stores/product/productContext';
-import { useReviewState } from '../../../stores/review/reviewStateContext';
-import { useReviewActions } from '../../../stores/review/reviewActionContext';
+import useReview from '../../../stores/review/reviewContext';
 import { useAuthState } from '../../../stores/auth/authStateContext';
-import { useCartActions } from '../../../stores/cart/cartActionContext';
+import useCart from '../../../stores/cart/cartContext';
 import { addToCartList } from '../../../stores/cart/CartStore';
 import formatDate from '../../../utils/formatDate';
 
 const ProductDetail = ({ className }) => {
    const { user } = useAuthState();
    const { product, statusProduct, errorProduct, getProduct } = useProduct();
-   const { dispatchCart } = useCartActions();
-   const { getReviews, createReview } = useReviewActions();
-   const { reviews, statusReviews } = useReviewState();
+   const [, { dispatchCart }] = useCart();
+   const [{ reviews, statusReviews }, { getReviews, createReview }] = useReview();
    const { productId } = useParams();
    const { register, handleSubmit, errors } = useForm();
    const [selectQty, setSelectQty] = useState(1);

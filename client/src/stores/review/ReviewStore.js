@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { ReviewStateProvider } from './reviewStateContext';
-import { ReviewActionProvider } from './reviewActionContext';
+import { ReviewStateProvider, ReviewActionProvider } from './reviewContext';
 import reviewReducer from './reviewReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
