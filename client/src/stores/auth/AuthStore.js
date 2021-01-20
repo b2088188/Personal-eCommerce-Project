@@ -21,7 +21,9 @@ const AuthStore = ({ children }) => {
    const getInitialAuth = useCallback(
       async function () {
          const { status } = await fetchAuth(
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`)
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`, {
+               withCredentials: true
+            })
          );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
       },
@@ -35,7 +37,9 @@ const AuthStore = ({ children }) => {
    const login = useCallback(
       async function (values) {
          const { status } = await fetchAuth(
-            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`, values)
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`, values, {
+               withCredentials: true
+            })
          );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
       },
@@ -45,7 +49,9 @@ const AuthStore = ({ children }) => {
    const signup = useCallback(
       async function (values) {
          const { status } = await fetchAuth(
-            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`, values)
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`, values, {
+               withCredentials: true
+            })
          );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
       },
@@ -64,7 +70,11 @@ const AuthStore = ({ children }) => {
 
    const logout = useCallback(
       async function (values) {
-         await fetchAuth(axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`));
+         await fetchAuth(
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`, {
+               withCredentials: true
+            })
+         );
          dispatchAuth({ type: LOGOUT_AUTH });
       },
       [fetchAuth, dispatchAuth]
