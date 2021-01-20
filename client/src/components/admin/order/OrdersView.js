@@ -18,9 +18,18 @@ const UserOrder = ({ className }) => {
 		});
 	}
 
-	if (statusAllOrders === 'idle' || statusAllOrders === 'pending') return <Spinner />;
+	if (statusAllOrders === 'idle' || statusAllOrders === 'pending')
+		return (
+			<Row>
+				<Spinner modifiers='dark' />
+			</Row>
+		);
 	if (statusAllOrders === 'rejected' && errorAllOrders)
-		return <Message severity='error' text={errorAllOrders} />;
+		return (
+			<Row>
+				<Message severity='error' text={errorAllOrders} />
+			</Row>
+		);
 	if (statusAllOrders === 'resolved')
 		return (
 			<Row direction={{ tabport: 'column' }} className={className}>
@@ -28,7 +37,7 @@ const UserOrder = ({ className }) => {
 					<AdminSidebar />
 				</Col>
 				<Col width='8'>
-					<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
+					<CenterWrapper width={{ desktop: '100', tabport: '90' }} my='2'>
 						<Title modifiers={['large', 'exlight']}>Orders</Title>
 						<Table>
 							<Table.Head>

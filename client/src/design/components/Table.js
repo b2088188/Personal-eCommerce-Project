@@ -1,20 +1,21 @@
 import styled from 'styled-components';
 import { applyStyleModifiers } from 'styled-components-modifiers';
+import { colorGrey } from '../utils';
 
 //table
 export const Table = styled.table`
 	table-layout: auto;
 	width: 100%;
-	color: var(--color-grey-dark-2);
+	color: ${colorGrey.dark2};
 	font-size: 1.7rem;
 	font-weight: 300;
 	border-collapse: collapse;
-	border: solid 0.1rem var(--color-grey-light-4);
+	border: solid 0.1rem ${colorGrey.light4};
 `;
 
 //tr
 const TableTr = styled.tr`
-	border-bottom: solid 0.1rem var(--color-grey-light-4);
+	border-bottom: solid 0.1rem ${colorGrey.light4};
 `;
 Table.Tr = TableTr;
 

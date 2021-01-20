@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useAuthActions } from '../../stores/auth/authActionContext';
+import useAuth from '../../stores/auth/authContext';
 import styled from 'styled-components';
-import { Span, Link as SLink } from '../../design/components';
+import { Span, Link as SLink, Button, Icon } from '../../design/components';
 import { colorGrey } from '../../design/utils';
 import { ShoppingCart, Person } from '@material-ui/icons';
 import Menu from '../../utils/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const AdminHeader = ({ className }) => {
-   const { user } = useAuthState();
-   const { logout } = useAuthActions();
+   const [{ user }, { logout }] = useAuth();
    const history = useHistory();
+   const [open, setOpen] = useState(false);
+   const anchorRef = useRef(null);
+
+   function onNavigationClick(url) {
+      return function () {
+         history.push(url);
+         setOpen(false);
+      };
+   }
+
+   function onLogoutClick() {
+      logout();
+      setOpen(false);
+   }
 
    return (
       <header className={className}>
@@ -20,11 +32,22 @@ const AdminHeader = ({ className }) => {
             <SLink as={Link} to='/' className='home'>
                eCommerce
             </SLink>
-            <Menu username={user.name}>
-               <MenuItem onClick={() => history.push('/')}>Orders</MenuItem>
-               <MenuItem onClick={() => history.push('/products')}>Products</MenuItem>
-               <MenuItem onClick={logout}>Logout</MenuItem>
-            </Menu>
+            <>
+               <Button
+                  ref={anchorRef}
+                  onClick={() => setOpen((prev) => !prev)}
+                  modifiers='transparent'
+               >
+                  <Icon as={Person} />
+                  <Span>{user.name}</Span>
+               </Button>
+               <Menu open={open} setOpen={setOpen} anchorRef={anchorRef}>
+                  <MenuItem onClick={onNavigationClick('/')}>Orders</MenuItem>
+                  <MenuItem onClick={onNavigationClick('/products')}>Products</MenuItem>
+                  <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+               </Menu>
+            </>
+            <Menu username={user.name}></Menu>
          </div>
       </header>
    );

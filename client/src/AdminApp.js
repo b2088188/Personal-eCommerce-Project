@@ -19,7 +19,13 @@ const AdminApp = () => {
 		<>
 			<GlobalStyle />
 			<Router>
-				<Suspense fallback={<Spinner />}>
+				<Suspense
+					fallback={
+						<Row>
+							<Spinner modifiers='dark' />
+						</Row>
+					}
+				>
 					<Container>
 						<AdminHeader />
 						<UserStore>

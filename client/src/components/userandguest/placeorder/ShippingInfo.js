@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect, Prompt } from 'react-router-dom';
 import useCart from '../../../stores/cart/cartContext';
-import { Row, Col, FormContainer, Form } from '../../../design/components';
+import { Row, Col, FormContainer, Form, Span } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import { useForm } from 'react-hook-form';
 import Navsteps from '../../../layout/NavSteps';
@@ -50,6 +50,9 @@ const ShippingInfo = () => {
                            required: 'Please provide your address'
                         })}
                      />
+                     {errors.address ? (
+                        <Span modifiers='danger'>{errors.address.message}</Span>
+                     ) : null}
                   </Form.Group>
                   <Form.Group direction='column'>
                      <Form.Label>City</Form.Label>
@@ -60,6 +63,7 @@ const ShippingInfo = () => {
                            required: 'Please provide your city'
                         })}
                      />
+                     {errors.city ? <Span modifiers='danger'>{errors.city.message}</Span> : null}
                   </Form.Group>
                   <Form.Group direction='column'>
                      <Form.Label>PostalCode</Form.Label>
@@ -70,6 +74,9 @@ const ShippingInfo = () => {
                            required: 'Please provide your postalCode'
                         })}
                      />
+                     {errors.postalCode ? (
+                        <Span modifiers='danger'>{errors.postalCode.message}</Span>
+                     ) : null}
                   </Form.Group>
                   <Form.Group direction='column'>
                      <Form.Label>Country</Form.Label>
@@ -80,6 +87,9 @@ const ShippingInfo = () => {
                            required: 'Please provide your country'
                         })}
                      />
+                     {errors.country ? (
+                        <Span modifiers='danger'>{errors.country.message}</Span>
+                     ) : null}
                   </Form.Group>
                   <Form.Button>Continue</Form.Button>
                </Form>

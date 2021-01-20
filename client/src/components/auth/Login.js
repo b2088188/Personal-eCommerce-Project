@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useAuthActions } from '../../stores/auth/authActionContext';
+import useAuth from '../../stores/auth/authContext';
 import {
    Row,
    Col,
@@ -9,7 +8,8 @@ import {
    Form,
    Link as SLink,
    Title,
-   Button
+   Button,
+   Span
 } from '../../design/components';
 import { Message, Spinner } from '../../design/elements';
 import { useForm } from 'react-hook-form';
@@ -17,9 +17,8 @@ import FormError from '../../utils/form/FormError';
 import axios from 'axios';
 
 const Login = ({ location }) => {
+   const [{ login }, { user, statusAuth, errorAuth }] = useAuth();
    const { register, handleSubmit, errors } = useForm();
-   const { user, statusAuth, errorAuth } = useAuthState();
-   const { login } = useAuthActions();
 
    if (user) return <Redirect to={location.state?.from || '/'} />;
    if (statusAuth === 'pending')
@@ -28,13 +27,11 @@ const Login = ({ location }) => {
             <Spinner modifiers='dark' />
          </Row>
       );
-
    return (
       <Row>
          <Col width='12'>
             <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
                <Title modifiers={['big', 'light']}>Login</Title>
-
                {errorAuth ? <Message text={errorAuth} severity='error' /> : null}
                <Form onSubmit={handleSubmit(login)}>
                   <Form.Group>
@@ -50,6 +47,7 @@ const Login = ({ location }) => {
                            }
                         })}
                      />
+                     {errors.email ? <Span modifiers='danger'>{errors.email.message}</Span> : null}
                   </Form.Group>
                   <Form.Group>
                      <Form.Label>Password</Form.Label>
@@ -60,6 +58,9 @@ const Login = ({ location }) => {
                            required: 'Please enter your password'
                         })}
                      />
+                     {errors.password ? (
+                        <Span modifiers='danger'>{errors.password.message}</Span>
+                     ) : null}
                   </Form.Group>
                   <Button>Login</Button>
                </Form>

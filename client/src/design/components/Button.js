@@ -40,6 +40,9 @@ const BUTTON_MODIFIERS = {
       color: ${colorNormal.white};
       background: ${colorNatural.default};
     }
+    `,
+   dark: () => `
+    color: ${colorGrey.dark2};
     `
 };
 

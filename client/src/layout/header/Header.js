@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useAuthActions } from '../../stores/auth/authActionContext';
+import useAuth from '../../stores/auth/authContext';
 import styled from 'styled-components';
 import { Wrapper, Span, Link as SLink, Input, Button, Icon } from '../../design/components';
 import { colorGrey, media } from '../../design/utils';
@@ -12,8 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 const Header = ({ className }) => {
    const [q, setQ] = useState('');
    const [open, setOpen] = useState(false);
-   const { user } = useAuthState();
-   const { logout } = useAuthActions();
+   const [{ user }, { logout }] = useAuth();
    let history = useHistory();
    const anchorRef = useRef(null);
    function onSearchClick() {

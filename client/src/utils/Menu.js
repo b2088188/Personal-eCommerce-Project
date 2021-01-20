@@ -14,7 +14,7 @@ const Menu = ({ open, setOpen, anchorRef, children, className }) => {
    };
 
    return (
-      <Popper open={open} anchorEl={anchorRef.current} transition>
+      <Popper open={open} anchorEl={anchorRef?.current || null} transition>
          {({ TransitionProps, placement }) => (
             <Grow
                {...TransitionProps}

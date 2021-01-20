@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { applyStyleModifiers } from 'styled-components-modifiers';
+import { colorPrimary } from '../utils';
 
 const SPAN_MODIFIERS = {
 	huge: () => `
@@ -28,6 +29,9 @@ const SPAN_MODIFIERS = {
 	`,
 	exlight: () => `
 	 font-weight: 300
+	`,
+	danger: () => `
+	color: ${colorPrimary.light};
 	`
 };
 

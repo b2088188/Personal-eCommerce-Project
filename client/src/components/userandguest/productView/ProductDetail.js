@@ -20,13 +20,13 @@ import { Message, Options, Spinner, RatingStar } from '../../../design/elements'
 import { media } from '../../../design/utils';
 import { useProduct } from '../../../stores/product/productContext';
 import useReview from '../../../stores/review/reviewContext';
-import { useAuthState } from '../../../stores/auth/authStateContext';
+import useAuth from '../../../stores/auth/authContext';
 import useCart from '../../../stores/cart/cartContext';
 import { addToCartList } from '../../../stores/cart/CartStore';
 import formatDate from '../../../utils/formatDate';
 
 const ProductDetail = ({ className }) => {
-   const { user } = useAuthState();
+   const [{ user }] = useAuth();
    const { product, statusProduct, errorProduct, getProduct } = useProduct();
    const [, { dispatchCart }] = useCart();
    const [{ reviews, statusReviews }, { getReviews, createReview }] = useReview();

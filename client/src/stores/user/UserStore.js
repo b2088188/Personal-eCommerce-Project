@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { UserStateProvider } from './userStateContext';
-import { UserActionProvider } from './userActionContext';
+import { UserStateProvider, UserActionProvider } from './userContext';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
 import { GET_USERPRODUCTS, CREATE_USERPRODUCT, UPDATE_USERPRODUCT } from '../types';

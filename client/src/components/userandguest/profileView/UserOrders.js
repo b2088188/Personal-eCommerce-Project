@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useUserState } from '../../../stores/user/userStateContext';
-import { useUserActions } from '../../../stores/user/userActionContext';
+import useUser from '../../../stores/user/userContext';
 import styled from 'styled-components';
 import { Row, Col, CenterWrapper, Title, Table } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
@@ -9,8 +8,8 @@ import UserOrderItem from './UserOrderItem';
 import axios from 'axios';
 
 const UserOrder = ({ className }) => {
-	const { userOrdersHandle } = useUserActions();
-	const { userOrders, statusUserOrders, errorUserOrders } = useUserState();
+	const [{ userOrders, statusUserOrders, errorUserOrders }, { userOrdersHandle }] = useUser();
+
 	useEffect(() => {
 		userOrdersHandle(axios.get('/api/v1/users/orders'));
 	}, [userOrdersHandle]);

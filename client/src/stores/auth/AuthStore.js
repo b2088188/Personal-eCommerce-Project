@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { AuthStateProvider } from './authStateContext';
-import { AuthActionProvider } from './authActionContext';
+import { Row } from '../../design/components';
+import { AuthStateProvider, AuthActionProvider } from './authContext';
 import authReducer from './authReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
@@ -83,7 +83,12 @@ const AuthStore = ({ children }) => {
       [login, signup, logout, updateUserData]
    );
 
-   if (!stateAuth.initialAuthCheck) return <Spinner modifiers='dark' />;
+   if (!stateAuth.initialAuthCheck)
+      return (
+         <Row>
+            <Spinner modifiers='dark' />
+         </Row>
+      );
 
    return (
       <AuthStateProvider value={value}>

@@ -1,17 +1,15 @@
 import React, { useRef } from 'react';
 import { Redirect } from 'react-router-dom';
-import { useAuthState } from '../../stores/auth/authStateContext';
-import { useAuthActions } from '../../stores/auth/authActionContext';
-import { Row, Col, FormContainer, Form, Button, Title } from '../../design/components';
-import { Spinner } from '../../design/elements';
+import useAuth from '../../stores/auth/authContext';
+import { Row, Col, FormContainer, Form, Button, Title, Span } from '../../design/components';
+import { Spinner, Message } from '../../design/elements';
 import { useForm } from 'react-hook-form';
 import FormError from '../../utils/form/FormError';
 import axios from 'axios';
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({ location }) => {
-   const { user, statusAuth, errorAuth } = useAuthState();
-   const { signup } = useAuthActions();
+   const [{ user, statusAuth, errorAuth }, { signup }] = useAuth();
    const { register, handleSubmit, watch, errors } = useForm();
    const password = useRef({});
    password.current = watch('password', '');
@@ -38,6 +36,7 @@ const Signup = ({ location }) => {
                            required: 'Please enter your name'
                         })}
                      />
+                     {errors.name ? <Span modifiers='danger'>{errors.name.message}</Span> : null}
                   </Form.Group>
                   <Form.Group>
                      <Form.Label>Email</Form.Label>
@@ -52,6 +51,7 @@ const Signup = ({ location }) => {
                            }
                         })}
                      />
+                     {errors.email ? <Span modifiers='danger'>{errors.email.message}</Span> : null}
                   </Form.Group>
                   <Form.Group>
                      <Form.Label>Password</Form.Label>
@@ -63,6 +63,9 @@ const Signup = ({ location }) => {
                            minLength: [8, 'Password must have at least 8 characters']
                         })}
                      />
+                     {errors.password ? (
+                        <Span modifiers='danger'>{errors.password.message}</Span>
+                     ) : null}
                   </Form.Group>
                   <Form.Group>
                      <Form.Label>Password Confirm</Form.Label>
@@ -76,6 +79,9 @@ const Signup = ({ location }) => {
                               'The passwords do no match, please try again'
                         })}
                      />
+                     {errors.passwordConfirm ? (
+                        <Span modifiers='danger'>{errors.passwordConfirm.message}</Span>
+                     ) : null}
                   </Form.Group>
                   <Button>Sign Up</Button>
                </Form>

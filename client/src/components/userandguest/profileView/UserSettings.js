@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useUserState } from '../../../stores/user/userStateContext';
-import { useUserActions } from '../../../stores/user/userActionContext';
-import { useAuthState } from '../../../stores/auth/authStateContext';
-import { useAuthActions } from '../../../stores/auth/authActionContext';
+import useUser from '../../../stores/user/userContext';
+import useAuth from '../../../stores/auth/authContext';
 import { useForm } from 'react-hook-form';
 import { FormContainer, Form, Row, Col, Title, Button } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
@@ -13,10 +11,8 @@ import FormError from '../../../utils/form/FormError';
 import useFetch from '../../../customhooks/useFetch';
 
 const UserSettings = () => {
-	const { userProfile, statusUserProfile, errorUserProfile } = useUserState();
-	const { getUserProfile } = useUserActions();
-	const { statusAuth, errorAuth } = useAuthState();
-	const { updateUserData } = useAuthActions();
+	const [{ statusAuth, errorAuth }, { updateUserData }] = useAuth();
+	const [{ userProfile, statusUserProfile, errorUserProfile }, { getUserProfile }] = useUser();
 	const { register, handleSubmit, errors, setValue, reset } = useForm();
 	useEffect(() => {
 		getUserProfile();

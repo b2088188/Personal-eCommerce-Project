@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { useProducts } from '../../../stores/product/productsContext';
 import { Wrapper, Table, Link as SLink, Icon, Button, Title } from '../../../design/components';
@@ -28,13 +29,13 @@ const UserProductItem = ({ product }) => {
 			<Table.Td>
 				<Button
 					onClick={() => history.push(`${url}/edit/${product._id}`)}
-					modifiers='transparent'
+					modifiers={['transparent', 'dark']}
 				>
 					<Icon as={Edit} />
 				</Button>
 				<Modal
 					toggleButton={
-						<Button modifiers='transparent' onClick={() => setOpen(true)}>
+						<Button modifiers={['transparent', 'dark']} onClick={() => setOpen(true)}>
 							<Icon as={Delete} />
 						</Button>
 					}

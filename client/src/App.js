@@ -1,12 +1,12 @@
 import React, { lazy, Suspense } from 'react';
-import { useAuthState } from './stores/auth/authStateContext';
+import useAuth from './stores/auth/authContext';
 import { Container } from './design/components';
 import { Spinner } from './design/elements';
 const UserAndGuestApp = React.lazy(() => import('./UserAndGuestApp'));
 const AdminApp = React.lazy(() => import('./AdminApp'));
 
 const App = () => {
-   const { isAdmin } = useAuthState();
+   const [{ isAdmin }] = useAuth();
    if (!isAdmin)
       return (
          <Suspense
