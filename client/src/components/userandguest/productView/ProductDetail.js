@@ -34,6 +34,8 @@ const ProductDetail = ({ className }) => {
    const { register, handleSubmit, errors } = useForm();
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
+   const isReviewed = user ? reviews.find((el) => el.user._id === user._id) : false;
+
    useEffect(() => {
       if (!productId) return;
       getProduct(productId);
@@ -124,7 +126,9 @@ const ProductDetail = ({ className }) => {
                      </ListGroup>
                      <ListGroup flexy='center' bdbottom>
                         <ListGroup.Item half>
-                           <RatingStar average={product.ratingsAverage} />
+                           <RatingStar
+                              average={product.ratingsQuantity < 1 ? 0 : product.ratingsAverage}
+                           />
                         </ListGroup.Item>
                         <ListGroup.Item half>
                            <Span className='product__span'>{product.ratingsQuantity} reviews</Span>
@@ -160,48 +164,49 @@ const ProductDetail = ({ className }) => {
                      <ListGroup>
                         <Title modifiers='large'>Reviews</Title>
                         {statusReviews === 'pending' ? (
-                           <Spinner />
+                           <Spinner modifiers='dark' />
                         ) : statusReviews === 'resolved' && reviews.length > 0 ? (
                            renderReviewList(reviews)
                         ) : (
                            <Message text='No Review yet' severity='info' />
                         )}
                         <ListGroup.Item>
-                           {user ? (
-                              <Form onSubmit={handleSubmit(onReviewCreate)}>
-                                 <Form.Group>
-                                    <Form.Label>Rating</Form.Label>
-                                    <Select name='rating' id='rating' ref={register}>
-                                       <Options
-                                          options={[
-                                             { value: 1, text: '1 - Poor' },
-                                             { value: 2, text: '2 - Fair' },
-                                             { value: 3, text: '3 - OK' },
-                                             { value: 4, text: '4 - Great' },
-                                             { value: 5, text: '5 - Awesome' }
-                                          ]}
+                           {statusReviews === 'resolved' ? (
+                              user && !isReviewed ? (
+                                 <Form onSubmit={handleSubmit(onReviewCreate)}>
+                                    <Form.Group>
+                                       <Form.Label>Rating</Form.Label>
+                                       <Select name='rating' id='rating' ref={register}>
+                                          <Options
+                                             options={[
+                                                { value: 1, text: '1 - Poor' },
+                                                { value: 2, text: '2 - Fair' },
+                                                { value: 3, text: '3 - OK' },
+                                                { value: 4, text: '4 - Great' },
+                                                { value: 5, text: '5 - Awesome' }
+                                             ]}
+                                          />
+                                       </Select>
+                                    </Form.Group>
+                                    <Form.Group>
+                                       <Form.Label>Review</Form.Label>
+                                       <Form.Input
+                                          name='review'
+                                          as='textarea'
+                                          ref={register({
+                                             required: "Review can't not be empty"
+                                          })}
                                        />
-                                    </Select>
-                                 </Form.Group>
-                                 <Form.Group>
-                                    <Form.Label>Review</Form.Label>
-                                    <Form.Input
-                                       name='review'
-                                       as='textarea'
-                                       ref={register({
-                                          required: "Review can't not be empty",
-                                          maxLength: 30
-                                       })}
-                                    />
-                                 </Form.Group>
-                                 <Button>Submit</Button>
-                              </Form>
-                           ) : (
-                              <Message
-                                 text='Please sign in to write down your review'
-                                 severity='info'
-                              />
-                           )}
+                                    </Form.Group>
+                                    <Button>Submit</Button>
+                                 </Form>
+                              ) : !user ? (
+                                 <Message
+                                    text='Please sign in to write down your review'
+                                    severity='info'
+                                 />
+                              ) : null
+                           ) : null}
                         </ListGroup.Item>
                      </ListGroup>
                   </Col>

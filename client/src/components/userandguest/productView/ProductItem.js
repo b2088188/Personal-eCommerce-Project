@@ -18,7 +18,7 @@ const ProductItem = ({ product }) => {
 						{product.name}
 					</Card.Link>
 					<div className='rating'>
-						<RatingStar average={product.ratingsAverage} />
+						<RatingStar average={product.ratingsQuantity < 1 ? 0 : product.ratingsAverage} />
 						<Card.Span>{product.ratingsQuantity} reviews</Card.Span>
 					</div>
 					<Card.Title modifiers='medium'>${product.price}</Card.Title>

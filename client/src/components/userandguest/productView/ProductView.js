@@ -8,13 +8,15 @@ import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
+import { NativeSelect, FormHelperText } from '@material-ui/core';
 import axios from 'axios';
 const ProductView = ({ className }) => {
-   const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
+   const { products, statusProducts, errorProducts, getFilteredProducts } = useProducts();
    const [page, setPage] = useState(1);
+   const [filterBy, setFilterBy] = useState(null);
    useEffect(() => {
-      getAllProducts();
-   }, [getAllProducts]);
+      getFilteredProducts(filterBy);
+   }, [getFilteredProducts, filterBy]);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -51,10 +53,25 @@ const ProductView = ({ className }) => {
          <Row>
             <Col width='12' className={className}>
                <div className='products'>
-                  <Title className='products__title' modifiers='big'>
-                     All Products
-                  </Title>
-                  <ListGroup flexy='center' wrap>
+                  <div className='products__titlebox'>
+                     <Title className='products__title' modifiers='big'>
+                        All Products
+                     </Title>
+                     <div className='products__select'>
+                        <NativeSelect
+                           value={filterBy}
+                           onChange={(e) => setFilterBy(e.target.value)}
+                           name='category'
+                           inputProps={{ 'aria-label': 'age' }}
+                        >
+                           <option value=''>All</option>
+                           <option value='Electronics'>Electronics</option>
+                           <option value='Life'>Life</option>
+                        </NativeSelect>
+                        <FormHelperText>Select Category</FormHelperText>
+                     </div>
+                  </div>
+                  <ListGroup flexy='center' wrap='true'>
                      {renderProducts(products, page)}
                   </ListGroup>
                   {Math.ceil(products.length / 8) > 1 ? (
@@ -82,8 +99,14 @@ export default styled(ProductView)`
       ${media.phone(`
          min-height: auto;
          `)}
-      &__title {
+      &__titlebox {
          align-self: flex-start;
+         display: flex;
+         align-items: flex-start;
+      }
+
+      &__select {
+         margin-left: 1rem;
       }
    }
 `;

@@ -1,10 +1,21 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useOrder from '../../../stores/order/orderContext';
 import OrderItem from './OrderItem';
 import AdminSidebar from '../../../layout/admin/AdminSidebar';
-import { Row, Col, CenterWrapper, Title, Table } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title, Link as SLink } from '../../../design/components';
+import {
+	TableHead,
+	TableRow,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer
+} from '@material-ui/core';
 import { Spinner, Message } from '../../../design/elements';
+import formatDate from '../../../utils/formatDate';
 
 const UserOrder = ({ className }) => {
 	const [{ orderList, statusAllOrders, errorAllOrders }, { getAllOrders }] = useOrder();
@@ -12,7 +23,7 @@ const UserOrder = ({ className }) => {
 		getAllOrders();
 	}, [getAllOrders]);
 
-	function renderUserOrders(list) {
+	function renderOrders(list) {
 		return list.map(function generateItem(order) {
 			return <OrderItem key={order._id} order={order} />;
 		});
@@ -37,26 +48,28 @@ const UserOrder = ({ className }) => {
 					<AdminSidebar />
 				</Col>
 				<Col width='8'>
-					<CenterWrapper width={{ desktop: '100', tabport: '90' }} my='2'>
+					<CenterWrapper width='90' my='2'>
 						<Title modifiers={['large', 'exlight']}>Orders</Title>
-						<Table>
-							<Table.Head>
-								<Table.Tr>
-									<Table.Td modifiers='light'>Id</Table.Td>
-									<Table.Td modifiers='light'>User</Table.Td>
-									<Table.Td modifiers='light'>Date</Table.Td>
-									<Table.Td modifiers='light'>TotalPrice</Table.Td>
-									<Table.Td modifiers='light'>Paid</Table.Td>
-									<Table.Td modifiers='light'>Delivered</Table.Td>
-									<th></th>
-								</Table.Tr>
-							</Table.Head>
-							<Table.Body>{renderUserOrders(orderList)}</Table.Body>
-						</Table>
+						<TableContainer component={Paper}>
+							<Table aria-label='simple table'>
+								<TableHead>
+									<TableRow>
+										<TableCell>Id</TableCell>
+										<TableCell>User</TableCell>
+										<TableCell>Date</TableCell>
+										<TableCell>TotalPrice</TableCell>
+										<TableCell>Paid</TableCell>
+										<TableCell>Delivered</TableCell>
+										<TableCell> </TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>{renderOrders(orderList)}</TableBody>
+							</Table>
+						</TableContainer>
 					</CenterWrapper>
 				</Col>
 			</Row>
 		);
 };
 
-export default styled(UserOrder)``;
+export default UserOrder;

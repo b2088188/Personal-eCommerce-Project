@@ -25,7 +25,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import axios from 'axios';
 const ProductView = ({ className }) => {
-   const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
+   const { products, statusProducts, errorProducts, getSortedProducts } = useProducts();
    const { search } = useLocation();
    const searchParams = new URLSearchParams(search);
    const q = searchParams.get('q');
@@ -34,8 +34,8 @@ const ProductView = ({ className }) => {
    const [open, setOpen] = useState(false);
    const anchorRef = useRef(null);
    useEffect(() => {
-      getAllProducts(q, sort);
-   }, [getAllProducts, q, sort]);
+      getSortedProducts(q, sort);
+   }, [getSortedProducts, q, sort]);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -103,7 +103,7 @@ const ProductView = ({ className }) => {
                         </Menu>
                      </>
                   </Wrapper>
-                  <ListGroup flexy='center' wrap>
+                  <ListGroup flexy='center' wrap='true'>
                      {renderProducts(products, page)}
                   </ListGroup>
                   {Math.ceil(products.length / 8) > 1 ? (

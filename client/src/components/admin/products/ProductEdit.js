@@ -44,7 +44,7 @@ const ProductEdit = ({ location }) => {
    return (
       <Row>
          <Col width='12'>
-            <FormContainer>
+            <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
                <Form.Title modifiers={['big', 'light']}>Edit Product</Form.Title>
                <Form onSubmit={handleSubmit(onEditHandle)}>
                   <Form.Group>
@@ -62,6 +62,9 @@ const ProductEdit = ({ location }) => {
                      <Form.Input
                         name='price'
                         type='number'
+                        min='1.00'
+                        max='500.00'
+                        step='0.01'
                         ref={register({
                            required: 'Please product your product price'
                         })}

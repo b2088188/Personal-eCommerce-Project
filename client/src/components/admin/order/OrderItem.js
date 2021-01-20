@@ -1,24 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Link as SLink } from '../../../design/components';
+import { Link as SLink, Icon } from '../../../design/components';
 import formatDate from '../../../utils/formatDate';
-import CloseIcon from '@material-ui/icons/Close';
+import { TableRow, TableCell } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 
 const OrderItem = ({ order }) => {
 	return (
-		<Table.Tr>
-			<Table.Td>{order._id}</Table.Td>
-			<Table.Td>{order.user?._id}</Table.Td>
-			<Table.Td>{formatDate(order.createdAt)}</Table.Td>
-			<Table.Td>{order.totalPrice}</Table.Td>
-			<Table.Td>{order.isPaid ? formatDate(order.paidAt) : <CloseIcon />}</Table.Td>
-			<Table.Td>{order.isDelivered ? formatDate(order.deliveredAt) : <CloseIcon />}</Table.Td>
-			<Table.Td>
+		<TableRow>
+			<TableCell component='th' scope='row'>
+				{order._id}
+			</TableCell>
+			<TableCell>{order.user._id}</TableCell>
+			<TableCell>{formatDate(order.createdAt)}</TableCell>
+			<TableCell>{order.totalPrice}</TableCell>
+			<TableCell>{order.isPaid ? formatDate(order.paidAt) : <Icon as={Close} />}</TableCell>
+			<TableCell>
+				{order.isDelivered ? formatDate(order.deliveredAt) : <Icon as={Close} />}
+			</TableCell>
+			<TableCell>
 				<SLink as={Link} to={`/order/${order._id}`}>
 					Details
 				</SLink>
-			</Table.Td>
-		</Table.Tr>
+			</TableCell>
+		</TableRow>
 	);
 };
 

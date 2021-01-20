@@ -30,7 +30,7 @@ export const FormContainer = styled.div`
 `;
 
 export const Row = styled.div`
-	width: 100%;
+	max-width: 100%;
 	min-height: inherit;
 	${setFlex({ wrap: 'wrap' })}
 	// flex-direction
@@ -50,6 +50,7 @@ export const Row = styled.div`
 `;
 
 export const Col = styled.div`
+	max-width: 100%;
 	//Width
 	${({ width }) =>
 		width && typeof width === 'string' ? setFlexWidth({ width: Math.ceil(8.33 * width) }) : null}

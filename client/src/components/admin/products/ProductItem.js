@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { useProducts } from '../../../stores/product/productsContext';
-import { Wrapper, Table, Link as SLink, Icon, Button, Title } from '../../../design/components';
+import { Wrapper, Link as SLink, Icon, Button, Title } from '../../../design/components';
 import formatDate from '../../../utils/formatDate';
 import { Edit, Delete } from '@material-ui/icons';
+import { TableRow, TableCell } from '@material-ui/core';
 import { Modal } from '../../../design/elements';
 
-const UserProductItem = ({ product }) => {
+const ProductItem = ({ product }) => {
 	const { deleteProduct } = useProducts();
 	const history = useHistory();
 	const { url } = useRouteMatch();
@@ -20,13 +21,15 @@ const UserProductItem = ({ product }) => {
 	}
 
 	return (
-		<Table.Tr>
-			<Table.Td>{product._id}</Table.Td>
-			<Table.Td>{product.name}</Table.Td>
-			<Table.Td>{product.price}</Table.Td>
-			<Table.Td>{product.category}</Table.Td>
-			<Table.Td>{product.brand}</Table.Td>
-			<Table.Td>
+		<TableRow>
+			<TableCell component='th' scope='row'>
+				{product._id}
+			</TableCell>
+			<TableCell>{product.name}</TableCell>
+			<TableCell>{product.price}</TableCell>
+			<TableCell>{product.category}</TableCell>
+			<TableCell>{product.brand}</TableCell>
+			<TableCell>
 				<Button
 					onClick={() => history.push(`${url}/edit/${product._id}`)}
 					modifiers={['transparent', 'dark']}
@@ -49,9 +52,9 @@ const UserProductItem = ({ product }) => {
 						</Button>
 					</Wrapper>
 				</Modal>
-			</Table.Td>
-		</Table.Tr>
+			</TableCell>
+		</TableRow>
 	);
 };
 
-export default UserProductItem;
+export default ProductItem;

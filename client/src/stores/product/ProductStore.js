@@ -17,10 +17,21 @@ const ProductStore = ({ children }) => {
       data: {}
    });
 
-   const getAllProducts = useCallback(
+   const getSortedProducts = useCallback(
       async function (q, sort) {
-         let url = q ? `/api/v1/products/?q=${q}` : '/api/v1/products';
+         let url = '/api/v1/products';
+         if (q) url = `${url}/?q=${q}`;
          if (sort) url = `${url}&sort=${sort}`;
+         const { status } = await fetchProducts(axios.get(url));
+         if (status === 'success') dispatchProducts({ type: GET_PRODUCTS });
+      },
+      [fetchProducts, dispatchProducts]
+   );
+
+   const getFilteredProducts = useCallback(
+      async function (category) {
+         let url = '/api/v1/products';
+         if (category) url = `${url}/?category=${category}`;
          const { status } = await fetchProducts(axios.get(url));
          if (status === 'success') dispatchProducts({ type: GET_PRODUCTS });
       },
@@ -81,12 +92,20 @@ const ProductStore = ({ children }) => {
          products: stateProducts.products,
          statusProducts: stateProducts.status,
          errorProducts: stateProducts.error,
-         getAllProducts,
+         getSortedProducts,
+         getFilteredProducts,
          createProduct,
          updateProduct,
          deleteProduct
       }),
-      [stateProducts, getAllProducts, createProduct, updateProduct, deleteProduct]
+      [
+         stateProducts,
+         getSortedProducts,
+         getFilteredProducts,
+         createProduct,
+         updateProduct,
+         deleteProduct
+      ]
    );
 
    let valueProduct = useMemo(

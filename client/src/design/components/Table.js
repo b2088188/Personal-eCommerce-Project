@@ -4,8 +4,6 @@ import { colorGrey } from '../utils';
 
 //table
 export const Table = styled.table`
-	table-layout: auto;
-	width: 100%;
 	color: ${colorGrey.dark2};
 	font-size: 1.7rem;
 	font-weight: 300;

@@ -17,7 +17,7 @@ import FormError from '../../utils/form/FormError';
 import axios from 'axios';
 
 const Login = ({ location }) => {
-   const [{ login }, { user, statusAuth, errorAuth }] = useAuth();
+   const [{ user, statusAuth, errorAuth }, { login }] = useAuth();
    const { register, handleSubmit, errors } = useForm();
 
    if (user) return <Redirect to={location.state?.from || '/'} />;

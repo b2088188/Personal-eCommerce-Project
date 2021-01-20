@@ -1,12 +1,21 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Row, Col, CenterWrapper, Title, Table, Button } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title, Button } from '../../../design/components';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import AdminSidebar from '../../../layout/admin/AdminSidebar';
 import { Spinner, Message } from '../../../design/elements';
 import axios from 'axios';
+import {
+	TableHead,
+	TableRow,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer
+} from '@material-ui/core';
 
 const UserProducts = ({ className }) => {
 	const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
@@ -17,7 +26,7 @@ const UserProducts = ({ className }) => {
 		getAllProducts();
 	}, [getAllProducts]);
 
-	function renderUserProducts(list) {
+	function renderProducts(list) {
 		return list?.map(function generateItem(product) {
 			return <ProductItem key={product._id} product={product} />;
 		});
@@ -47,19 +56,21 @@ const UserProducts = ({ className }) => {
 							<Title modifiers={['large', 'exlight']}>Products</Title>
 							<Button onClick={() => history.push(`${url}/edit`)}>Create Product</Button>
 						</div>
-						<Table>
-							<Table.Head>
-								<Table.Tr>
-									<Table.Td modifiers='light'>Id</Table.Td>
-									<Table.Td modifiers='light'>Name</Table.Td>
-									<Table.Td modifiers='light'>Price</Table.Td>
-									<Table.Td modifiers='light'>Category</Table.Td>
-									<Table.Td modifiers='light'>Brand</Table.Td>
-									<th></th>
-								</Table.Tr>
-							</Table.Head>
-							<Table.Body>{renderUserProducts(products)}</Table.Body>
-						</Table>
+						<TableContainer component={Paper}>
+							<Table aria-label='simple table'>
+								<TableHead>
+									<TableRow>
+										<TableCell>Id</TableCell>
+										<TableCell>Name</TableCell>
+										<TableCell>Price</TableCell>
+										<TableCell>Category</TableCell>
+										<TableCell>Brand</TableCell>
+										<TableCell> </TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>{renderProducts(products)}</TableBody>
+							</Table>
+						</TableContainer>
 					</CenterWrapper>
 				</Col>
 			</Row>
