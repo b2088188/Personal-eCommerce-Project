@@ -2,9 +2,10 @@
    "name": "ecommerce-project",
    "version": "1.0.0",
    "description": "",
-   "main": "index.js",
+   "main": "server.js",
    "type": "module",
    "scripts": {
+      "start": "node server.js",
       "client": "npm start --prefix client",
       "server": "nodemon server/server.js",
       "format": "prettier \"server/**/*.{js,html}\" -w",
