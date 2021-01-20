@@ -4,7 +4,7 @@ import useAuth from '../../stores/auth/authContext';
 import styled from 'styled-components';
 import { Span, Link as SLink, Button, Icon } from '../../design/components';
 import { colorGrey } from '../../design/utils';
-import { ShoppingCart, Person } from '@material-ui/icons';
+import { Person } from '@material-ui/icons';
 import Menu from '../../utils/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 

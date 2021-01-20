@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import useOrder from '../../../stores/order/orderContext';
 import OrderItem from './OrderItem';
 import AdminSidebar from '../../../layout/admin/AdminSidebar';
-import { Row, Col, CenterWrapper, Title, Link as SLink } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title } from '../../../design/components';
 import {
 	TableHead,
 	TableRow,
@@ -15,7 +13,6 @@ import {
 	TableContainer
 } from '@material-ui/core';
 import { Spinner, Message } from '../../../design/elements';
-import formatDate from '../../../utils/formatDate';
 
 const UserOrder = ({ className }) => {
 	const [{ orderList, statusAllOrders, errorAllOrders }, { getAllOrders }] = useOrder();

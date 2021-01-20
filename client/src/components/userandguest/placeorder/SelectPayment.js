@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import useCart from '../../../stores/cart/cartContext';
 import { Redirect } from 'react-router-dom';
-import styled from 'styled-components';
 import { Row, Col, CenterWrapper, Title, Form, Button, Radio } from '../../../design/components';
 import { RadioGroup } from '@material-ui/core';
-import { setFlex } from '../../../design/utils';
 import { useForm, Controller } from 'react-hook-form';
 import Navsteps from '../../../layout/NavSteps';
-import FormRadio from '../../../utils/form/FormRadio';
 
 const SelectPayment = ({ className }) => {
 	const [{ shippingAddress }, { savePayInfo }] = useCart();
 	const [toPlaceOrder, setToPlaceOrder] = useState(false);
-	const { register, handleSubmit, errors, control } = useForm();
+	const { handleSubmit, control } = useForm();
 
 	function onSubmit({ payment }) {
 		savePayInfo('paymentMethod', payment);

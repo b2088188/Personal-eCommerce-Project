@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useProducts } from '../../../stores/product/productsContext';
-import { Wrapper, Link as SLink, Icon, Button, Title } from '../../../design/components';
-import formatDate from '../../../utils/formatDate';
+import { Wrapper, Icon, Button, Title } from '../../../design/components';
 import { Edit, Delete } from '@material-ui/icons';
 import { TableRow, TableCell } from '@material-ui/core';
 import { Modal } from '../../../design/elements';

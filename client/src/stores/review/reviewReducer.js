@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import { fetchReducer } from '../../customhooks/useFetch';
 import { REQUEST_RESOLVED, GET_REVIEWS, CREATE_REVIEW } from '../types';
 function reviewReducer(currentState, action) {

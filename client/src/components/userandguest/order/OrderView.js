@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
-import { Link as Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';
 import {
@@ -13,7 +13,6 @@ import {
 	Link as SLink,
 	Title,
 	Paragraph,
-	Button,
 	Span
 } from '../../../design/components';
 import { setBorder } from '../../../design/utils';
@@ -32,7 +31,7 @@ const OrderView = ({ className }) => {
 		async function addPaypalScript() {
 			const {
 				data: { data }
-			} = await axios.get('/api/v1/config/paypal');
+			} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/config/paypal`);
 			const script = document.createElement('script');
 			script.type = 'text/javascript';
 			script.src = `https://www.paypal.com/sdk/js?client-id=${data.clientId}`;

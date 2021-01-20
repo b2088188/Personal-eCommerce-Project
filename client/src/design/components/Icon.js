@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colorPrimary, colorGrey, colorSecondary, colorTertiary, colorNatural } from '../utils';
+import { colorPrimary, colorSecondary, colorTertiary, colorNatural } from '../utils';
 import { applyStyleModifiers } from 'styled-components-modifiers';
 
 const ICON_MODIFIERS = {

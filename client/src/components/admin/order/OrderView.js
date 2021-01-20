@@ -1,6 +1,5 @@
-import * as R from 'ramda';
-import React, { useState, useEffect } from 'react';
-import { Link as Link, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';
 import {
@@ -17,7 +16,7 @@ import {
 import { setBorder } from '../../../design/utils';
 import { Message, Spinner } from '../../../design/elements';
 import formatDate from '../../../utils/formatDate';
-import axios from 'axios';
+
 const OrderView = ({ className }) => {
 	const [
 		{ currentOrder, statusOrder, errorOrder },

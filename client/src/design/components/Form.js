@@ -3,7 +3,6 @@ import { applyStyleModifiers } from 'styled-components-modifiers';
 import { colorGrey, setFlex, media } from '../utils';
 import { Title } from '../components/Title';
 import { Button } from '../components/Button';
-import { Span } from '../components/Span';
 import { Link } from '../components/Link';
 
 export const Form = styled.form`

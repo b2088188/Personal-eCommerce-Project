@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { css } from 'styled-components';
 // 0 - 600px: Phone
 // 600 - 900px: Tablet Portrait
 // 900 - 1200px: Tablet Landscape

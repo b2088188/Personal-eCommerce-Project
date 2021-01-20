@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import useCart from '../../../stores/cart/cartContext';
 import styled from 'styled-components';
 import { CenterWrapper, Row, Col, Title, Span, Button } from '../../../design/components';
-import { setBorder, setFlex, setFlexWidth, colorGrey, media } from '../../../design/utils';
+import { setBorder, setFlex, media } from '../../../design/utils';
 import CartItem from './CartItem';
 
 const CartView = ({ className }) => {
@@ -44,7 +44,7 @@ const CartView = ({ className }) => {
                      >
                         {cartList.length > 0
                            ? 'Proceed To Check Out'
-                           : "You haven't any item yet, please get one."}
+                           : "You haven't choose any item yet, please get one."}
                      </Button>
                   </Col>
                </Row>

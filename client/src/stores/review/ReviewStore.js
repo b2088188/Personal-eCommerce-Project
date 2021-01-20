@@ -3,7 +3,7 @@ import { ReviewStateProvider, ReviewActionProvider } from './reviewContext';
 import reviewReducer from './reviewReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
-import { REQUEST_RESOLVED, GET_REVIEWS, CREATE_REVIEW } from '../types';
+import { GET_REVIEWS, CREATE_REVIEW } from '../types';
 
 const ReviewStore = ({ children }) => {
 	const [stateReviews, fetchReviews, dispatchReviews] = useFetch(
@@ -16,7 +16,9 @@ const ReviewStore = ({ children }) => {
 
 	const getReviews = useCallback(
 		async function (productId) {
-			const { status } = await fetchReviews(axios.get(`/api/v1/products/${productId}/reviews`));
+			const { status } = await fetchReviews(
+				axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`)
+			);
 			if (status === 'success') dispatchReviews({ type: GET_REVIEWS });
 		},
 		[fetchReviews, dispatchReviews]
@@ -25,7 +27,10 @@ const ReviewStore = ({ children }) => {
 	const createReview = useCallback(
 		async function (productId, rating, review) {
 			const { status } = await fetchReviews(
-				axios.post(`/api/v1/products/${productId}/reviews`, { rating, review })
+				axios.post(
+					`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`,
+					{ rating, review }
+				)
 			);
 			if (status === 'success') dispatchReviews({ type: CREATE_REVIEW });
 		},

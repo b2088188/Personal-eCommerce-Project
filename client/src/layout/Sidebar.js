@@ -1,13 +1,11 @@
 import React from 'react';
-import { Link, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Settings, FormatListBulleted, Storefront } from '@material-ui/icons';
+import { Settings, FormatListBulleted } from '@material-ui/icons';
 import { Link as SLink, Span, Icon, List } from '../design/components';
-import { setFlex, setTransition, colorGrey, media } from '../design/utils';
+import { setTransition, colorGrey, media } from '../design/utils';
 
 const Sidebar = ({ className }) => {
-   const location = useLocation();
-
    return (
       <nav className={className}>
          <List direction={{ tabport: 'row' }} flexx={{ tabport: 'center' }}>

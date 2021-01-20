@@ -4,16 +4,15 @@ import styled from 'styled-components';
 import { Row, Col, Title, ListGroup } from '../../../design/components';
 import { media } from '../../../design/utils';
 import { Spinner, Message } from '../../../design/elements';
-import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { NativeSelect, FormHelperText } from '@material-ui/core';
-import axios from 'axios';
+
 const ProductView = ({ className }) => {
    const { products, statusProducts, errorProducts, getFilteredProducts } = useProducts();
    const [page, setPage] = useState(1);
-   const [filterBy, setFilterBy] = useState(null);
+   const [filterBy, setFilterBy] = useState('');
    useEffect(() => {
       getFilteredProducts(filterBy);
    }, [getFilteredProducts, filterBy]);

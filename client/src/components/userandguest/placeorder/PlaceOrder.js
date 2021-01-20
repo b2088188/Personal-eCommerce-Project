@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 import useCart from '../../../stores/cart/cartContext';
 import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';

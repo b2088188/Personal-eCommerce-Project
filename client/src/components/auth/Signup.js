@@ -4,8 +4,6 @@ import useAuth from '../../stores/auth/authContext';
 import { Row, Col, FormContainer, Form, Button, Title, Span } from '../../design/components';
 import { Spinner, Message } from '../../design/elements';
 import { useForm } from 'react-hook-form';
-import FormError from '../../utils/form/FormError';
-import axios from 'axios';
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({ location }) => {
@@ -26,6 +24,7 @@ const Signup = ({ location }) => {
          <Col width='12'>
             <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
                <Title modifiers={['big', 'light']}>Sign Up</Title>
+               {errorAuth ? <Message text={errorAuth} severity='error' /> : null}
                <Form onSubmit={handleSubmit(signup)}>
                   <Form.Group direction='column'>
                      <Form.Label>Name</Form.Label>

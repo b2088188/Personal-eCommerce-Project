@@ -6,7 +6,6 @@ import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import AdminSidebar from '../../../layout/admin/AdminSidebar';
 import { Spinner, Message } from '../../../design/elements';
-import axios from 'axios';
 import {
 	TableHead,
 	TableRow,

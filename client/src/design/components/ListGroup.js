@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { applyStyleModifiers } from 'styled-components-modifiers';
 import { Title } from '../components/Title';
 import { Paragraph } from '../components/Paragraph';
 import { Span } from '../components/Span';
@@ -27,8 +26,6 @@ export const ListGroup = styled.div`
     ${(props) => props.bdbottom && setBorder({ position: 'border-bottom' })}
     ${(props) => props.bdtop && setBorder({ position: 'border-top' })}
 `;
-
-const ITEM_MODIFIERS = {};
 
 const ListGroupItem = styled.div`
    // flex-basis

@@ -15,7 +15,6 @@ import {
 } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import { useLocation } from 'react-router-dom';
-import useFetch from '../../../customhooks/useFetch';
 import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
@@ -23,7 +22,6 @@ import { FilterList } from '@material-ui/icons';
 import Menu from '../../../utils/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import axios from 'axios';
 const ProductView = ({ className }) => {
    const { products, statusProducts, errorProducts, getSortedProducts } = useProducts();
    const { search } = useLocation();

@@ -2,10 +2,7 @@ import * as R from 'ramda';
 import React, { useReducer, useMemo, useCallback } from 'react';
 import { CartStateProvider, CartActionProvider } from './cartContext';
 import cartReducer from './cartReducer';
-import axios from 'axios';
 import {
-   LOADING_CARTLIST,
-   CARTLIST_SUCCESS,
    ADD_CARTITEM,
    REMOVE_CARTITEM,
    CHANGE_QUANTITY,

@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { Row } from '../../design/components';
 import { AuthStateProvider, AuthActionProvider } from './authContext';
@@ -21,7 +20,9 @@ const AuthStore = ({ children }) => {
 
    const getInitialAuth = useCallback(
       async function () {
-         const { status } = await fetchAuth(axios.get('/api/v1/users'));
+         const { status } = await fetchAuth(
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`)
+         );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
       },
       [fetchAuth, dispatchAuth]
@@ -33,7 +34,9 @@ const AuthStore = ({ children }) => {
 
    const login = useCallback(
       async function (values) {
-         const { status } = await fetchAuth(axios.post('/api/v1/users/login', values));
+         const { status } = await fetchAuth(
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`, values)
+         );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
       },
       [fetchAuth, dispatchAuth]
@@ -41,7 +44,9 @@ const AuthStore = ({ children }) => {
 
    const signup = useCallback(
       async function (values) {
-         const { status } = await fetchAuth(axios.post('/api/v1/users/signup', values));
+         const { status } = await fetchAuth(
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`, values)
+         );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
       },
       [fetchAuth, dispatchAuth]
@@ -49,7 +54,9 @@ const AuthStore = ({ children }) => {
 
    const updateUserData = useCallback(
       async function (values) {
-         const { status } = await fetchAuth(axios.patch('/api/v1/users/profile', values));
+         const { status } = await fetchAuth(
+            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/profile`, values)
+         );
          if (status === 'success') dispatchAuth({ type: UPDATE_USERDATA });
       },
       [fetchAuth, dispatchAuth]
@@ -57,7 +64,7 @@ const AuthStore = ({ children }) => {
 
    const logout = useCallback(
       async function (values) {
-         await fetchAuth(axios.get('/api/v1/users/logout'));
+         await fetchAuth(axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`));
          dispatchAuth({ type: LOGOUT_AUTH });
       },
       [fetchAuth, dispatchAuth]

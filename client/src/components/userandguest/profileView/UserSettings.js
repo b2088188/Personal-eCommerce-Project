@@ -1,14 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import useUser from '../../../stores/user/userContext';
 import useAuth from '../../../stores/auth/authContext';
 import { useForm } from 'react-hook-form';
-import { FormContainer, Form, Row, Col, Title, Button } from '../../../design/components';
+import { FormContainer, Form, Row, Col, Title, Button, Span } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import Sidebar from '../../../layout/Sidebar';
-import FormGroup from '../../../utils/form/FormGroup';
-import FormError from '../../../utils/form/FormError';
-import useFetch from '../../../customhooks/useFetch';
 
 const UserSettings = () => {
 	const [{ statusAuth, errorAuth }, { updateUserData }] = useAuth();
@@ -61,6 +57,7 @@ const UserSettings = () => {
 										required: 'You must specify a name'
 									})}
 								/>
+								{errors.name ? <Span modifiers='danger'>{errors.name.message}</Span> : null}
 							</Form.Group>
 							<Form.Group>
 								<Form.Label>Email</Form.Label>
@@ -75,6 +72,9 @@ const UserSettings = () => {
 										}
 									})}
 								/>
+								{errors.email ? (
+									<Span modifiers='danger'>{errors.email.message}</Span>
+								) : null}
 							</Form.Group>
 							<Button>Save Changes</Button>
 						</Form>

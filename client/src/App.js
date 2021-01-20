@@ -2,8 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import useAuth from './stores/auth/authContext';
 import { Container } from './design/components';
 import { Spinner } from './design/elements';
-const UserAndGuestApp = React.lazy(() => import('./UserAndGuestApp'));
-const AdminApp = React.lazy(() => import('./AdminApp'));
+const UserAndGuestApp = lazy(() => import('./UserAndGuestApp'));
+const AdminApp = lazy(() => import('./AdminApp'));
 
 const App = () => {
    const [{ isAdmin }] = useAuth();

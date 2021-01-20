@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ProductProvider } from './productContext';
 import { ProductsProvider } from './productsContext';
 import productsReducer from './productsReducer';
@@ -19,7 +19,7 @@ const ProductStore = ({ children }) => {
 
    const getSortedProducts = useCallback(
       async function (q, sort) {
-         let url = '/api/v1/products';
+         let url = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`;
          if (q) url = `${url}/?q=${q}`;
          if (sort) url = `${url}&sort=${sort}`;
          const { status } = await fetchProducts(axios.get(url));
@@ -30,7 +30,7 @@ const ProductStore = ({ children }) => {
 
    const getFilteredProducts = useCallback(
       async function (category) {
-         let url = '/api/v1/products';
+         let url = `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`;
          if (category) url = `${url}/?category=${category}`;
          const { status } = await fetchProducts(axios.get(url));
          if (status === 'success') dispatchProducts({ type: GET_PRODUCTS });
@@ -40,7 +40,7 @@ const ProductStore = ({ children }) => {
 
    const getProduct = useCallback(
       async function (id) {
-         fetchProduct(axios.get(`/api/v1/products/${id}`));
+         fetchProduct(axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${id}`));
       },
       [fetchProduct]
    );
@@ -55,7 +55,9 @@ const ProductStore = ({ children }) => {
             }
             if (el !== 'image') formData.append(el, values[el]);
          });
-         const { status } = await fetchProducts(axios.post('/api/v1/products', formData));
+         const { status } = await fetchProducts(
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products`, formData)
+         );
          if (status === 'success') dispatchProducts({ type: CREATE_PRODUCT });
       },
       [fetchProducts, dispatchProducts]
@@ -72,7 +74,10 @@ const ProductStore = ({ children }) => {
             if (el !== 'image') formData.append(el, values[el]);
          });
          const { status } = await fetchProducts(
-            axios.patch(`/api/v1/products/${productId}`, formData)
+            axios.patch(
+               `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}`,
+               formData
+            )
          );
          if (status === 'success') dispatchProducts({ type: UPDATE_PRODUCT });
       },
@@ -81,7 +86,9 @@ const ProductStore = ({ children }) => {
 
    const deleteProduct = useCallback(
       async function (productId) {
-         await fetchProducts(axios.delete(`/api/v1/products/${productId}`));
+         await fetchProducts(
+            axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}`)
+         );
          dispatchProducts({ type: DELETE_PRODUCT, payload: { productId } });
       },
       [fetchProducts, dispatchProducts]

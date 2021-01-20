@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react';
 import { UserStateProvider, UserActionProvider } from './userContext';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
-import { GET_USERPRODUCTS, CREATE_USERPRODUCT, UPDATE_USERPRODUCT } from '../types';
 
 const UserStore = ({ children }) => {
    const [stateUserProfile, fetchUserProfile] = useFetch({
@@ -14,7 +13,7 @@ const UserStore = ({ children }) => {
 
    const getUserProfile = useCallback(
       async function () {
-         fetchUserProfile(axios.get('/api/v1/users/profile'));
+         fetchUserProfile(axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/profile`));
       },
       [fetchUserProfile]
    );

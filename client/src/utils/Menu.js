@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Button, Span, Icon } from '../design/components';
+import React from 'react';
 import MenuList from '@material-ui/core/MenuList';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';

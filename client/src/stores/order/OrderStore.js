@@ -4,14 +4,7 @@ import orderReducer from './orderReducer';
 import orderListReducer from './orderListReducer';
 import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
-import {
-   CREATE_ORDER,
-   GET_ORDER,
-   GET_ORDERLIST,
-   UPDATE_ORDER,
-   ORDER_FAIL,
-   CLEAR_ORDER
-} from '../types';
+import { CREATE_ORDER, GET_ORDER, GET_ORDERLIST, UPDATE_ORDER } from '../types';
 
 const OrderStore = ({
    // prettier-ignore
@@ -35,7 +28,9 @@ const OrderStore = ({
 
    const createOrder = useCallback(
       async function (values) {
-         const { status } = await fetchOrder(axios.post('/api/v1/orders', values));
+         const { status } = await fetchOrder(
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`, values)
+         );
          if (status === 'success') dispatchOrder({ type: CREATE_ORDER });
       },
       [fetchOrder, dispatchOrder]
@@ -43,7 +38,9 @@ const OrderStore = ({
 
    const getOrder = useCallback(
       async function (orderId) {
-         const { status } = await fetchOrder(axios.get(`/api/v1/orders/${orderId}`));
+         const { status } = await fetchOrder(
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}`)
+         );
          if (status === 'success')
             dispatchOrder({
                type: GET_ORDER
@@ -54,7 +51,9 @@ const OrderStore = ({
 
    const updateOrderToPaid = useCallback(
       async function (orderId, values) {
-         const { status } = await fetchOrder(axios.patch(`/api/v1/orders/${orderId}/pay`, values));
+         const { status } = await fetchOrder(
+            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/pay`, values)
+         );
          if (status === 'success')
             dispatchOrder({
                type: UPDATE_ORDER
@@ -65,7 +64,9 @@ const OrderStore = ({
 
    const updateOrderToDeliver = useCallback(
       async function (orderId) {
-         const { status } = await fetchOrder(axios.patch(`/api/v1/orders/${orderId}/deliver`));
+         const { status } = await fetchOrder(
+            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`)
+         );
          if (status === 'success')
             dispatchOrder({
                type: UPDATE_ORDER
@@ -76,7 +77,9 @@ const OrderStore = ({
 
    const getAllOrders = useCallback(
       async function () {
-         const { status } = await fetchAllOrders(axios.get('/api/v1/orders'));
+         const { status } = await fetchAllOrders(
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`)
+         );
          if (status === 'success') dispatchAllOrders({ type: GET_ORDERLIST });
       },
       [fetchAllOrders, dispatchAllOrders]

@@ -2,8 +2,14 @@ import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import cors from 'cors';
+import compression from 'compression';
 
 const app = express();
+app.enable('trust proxy');
+app.use(cors());
+app.options('*', cors());
+app.use(compression());
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(express.json());

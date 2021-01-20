@@ -13,8 +13,6 @@ import {
 } from '../../design/components';
 import { Message, Spinner } from '../../design/elements';
 import { useForm } from 'react-hook-form';
-import FormError from '../../utils/form/FormError';
-import axios from 'axios';
 
 const Login = ({ location }) => {
    const [{ user, statusAuth, errorAuth }, { login }] = useAuth();

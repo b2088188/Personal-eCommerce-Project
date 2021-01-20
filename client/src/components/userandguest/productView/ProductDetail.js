@@ -1,5 +1,4 @@
-import * as R from 'ramda';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -31,7 +30,7 @@ const ProductDetail = ({ className }) => {
    const [, { dispatchCart }] = useCart();
    const [{ reviews, statusReviews }, { getReviews, createReview }] = useReview();
    const { productId } = useParams();
-   const { register, handleSubmit, errors } = useForm();
+   const { register, handleSubmit } = useForm();
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
    const isReviewed = user ? reviews.find((el) => el.user._id === user._id) : false;
