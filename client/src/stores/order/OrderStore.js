@@ -29,7 +29,9 @@ const OrderStore = ({
    const createOrder = useCallback(
       async function (values) {
          const { status } = await fetchOrder(
-            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`, values)
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`, values, {
+               withCredentials: true
+            })
          );
          if (status === 'success') dispatchOrder({ type: CREATE_ORDER });
       },
@@ -39,7 +41,9 @@ const OrderStore = ({
    const getOrder = useCallback(
       async function (orderId) {
          const { status } = await fetchOrder(
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}`)
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}`, {
+               withCredentials: true
+            })
          );
          if (status === 'success')
             dispatchOrder({
@@ -52,7 +56,13 @@ const OrderStore = ({
    const updateOrderToPaid = useCallback(
       async function (orderId, values) {
          const { status } = await fetchOrder(
-            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/pay`, values)
+            axios.patch(
+               `${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/pay`,
+               values,
+               {
+                  withCredentials: true
+               }
+            )
          );
          if (status === 'success')
             dispatchOrder({
@@ -65,7 +75,9 @@ const OrderStore = ({
    const updateOrderToDeliver = useCallback(
       async function (orderId) {
          const { status } = await fetchOrder(
-            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`)
+            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`, {
+               withCredentials: true
+            })
          );
          if (status === 'success')
             dispatchOrder({
@@ -78,7 +90,9 @@ const OrderStore = ({
    const getAllOrders = useCallback(
       async function () {
          const { status } = await fetchAllOrders(
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`)
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`, {
+               withCredentials: true
+            })
          );
          if (status === 'success') dispatchAllOrders({ type: GET_ORDERLIST });
       },

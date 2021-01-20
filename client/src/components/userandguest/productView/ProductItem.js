@@ -11,7 +11,10 @@ const ProductItem = ({ product }) => {
 		>
 			<Card>
 				<Card.Link as={Link} to={`/products/${product._id}`} modifiers='image'>
-					<Image src={`http://127.0.0.1:8000/${product.image}`} alt={product.name} />
+					<Image
+						src={`${process.env.REACT_APP_BACKEND_URL}/${product.image}`}
+						alt={product.name}
+					/>
 				</Card.Link>
 				<div className='details'>
 					<Card.Link as={Link} to={`/products/${product._id}`} modifiers='name'>

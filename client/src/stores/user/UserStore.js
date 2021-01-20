@@ -13,7 +13,11 @@ const UserStore = ({ children }) => {
 
    const getUserProfile = useCallback(
       async function () {
-         fetchUserProfile(axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/profile`));
+         fetchUserProfile(
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/profile`, {
+               withCredentials: true
+            })
+         );
       },
       [fetchUserProfile]
    );

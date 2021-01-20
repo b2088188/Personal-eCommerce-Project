@@ -114,7 +114,10 @@ const ProductDetail = ({ className }) => {
                <Row direction={{ tabport: 'column' }}>
                   <Col width='4' spacing='2.5' className='product__group'>
                      <ImageContainer>
-                        <Image src={`http://127.0.0.1:8000/${product.image}`} alt={product.name} />
+                        <Image
+                           src={`${process.env.REACT_APP_BACKEND_URL}/${product.image}`}
+                           alt={product.name}
+                        />
                      </ImageContainer>
                   </Col>
                   <Col width='3' spacing='2.5' className='product__group'>

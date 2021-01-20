@@ -35,7 +35,10 @@ const OrderView = ({ className }) => {
 				<ListGroup key={order._id} flexy='center'>
 					<ListGroup.Item width='20' spacing='3.5'>
 						<ImageContainer>
-							<Image src={`http://127.0.0.1:8000/${order.image}`} alt={order.name} />
+							<Image
+								src={`${process.env.REACT_APP_BACKEND_URL}/${order.image}`}
+								alt={order.name}
+							/>
 						</ImageContainer>
 					</ListGroup.Item>
 					<ListGroup.Item width='35' spacing='3.5'>

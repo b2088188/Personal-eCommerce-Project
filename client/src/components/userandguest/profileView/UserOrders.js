@@ -20,7 +20,11 @@ const UserOrder = ({ className }) => {
 	const [{ userOrders, statusUserOrders, errorUserOrders }, { userOrdersHandle }] = useUser();
 
 	useEffect(() => {
-		userOrdersHandle(axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/orders`));
+		userOrdersHandle(
+			axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/orders`, {
+				withCredentials: true
+			})
+		);
 	}, [userOrdersHandle]);
 
 	function renderUserOrders(list) {
