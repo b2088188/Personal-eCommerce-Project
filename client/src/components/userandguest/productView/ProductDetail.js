@@ -21,20 +21,20 @@ import { useProduct } from '../../../stores/product/productContext';
 import useReview from '../../../stores/review/reviewContext';
 import useAuth from '../../../stores/auth/authContext';
 import useCart from '../../../stores/cart/cartContext';
-import { addToCartList } from '../../../stores/cart/CartStore';
+import { addToCartList, updateCartItem } from '../../../stores/cart/CartStore';
 import formatDate from '../../../utils/formatDate';
 
 const ProductDetail = ({ className }) => {
    const [{ user }] = useAuth();
    const { product, statusProduct, errorProduct, getProduct } = useProduct();
-   const [, { dispatchCart }] = useCart();
+   const [{ cartList }, { dispatchCart }] = useCart();
    const [{ reviews, statusReviews }, { getReviews, createReview }] = useReview();
    const { productId } = useParams();
    const { register, handleSubmit } = useForm();
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
    const isReviewed = user ? reviews.find((el) => el.user._id === user._id) : false;
-
+   const isInCart = cartList.find((el) => el.product === productId);
    useEffect(() => {
       if (!productId) return;
       getProduct(productId);
@@ -43,7 +43,11 @@ const ProductDetail = ({ className }) => {
 
    function addCartClick(item, quantity) {
       return function () {
-         addToCartList(dispatchCart, item, +quantity);
+         if (!isInCart) {
+            addToCartList(dispatchCart, item, +quantity);
+         } else {
+            updateCartItem(dispatchCart, item, +quantity);
+         }
          setToCart(true);
       };
    }

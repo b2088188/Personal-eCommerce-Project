@@ -3,6 +3,7 @@ import {
 	LOADING_CARTLIST,
 	CARTLIST_SUCCESS,
 	ADD_CARTITEM,
+	UPDATE_CARTITEM,
 	REMOVE_CARTITEM,
 	CHANGE_QUANTITY,
 	CALCULATE_QTYANDPRICE,
@@ -26,6 +27,14 @@ function cartReducer(currentState, action) {
 			return {
 				...currentState,
 				cartList: R.uniqBy(R.prop('product'), [...currentState.cartList, action.payload.item])
+			};
+		case UPDATE_CARTITEM:
+			const cartIndex = currentState.cartList.findIndex(
+				(el) => el.product === action.payload.item.product
+			);
+			return {
+				...currentState,
+				cartList: R.update(cartIndex, action.payload.item, currentState.cartList)
 			};
 		case CALCULATE_QTYANDPRICE:
 			const itemsPrice = addDecimal(

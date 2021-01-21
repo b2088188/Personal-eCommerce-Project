@@ -35,7 +35,7 @@ const CartItem = ({ item, className }) => {
       <ListGroup flexy='center' className={className}>
          <ListGroup.Item width='15' spacing='3'>
             <ImageContainer>
-               <Image src={item.image} alt={item.name} />
+               <Image src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`} alt={item.name} />
             </ImageContainer>
          </ListGroup.Item>
          <ListGroup.Item width='30' spacing='3'>
@@ -54,7 +54,7 @@ const CartItem = ({ item, className }) => {
          <ListGroup.Item>
             <Button
                className='cart__button--delete'
-               modifiers='transparent'
+               modifiers={['transparent', 'dark']}
                onClick={deleteFromCart(item.product)}
             >
                <Icon as={Delete} />

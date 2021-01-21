@@ -29,7 +29,10 @@ const ReviewStore = ({ children }) => {
 			const { status } = await fetchReviews(
 				axios.post(
 					`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`,
-					{ rating, review }
+					{ rating, review },
+					{
+						withCredentials: true
+					}
 				)
 			);
 			if (status === 'success') dispatchReviews({ type: CREATE_REVIEW });

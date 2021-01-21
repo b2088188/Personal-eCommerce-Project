@@ -4,6 +4,7 @@ import { CartStateProvider, CartActionProvider } from './cartContext';
 import cartReducer from './cartReducer';
 import {
    ADD_CARTITEM,
+   UPDATE_CARTITEM,
    REMOVE_CARTITEM,
    CHANGE_QUANTITY,
    CALCULATE_QTYANDPRICE,
@@ -25,6 +26,22 @@ const InitialState = {
 export function addToCartList(dispatch, item, quantity) {
    dispatch({
       type: ADD_CARTITEM,
+      payload: {
+         item: {
+            ['product']: R.prop('_id', item),
+            ...R.pick(['name', 'image', 'price', 'countInStock'], item),
+            ...{ quantity }
+         }
+      }
+   });
+   dispatch({
+      type: CALCULATE_QTYANDPRICE
+   });
+}
+
+export function updateCartItem(dispatch, item, quantity) {
+   dispatch({
+      type: UPDATE_CARTITEM,
       payload: {
          item: {
             ['product']: R.prop('_id', item),
