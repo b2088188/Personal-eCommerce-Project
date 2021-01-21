@@ -62,7 +62,8 @@ export const logout = (req, res) => {
    res.cookie('jwt', 'Logged Out', {
       expires: new Date(Date.now() + 10 * 1000),
       httpOnly: true,
-      secure: true
+      secure: true,
+      sameSite: 'None'
    });
    res.status(200).json({
       status: 'success'
