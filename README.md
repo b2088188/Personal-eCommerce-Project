@@ -1,5 +1,9 @@
 # Personal eCommerce Project
-Paypal 金流電商MERN(React, Node.js, Express, MongoDB)專案, 使用 SPA 前後端分離的架構
+Paypal 金流電商MERN(React, Node.js, Express, MongoDB)專案  
+- 使用 SPA 前後端分離的架構  
+- 前端使用 React Hooks 進行狀態管控  
+- 後端使用 MVC 架構
+
 ## Table of contents
 * [General info](#general-info)
 * [Screenshots](#screenshots)
@@ -9,11 +13,11 @@ Paypal 金流電商MERN(React, Node.js, Express, MongoDB)專案, 使用 SPA 前�
 * [Status](#status)
 * [Contact](#contact)
 ## General info
-Purpose: 專案的目的是模擬可供使用者操作的電子商務平台, 並提供管理員限定的後台管理系統
-Motivation: 動機是想到現下社會有大量的網購用戶, 若能以貼近現實社會的主題方向進行, 更能理解開發遇到的困難以及使用者操作上的問題
-Inspiration: 啟發是受到 Brad Travercy 的 eCommerce 課程, 並對課程的 Project 進行前後端完全的重構, 主要著重在提升代碼的可維護、重用性, 並加強後端的安全性
+Purpose: 專案的目的是模擬可供使用者操作的電子商務平台, 並提供管理員限定的後台管理系統  
+Motivation: 動機是想到現下社會有大量的網購用戶, 若能以貼近現實社會的主題方向進行, 更能理解開發遇到的困難以及使用者操作上的問題  
+Inspiration: 啟發是受到 Brad Travercy 的 eCommerce 課程, 並對課程的 Project 進行前後端完全的重構, 主要著重在提升代碼的可維護、重用性, 並將Token存放至cookie以加強後端的安全性
 ## Screenshots
-![Example screenshot](https://i.imgur.com/clM2VFI.png)
+![Example screenshot](https://i.imgur.com/hofvRWw.png)
 ## Technologies
 > Front-end:
 * React
@@ -34,6 +38,7 @@ Inspiration: 啟發是受到 Brad Travercy 的 eCommerce 課程, 並對課程的
 * sharp
 > Others:
 * SPA
+* MVC
 * Paypal Developer API
 ## Deploy URL
 URL:
