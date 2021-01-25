@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import useCart from '../../../stores/cart/cartContext';
 import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';
@@ -17,13 +17,13 @@ import Navsteps from '../../../layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
 import { Spinner, Message } from '../../../design/elements';
 
-const PlaceOrder = ({ history, className }) => {
+const PlaceOrder = ({ className }) => {
 	const [
 		{ cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod }
 	] = useCart();
 	const [{ currentOrder, statusOrder, errorOrder }, { createOrder }] = useOrder();
-
-	function createOrderHandle(e) {
+	const history = useHistory();
+	async function createOrderHandle(e) {
 		createOrder({
 			orderItems: cartList,
 			shippingAddress,
@@ -44,7 +44,7 @@ const PlaceOrder = ({ history, className }) => {
 	if (statusOrder === 'pending')
 		return (
 			<Row>
-				<Spinner />
+				<Spinner modifiers='dark' />
 			</Row>
 		);
 	if (statusOrder === 'rejected' && errorOrder)
@@ -53,7 +53,8 @@ const PlaceOrder = ({ history, className }) => {
 				<Message text={errorOrder} severity='error' />
 			</Row>
 		);
-	if (statusOrder === 'resolved' && currentOrder)
+
+	if (statusOrder === 'resolved' && currentOrder && !currentOrder.isPaid)
 		return <Redirect to={`/order/${currentOrder._id}`} />;
 
 	return (

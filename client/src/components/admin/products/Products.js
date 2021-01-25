@@ -17,13 +17,13 @@ import {
 } from '@material-ui/core';
 
 const UserProducts = ({ className }) => {
-	const { products, statusProducts, errorProducts, getAllProducts } = useProducts();
+	const { products, statusProducts, errorProducts, getFilteredProducts } = useProducts();
 	const { url } = useRouteMatch();
 	const history = useHistory();
 
 	useEffect(() => {
-		getAllProducts();
-	}, [getAllProducts]);
+		getFilteredProducts();
+	}, [getFilteredProducts]);
 
 	function renderProducts(list) {
 		return list?.map(function generateItem(product) {

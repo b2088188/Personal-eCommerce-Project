@@ -25,7 +25,9 @@ function orderReducer(currentState, action) {
 		case CLEAR_ORDER:
 			return {
 				...currentState,
-				currentOrder: null
+				currentOrder: null,
+				status: 'idle',
+				error: null
 			};
 	}
 	return fetchReducer(currentState, action);

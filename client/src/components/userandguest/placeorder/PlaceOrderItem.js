@@ -7,7 +7,7 @@ const PlaceOrderItem = ({ item }) => {
 		<ListGroup flexy='center'>
 			<ListGroup.Item width='15' spacing='3.5'>
 				<ImageContainer>
-					<Image src={item.image} alt={item.name} />
+					<Image src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`} alt={item.name} />
 				</ImageContainer>
 			</ListGroup.Item>
 			<ListGroup.Item width='40' spacing='3.5'>

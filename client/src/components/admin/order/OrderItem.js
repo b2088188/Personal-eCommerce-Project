@@ -12,6 +12,7 @@ const OrderItem = ({ order }) => {
 				{order._id}
 			</TableCell>
 			<TableCell>{order.user._id}</TableCell>
+			<TableCell>{order.user.name}</TableCell>
 			<TableCell>{formatDate(order.createdAt)}</TableCell>
 			<TableCell>{order.totalPrice}</TableCell>
 			<TableCell>{order.isPaid ? formatDate(order.paidAt) : <Icon as={Close} />}</TableCell>

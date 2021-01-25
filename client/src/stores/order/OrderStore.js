@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { OrderStateProvider, OrderActionProvider } from './orderContext';
 import orderReducer from './orderReducer';
 import orderListReducer from './orderListReducer';
@@ -6,10 +6,7 @@ import useFetch from '../../customhooks/useFetch';
 import axios from 'axios';
 import { CREATE_ORDER, GET_ORDER, GET_ORDERLIST, UPDATE_ORDER } from '../types';
 
-const OrderStore = ({
-   // prettier-ignore
-   children
-}) => {
+const OrderStore = ({ children }) => {
    const [stateOrder, fetchOrder, dispatchOrder] = useFetch(
       {
          data: {},
@@ -99,10 +96,6 @@ const OrderStore = ({
       [fetchAllOrders, dispatchAllOrders]
    );
 
-   //    const clearOrder = useCallback(function () {
-   //             dispatch({type: CLEAR_ORDER});
-   //          }, []);
-
    const value = useMemo(
       () => ({
          currentOrder: stateOrder.currentOrder,
@@ -117,13 +110,14 @@ const OrderStore = ({
 
    const actions = useMemo(
       () => ({
+         dispatchOrder,
          createOrder,
          getOrder,
          updateOrderToPaid,
          updateOrderToDeliver,
          getAllOrders
       }),
-      [createOrder, getOrder, updateOrderToPaid, updateOrderToDeliver, getAllOrders]
+      [dispatchOrder, createOrder, getOrder, updateOrderToPaid, updateOrderToDeliver, getAllOrders]
    );
 
    return (

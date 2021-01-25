@@ -1,7 +1,10 @@
 import express from 'express';
 const router = express.Router();
+import orderRouter from './orderRoutes.js';
 import { signup, login, isLoggedIn, logout, protect } from '../controller/authController.js';
 import { getUserProfile, updateUserProfile, getUserOrders } from '../controller/userController.js';
+
+router.use('/:userId/orders', orderRouter);
 
 //Public
 router.get('/', isLoggedIn);
@@ -12,7 +15,5 @@ router.get('/logout', logout);
 //Private
 router.use(protect);
 router.route('/profile').get(getUserProfile).patch(updateUserProfile);
-
-router.route('/orders').get(getUserOrders);
 
 export default router;

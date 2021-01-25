@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useRouteMatch } from 'react-router-dom';
 import useOrder from '../../../stores/order/orderContext';
 import styled from 'styled-components';
 import {
@@ -23,11 +23,16 @@ import formatDate from '../../../utils/formatDate';
 import axios from 'axios';
 const OrderView = ({ className }) => {
 	const [sdkReady, setSdkReady] = useState(false);
-	const [{ currentOrder, statusOrder, errorOrder }, { getOrder, updateOrderToPaid }] = useOrder();
+	const [
+		{ currentOrder, statusOrder, errorOrder },
+		{ dispatchOrder, getOrder, updateOrderToPaid }
+	] = useOrder();
 	const { orderId } = useParams();
+	const { url } = useRouteMatch();
 
 	useEffect(() => {
 		if (currentOrder && !currentOrder.isPaid && !window.paypal) addPaypalScript();
+		else setSdkReady(true);
 		async function addPaypalScript() {
 			const {
 				data: { data }
@@ -164,9 +169,13 @@ const OrderView = ({ className }) => {
 										<Span>${currentOrder.totalPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
-								{currentOrder && !currentOrder.isPaid
-									? renderPayButton(currentOrder.totalPrice)
-									: null}
+								{currentOrder && !currentOrder.isPaid ? (
+									sdkReady ? (
+										renderPayButton(currentOrder.totalPrice)
+									) : (
+										<Spinner modifiers='dark' />
+									)
+								) : null}
 							</Col>
 						</Row>
 					</CenterWrapper>

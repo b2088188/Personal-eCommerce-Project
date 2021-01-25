@@ -16,6 +16,16 @@ export const getAllOrders = catchAsync(async function (req, res, next) {
 	});
 });
 
+export const getUserOrders = catchAsync(async (req, res, next) => {
+	const orders = await Order.find({ user: req.params.userId });
+	res.status(200).json({
+		status: 'success',
+		data: {
+			orders
+		}
+	});
+});
+
 export const createOrder = catchAsync(async (req, res, next) => {
 	let order = await Order.create({ user: req.user._id, ...req.body });
 

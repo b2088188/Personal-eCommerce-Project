@@ -52,7 +52,8 @@ const UserOrder = ({ className }) => {
 								<TableHead>
 									<TableRow>
 										<TableCell>Id</TableCell>
-										<TableCell>User</TableCell>
+										<TableCell>User Id</TableCell>
+										<TableCell>User Name</TableCell>
 										<TableCell>Date</TableCell>
 										<TableCell>TotalPrice</TableCell>
 										<TableCell>Paid</TableCell>

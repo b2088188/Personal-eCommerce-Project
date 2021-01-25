@@ -131,16 +131,21 @@ const ProductDetail = ({ className }) => {
                         </Title>
                      </ListGroup>
                      <ListGroup flexy='center' bdbottom>
-                        <ListGroup.Item half>
+                        <ListGroup.Item width='50'>
                            <RatingStar
                               average={product.ratingsQuantity < 1 ? 0 : product.ratingsAverage}
                            />
                         </ListGroup.Item>
-                        <ListGroup.Item half>
-                           <Span className='product__span'>{product.ratingsQuantity} reviews</Span>
+                        <ListGroup.Item>
+                           <Span>{product.ratingsQuantity} reviews</Span>
                         </ListGroup.Item>
                      </ListGroup>
-                     <ListGroup bdbottom>Price: ${product.price}</ListGroup>
+                     <ListGroup bdbottom>
+                        <ListGroup.Item width='50'>Price:</ListGroup.Item>
+                        <ListGroup.Item>
+                           <Span>${product.price}</Span>
+                        </ListGroup.Item>
+                     </ListGroup>
                      <ListGroup bdbottom>{product.description}</ListGroup>
                   </Col>
                   <Col width='3' spacing='2.5' className='product__group'>
