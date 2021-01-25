@@ -9,13 +9,13 @@ const app = express();
 app.enable('trust proxy');
 app.use(
 	cors({
-		origin: 'https://app0529-43866.web.app',
+		origin: 'https://app0746-9a789.web.app',
 		credentials: true
 	})
 );
 app.options('*', cors());
 app.use(function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', 'https://app0529-43866.web.app');
+	res.header('Access-Control-Allow-Origin', 'https://app0746-9a789.web.app');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
 	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
 	res.header('Access-Control-Allow-Credentials', true);
