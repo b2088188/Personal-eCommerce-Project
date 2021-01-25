@@ -87,7 +87,7 @@ const OrderStore = ({ children }) => {
    const getAllOrders = useCallback(
       async function () {
          const { status } = await fetchAllOrders(
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`, {
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/admin`, {
                withCredentials: true
             })
          );
