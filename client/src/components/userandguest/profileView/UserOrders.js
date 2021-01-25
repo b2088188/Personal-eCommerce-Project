@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import useAuth from '../../../stores/auth/authContext';
 import useUser from '../../../stores/user/userContext';
 import styled from 'styled-components';
 import { Row, Col, CenterWrapper, Title } from '../../../design/components';
@@ -17,15 +18,16 @@ import {
 import axios from 'axios';
 
 const UserOrder = ({ className }) => {
+	const [{ user }] = useAuth();
 	const [{ userOrders, statusUserOrders, errorUserOrders }, { userOrdersHandle }] = useUser();
 
 	useEffect(() => {
 		userOrdersHandle(
-			axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/orders`, {
+			axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/${user._id}/orders`, {
 				withCredentials: true
 			})
 		);
-	}, [userOrdersHandle]);
+	}, [userOrdersHandle, user]);
 
 	function renderUserOrders(list) {
 		return list?.map(function generateItem(order) {
