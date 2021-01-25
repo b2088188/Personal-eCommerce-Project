@@ -1,5 +1,5 @@
 import express from 'express';
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 import { protect, restrictTo } from '../controller/authController.js';
 import {
    createOrder,
