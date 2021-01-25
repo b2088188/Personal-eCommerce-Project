@@ -13,7 +13,13 @@ app.use(
 		credentials: true
 	})
 );
-app.options('*', cors());
+app.options(
+	'*',
+	cors({
+		origin: 'https://app0529-43866.web.app',
+		credentials: true
+	})
+);
 app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', 'https://app0529-43866.web.app');
 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
