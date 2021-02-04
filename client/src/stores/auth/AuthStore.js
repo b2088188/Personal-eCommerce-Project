@@ -22,7 +22,7 @@ const AuthStore = ({ children }) => {
       async function () {
          const { status } = await fetchAuth(
             axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`, {
-               withCredentials: true
+               //withCredentials: true
             })
          );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
@@ -38,7 +38,7 @@ const AuthStore = ({ children }) => {
       async function (values) {
          const { status } = await fetchAuth(
             axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`, values, {
-               withCredentials: true
+               //  withCredentials: true
             })
          );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
@@ -50,7 +50,7 @@ const AuthStore = ({ children }) => {
       async function (values) {
          const { status } = await fetchAuth(
             axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`, values, {
-               withCredentials: true
+               //withCredentials: true
             })
          );
          if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
@@ -72,7 +72,7 @@ const AuthStore = ({ children }) => {
       async function (values) {
          await fetchAuth(
             axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`, {
-               withCredentials: true
+               //withCredentials: true
             })
          );
          dispatchAuth({ type: LOGOUT_AUTH });

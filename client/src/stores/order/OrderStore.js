@@ -27,7 +27,7 @@ const OrderStore = ({ children }) => {
       async function (values) {
          const { status } = await fetchOrder(
             axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`, values, {
-               withCredentials: true
+               //withCredentials: true
             })
          );
          if (status === 'success') dispatchOrder({ type: CREATE_ORDER });
@@ -39,7 +39,7 @@ const OrderStore = ({ children }) => {
       async function (orderId) {
          const { status } = await fetchOrder(
             axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}`, {
-               withCredentials: true
+               // withCredentials: true
             })
          );
          if (status === 'success')
@@ -57,7 +57,7 @@ const OrderStore = ({ children }) => {
                `${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/pay`,
                values,
                {
-                  withCredentials: true
+                  // withCredentials: true
                }
             )
          );
@@ -73,7 +73,7 @@ const OrderStore = ({ children }) => {
       async function (orderId) {
          const { status } = await fetchOrder(
             axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`, {
-               withCredentials: true
+               // withCredentials: true
             })
          );
          if (status === 'success')
@@ -88,7 +88,7 @@ const OrderStore = ({ children }) => {
       async function () {
          const { status } = await fetchAllOrders(
             axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/admin`, {
-               withCredentials: true
+               //    withCredentials: true
             })
          );
          if (status === 'success') dispatchAllOrders({ type: GET_ORDERLIST });
