@@ -3,104 +3,131 @@ import { Row } from '../../design/components';
 import { AuthStateProvider, AuthActionProvider } from './authContext';
 import authReducer from './authReducer';
 import useFetch from '../../customhooks/useFetch';
+import { useQueryClient } from 'react-query';
+import { useAsync } from '../../utils/hooks';
 import axios from 'axios';
 import { GET_AUTHINFO, LOGOUT_AUTH, UPDATE_USERDATA } from '../types';
 import { Spinner } from '../../design/elements';
 
 const AuthStore = ({ children }) => {
-   const [stateAuth, fetchAuth, dispatchAuth] = useFetch(
-      {
-         data: {},
-         user: null,
-         initialAuthCheck: false
-      },
-      authReducer
-   );
-   const isAdmin = stateAuth.user && stateAuth.user.role === 'admin';
+   const queryClient = useQueryClient();
+   const {
+      data: user,
+      error,
+      isLoading,
+      isIdle,
+      isError,
+      isSuccess,
+      run,
+      setData,
+      setError
+   } = useAsync();
+   const isAdmin = user && user.role === 'admin';
 
-   const getInitialAuth = useCallback(
-      async function () {
-         const { status } = await fetchAuth(
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`, {
-               //withCredentials: true
-            })
-         );
-         if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
-      },
-      [fetchAuth, dispatchAuth]
-   );
+   const getInitialAuth = useCallback(async function () {
+      try {
+         const {
+            data: { data }
+         } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`, {
+            //withCredentials: true
+         });
+         return data.user;
+      } catch (err) {
+         return;
+      }
+   }, []);
 
    useEffect(() => {
-      getInitialAuth();
-   }, [getInitialAuth]);
+      run(getInitialAuth());
+   }, [getInitialAuth, run]);
 
    const login = useCallback(
       async function (values) {
-         const { status } = await fetchAuth(
-            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`, values, {
-               //  withCredentials: true
-            })
-         );
-         if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
+         try {
+            const {
+               data: { data }
+            } = await axios.post(
+               `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`,
+               values,
+               {
+                  //  withCredentials: true
+               }
+            );
+            setData(data.user);
+         } catch ({ response: { data } }) {
+            setError(data.message);
+         }
       },
-      [fetchAuth, dispatchAuth]
+      [setData, setError]
    );
 
    const signup = useCallback(
       async function (values) {
-         const { status } = await fetchAuth(
-            axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`, values, {
-               //withCredentials: true
-            })
-         );
-         if (status === 'success') dispatchAuth({ type: GET_AUTHINFO });
+         try {
+            const {
+               data: { data }
+            } = await axios.post(
+               `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`,
+               values,
+               {
+                  //withCredentials: true
+               }
+            );
+            setData(data.user);
+         } catch ({ response: { data } }) {
+            setError(data.message);
+         }
       },
-      [fetchAuth, dispatchAuth]
+      [setData, setError]
    );
 
-   const updateUserData = useCallback(
-      async function (values) {
-         const { status } = await fetchAuth(
-            axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/profile`, values)
-         );
-         if (status === 'success') dispatchAuth({ type: UPDATE_USERDATA });
-      },
-      [fetchAuth, dispatchAuth]
-   );
+   // const updateUserData = useCallback(
+   //    async function (values) {
+   //       const { status } = await fetchAuth(
+   //          axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/profile`, values)
+   //       );
+   //       if (status === 'success') dispatchAuth({ type: UPDATE_USERDATA });
+   //    },
+   //    [fetchAuth, dispatchAuth]
+   // );
 
    const logout = useCallback(
       async function (values) {
-         await fetchAuth(
-            axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`, {
+         queryClient.clear();
+         try {
+            await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`, {
                //withCredentials: true
-            })
-         );
-         dispatchAuth({ type: LOGOUT_AUTH });
+            });
+            setData(null);
+         } catch (err) {
+            setData(null);
+         }
       },
-      [fetchAuth, dispatchAuth]
+      [setData, queryClient]
    );
 
    const value = useMemo(
       () => ({
-         user: stateAuth.user,
-         statusAuth: stateAuth.status,
-         errorAuth: stateAuth.error,
+         user,
+         isLoading,
+         isError,
+         error,
          isAdmin
       }),
-      [stateAuth, isAdmin]
+      [user, isLoading, isError, error, isAdmin]
    );
 
    const actions = useMemo(
       () => ({
          login,
          signup,
-         logout,
-         updateUserData
+         logout
+         //updateUserData
       }),
-      [login, signup, logout, updateUserData]
+      [login, signup, logout]
    );
 
-   if (!stateAuth.initialAuthCheck)
+   if (isIdle || isLoading)
       return (
          <Row>
             <Spinner modifiers='dark' />

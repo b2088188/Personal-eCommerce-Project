@@ -7,13 +7,13 @@ import { useForm } from 'react-hook-form';
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({ location }) => {
-   const [{ user, statusAuth, errorAuth }, { signup }] = useAuth();
+   const [{ user, isLoading, isError, error }, { signup }] = useAuth();
    const { register, handleSubmit, watch, errors } = useForm();
    const password = useRef({});
    password.current = watch('password', '');
 
    if (user) return <Redirect to={location.state?.from || '/'} />;
-   if (statusAuth === 'pending')
+   if (isLoading)
       return (
          <Row>
             <Spinner modifiers='dark' />
@@ -24,7 +24,7 @@ const Signup = ({ location }) => {
          <Col width='12'>
             <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
                <Title modifiers={['big', 'light']}>Sign Up</Title>
-               {errorAuth ? <Message text={errorAuth} severity='error' /> : null}
+               {error ? <Message text={error} severity='error' /> : null}
                <Form onSubmit={handleSubmit(signup)}>
                   <Form.Group direction='column'>
                      <Form.Label>Name</Form.Label>

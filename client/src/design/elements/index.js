@@ -4,4 +4,5 @@ import Spinner from './Spinner';
 import Modal from './Modal';
 import RatingStar from './RatingStar';
 
+export * from './Select';
 export { Message, Options, Spinner, Modal, RatingStar };

@@ -17,7 +17,7 @@ import {
 } from '../../../design/components';
 import { Message, Options, Spinner, RatingStar } from '../../../design/elements';
 import { media } from '../../../design/utils';
-import { useProduct } from '../../../stores/product/productContext';
+import { useProductInfo } from '../../../utils/product';
 import useReview from '../../../stores/review/reviewContext';
 import useAuth from '../../../stores/auth/authContext';
 import useCart from '../../../stores/cart/cartContext';
@@ -26,10 +26,10 @@ import formatDate from '../../../utils/formatDate';
 
 const ProductDetail = ({ className }) => {
    const [{ user }] = useAuth();
-   const { product, statusProduct, errorProduct, getProduct } = useProduct();
+   const { productId } = useParams();
+   const { product, isIdle, isLoading, isSuccess, isError, error } = useProductInfo(productId);
    const [{ cartList }, { dispatchCart }] = useCart();
    const [{ reviews, statusReviews }, { getReviews, createReview }] = useReview();
-   const { productId } = useParams();
    const { register, handleSubmit } = useForm();
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
@@ -37,9 +37,8 @@ const ProductDetail = ({ className }) => {
    const isInCart = cartList.find((el) => el.product === productId);
    useEffect(() => {
       if (!productId) return;
-      getProduct(productId);
       getReviews(productId);
-   }, [productId, getProduct, getReviews]);
+   }, [productId, getReviews]);
 
    function addCartClick(item, quantity) {
       return function () {
@@ -96,19 +95,19 @@ const ProductDetail = ({ className }) => {
 
    if (toCart) return <Redirect to='/cart' />;
 
-   if (statusProduct === 'idle' || statusProduct === 'pending')
+   if (isIdle || isLoading)
       return (
          <Row>
             <Spinner />
          </Row>
       );
-   if (statusProduct === 'rejected')
+   if (isError && error)
       return (
          <Row>
-            <Message text={errorProduct} severity='error' />
+            <Message text={error.message} severity='error' />
          </Row>
       );
-   if (statusProduct === 'resolved')
+   if (isSuccess)
       return (
          <Row className={className}>
             <CenterWrapper width='70' className='product'>

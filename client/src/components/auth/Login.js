@@ -15,11 +15,11 @@ import { Message, Spinner } from '../../design/elements';
 import { useForm } from 'react-hook-form';
 
 const Login = ({ location }) => {
-   const [{ user, statusAuth, errorAuth }, { login }] = useAuth();
+   const [{ user, isLoading, isError, error }, { login }] = useAuth();
    const { register, handleSubmit, errors } = useForm();
 
    if (user) return <Redirect to={location.state?.from || '/'} />;
-   if (statusAuth === 'pending')
+   if (isLoading)
       return (
          <Row>
             <Spinner modifiers='dark' />
@@ -30,7 +30,7 @@ const Login = ({ location }) => {
          <Col width='12'>
             <FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
                <Title modifiers={['big', 'light']}>Login</Title>
-               {errorAuth ? <Message text={errorAuth} severity='error' /> : null}
+               {error ? <Message text={error} severity='error' /> : null}
                <Form onSubmit={handleSubmit(login)}>
                   <Form.Group>
                      <Form.Label>Email</Form.Label>

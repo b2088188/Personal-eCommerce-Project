@@ -8,14 +8,13 @@ import { useProducts } from '../../../stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { NativeSelect, FormHelperText } from '@material-ui/core';
+import { Select, Option } from '../../../design/elements';
+import { useProductItems } from '../../../utils/product';
 
 const ProductView = ({ className }) => {
-   const { products, statusProducts, errorProducts, getFilteredProducts } = useProducts();
    const [page, setPage] = useState(1);
-   const [filterBy, setFilterBy] = useState('');
-   useEffect(() => {
-      getFilteredProducts(filterBy);
-   }, [getFilteredProducts, filterBy]);
+   const [filterBy, setFilterBy] = useState(null);
+   const { products, isIdle, isLoading, isSuccess, isError, error } = useProductItems(filterBy);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -35,19 +34,19 @@ const ProductView = ({ className }) => {
       setPage(value);
    }
 
-   if (statusProducts === 'idle' || statusProducts === 'pending')
+   if (isIdle || isLoading)
       return (
          <Row>
             <Spinner modifiers='dark' />
          </Row>
       );
-   if (statusProducts === 'rejected')
+   if (isError && error)
       return (
          <Row>
-            <Message alert={errorProducts} severity='error' />;
+            <Message alert={error.message} severity='error' />;
          </Row>
       );
-   if (statusProducts === 'resolved')
+   if (isSuccess)
       return (
          <Row>
             <Col width='12' className={className}>
@@ -57,16 +56,11 @@ const ProductView = ({ className }) => {
                         All Products
                      </Title>
                      <div className='products__select'>
-                        <NativeSelect
-                           value={filterBy}
-                           onChange={(e) => setFilterBy(e.target.value)}
-                           name='category'
-                           inputProps={{ 'aria-label': 'age' }}
-                        >
-                           <option value=''>All</option>
-                           <option value='Electronics'>Electronics</option>
-                           <option value='Life'>Life</option>
-                        </NativeSelect>
+                        <Select name='category' value={filterBy} changeValue={setFilterBy}>
+                           <Option>All</Option>
+                           <Option>Electronics</Option>
+                           <Option>Life</Option>
+                        </Select>
                         <FormHelperText>Select Category</FormHelperText>
                      </div>
                   </div>
@@ -109,3 +103,14 @@ export default styled(ProductView)`
       }
    }
 `;
+
+// <NativeSelect
+//                            value={filterBy}
+//                            onChange={(e) => setFilterBy(e.target.value)}
+//                            name='category'
+//                            inputProps={{ 'aria-label': 'age' }}
+//                         >
+//                            <option value=''>All</option>
+//                            <option value='Electronics'>Electronics</option>
+//                            <option value='Life'>Life</option>
+//                         </NativeSelect>
