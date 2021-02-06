@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import useCart from '../../../stores/cart/cartContext';
 import useOrder from '../../../stores/order/orderContext';
+import { useCreateOrder } from '../../../utils/order';
 import styled from 'styled-components';
 import {
 	CenterWrapper,
@@ -21,9 +22,11 @@ const PlaceOrder = ({ className }) => {
 	const [
 		{ cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod }
 	] = useCart();
-	const [{ currentOrder, statusOrder, errorOrder }, { createOrder }] = useOrder();
+	//const [{ currentOrder, statusOrder, errorOrder }, { createOrder }] = useOrder();
+	const { order, createOrder, isLoading, isSuccess, isError, error } = useCreateOrder();
 	const history = useHistory();
 	async function createOrderHandle(e) {
+		console.log('create');
 		createOrder({
 			orderItems: cartList,
 			shippingAddress,
@@ -41,21 +44,20 @@ const PlaceOrder = ({ className }) => {
 	}
 
 	if (!shippingAddress || !paymentMethod) return <Redirect to='/' />;
-	if (statusOrder === 'pending')
+	if (isLoading)
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
 			</Row>
 		);
-	if (statusOrder === 'rejected' && errorOrder)
+	if (isError && error)
 		return (
 			<Row>
-				<Message text={errorOrder} severity='error' />
+				<Message text={error.message} severity='error' />
 			</Row>
 		);
 
-	if (statusOrder === 'resolved' && currentOrder && !currentOrder.isPaid)
-		return <Redirect to={`/order/${currentOrder._id}`} />;
+	if (isSuccess) return <Redirect to={`/order/${order._id}`} />;
 
 	return (
 		<Row className={className}>
@@ -106,7 +108,7 @@ const PlaceOrder = ({ className }) => {
 								</ListGroup.Item>
 							</ListGroup>
 							<ListGroup bdtop>
-								{statusOrder === 'pending' ? (
+								{isLoading ? (
 									<Spinner modifiers='dark' />
 								) : (
 									<Button onClick={createOrderHandle} className='placeorder__button'>

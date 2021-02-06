@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useRouteMatch } from 'react-router-dom';
 import useOrder from '../../../stores/order/orderContext';
+import { useOrderInfo, useUpdateOrderToPaid } from '../../../utils/order';
 import styled from 'styled-components';
 import {
 	Row,
@@ -22,16 +23,14 @@ import { media } from '../../../design/utils';
 import formatDate from '../../../utils/formatDate';
 import axios from 'axios';
 const OrderView = ({ className }) => {
-	const [sdkReady, setSdkReady] = useState(false);
-	const [
-		{ currentOrder, statusOrder, errorOrder },
-		{ dispatchOrder, getOrder, updateOrderToPaid }
-	] = useOrder();
 	const { orderId } = useParams();
+	const [sdkReady, setSdkReady] = useState(false);
+	const { order, isIdle, isLoading, isSuccess, isError, error } = useOrderInfo(orderId);
+	const { updateToPaid } = useUpdateOrderToPaid(orderId);
 	const { url } = useRouteMatch();
 
 	useEffect(() => {
-		if (currentOrder && !currentOrder.isPaid && !window.paypal) addPaypalScript();
+		if (order && !order.isPaid && !window.paypal) addPaypalScript();
 		else setSdkReady(true);
 		async function addPaypalScript() {
 			const {
@@ -46,15 +45,10 @@ const OrderView = ({ className }) => {
 			};
 			document.body.appendChild(script);
 		}
-	}, [currentOrder]);
-
-	useEffect(() => {
-		//clearOrder();
-		getOrder(orderId);
-	}, [orderId, getOrder]);
+	}, [order]);
 
 	function onSuccessPayHandler(result) {
-		updateOrderToPaid(orderId, {
+		updateToPaid({
 			paymentResult: R.pick(['id', 'update_time', 'status'], result)
 		});
 	}
@@ -96,32 +90,32 @@ const OrderView = ({ className }) => {
 		);
 	}
 
-	if (statusOrder === 'idle' || statusOrder === 'pending')
+	if (isIdle || isLoading)
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
 			</Row>
 		);
-	if (statusOrder === 'rejected' && errorOrder)
+	if (isError && error)
 		return (
 			<Row>
-				<Message severity='error' text={errorOrder} />
+				<Message severity='error' text={error.message} />
 			</Row>
 		);
 
-	if (statusOrder === 'resolved')
+	if (isSuccess)
 		return (
 			<Row className={className}>
 				<Col width='12'>
 					<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
-						<Title modifiers='large'>ORDER {currentOrder._id}</Title>
+						<Title modifiers='large'>ORDER {order._id}</Title>
 						<Row direction={{ tabport: 'column' }}>
 							<Col width='7'>
 								<ListGroup bdbottom>
 									<ListGroup.Item>
 										<Title>Shipping</Title>
 										<Paragraph modifiers='exlight'>
-											{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`}
+											{`Address: ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`}
 										</Paragraph>
 									</ListGroup.Item>
 									<Message text='Not Delivered' severity='error' />
@@ -130,12 +124,12 @@ const OrderView = ({ className }) => {
 									<ListGroup.Item>
 										<Title>Payment Method</Title>
 										<Paragraph modifiers='exlight'>
-											{`Method: ${currentOrder.paymentMethod}`}
+											{`Method: ${order.paymentMethod}`}
 										</Paragraph>
 									</ListGroup.Item>
-									{currentOrder.isPaid ? (
+									{order.isPaid ? (
 										<Message
-											text={`Paid on ${formatDate(currentOrder.paidAt)}`}
+											text={`Paid on ${formatDate(order.paidAt)}`}
 											severity='success'
 										/>
 									) : (
@@ -144,7 +138,7 @@ const OrderView = ({ className }) => {
 								</ListGroup>
 								<ListGroup bdbottom>
 									<Title>Order Items</Title>
-									{renderOrderItems(currentOrder.orderItems)}
+									{renderOrderItems(order.orderItems)}
 								</ListGroup>
 							</Col>
 							<Col width='4' spacing='2' className='order__summary'>
@@ -154,24 +148,24 @@ const OrderView = ({ className }) => {
 								<ListGroup flexy='center' bdtop>
 									<ListGroup.Item width='50'>Items</ListGroup.Item>
 									<ListGroup.Item>
-										<Span>${currentOrder.itemsPrice}</Span>
+										<Span>${order.itemsPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
 								<ListGroup flexy='center' bdtop>
 									<ListGroup.Item width='50'>Shipping</ListGroup.Item>
 									<ListGroup.Item>
-										<Span>${currentOrder.shippingPrice}</Span>
+										<Span>${order.shippingPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
 								<ListGroup flexy='center' bdtop>
 									<ListGroup.Item width='50'>Total</ListGroup.Item>
 									<ListGroup.Item>
-										<Span>${currentOrder.totalPrice}</Span>
+										<Span>${order.totalPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
-								{currentOrder && !currentOrder.isPaid ? (
+								{order && !order.isPaid ? (
 									sdkReady ? (
-										renderPayButton(currentOrder.totalPrice)
+										renderPayButton(order.totalPrice)
 									) : (
 										<Spinner modifiers='dark' />
 									)
