@@ -18,7 +18,7 @@ import {
 import { Message, Options, Spinner, RatingStar } from '../../../design/elements';
 import { media } from '../../../design/utils';
 import { useProductInfo } from '../../../utils/product';
-import useReview from '../../../stores/review/reviewContext';
+import { useReviewItems, useCreateReview, useReviewItem } from '../../../utils/review';
 import useAuth from '../../../stores/auth/authContext';
 import useCart from '../../../stores/cart/cartContext';
 import { addToCartList, updateCartItem } from '../../../stores/cart/CartStore';
@@ -29,16 +29,21 @@ const ProductDetail = ({ className }) => {
    const { productId } = useParams();
    const { product, isIdle, isLoading, isSuccess, isError, error } = useProductInfo(productId);
    const [{ cartList }, { dispatchCart }] = useCart();
-   const [{ reviews, statusReviews }, { getReviews, createReview }] = useReview();
+   const {
+      reviews,
+      isIdle: isReviewIdle,
+      isLoading: isReviewLoading,
+      isSuccess: isReviewSuccess,
+      isError: isReviewError,
+      error: errorReviews
+   } = useReviewItems(productId);
+   const reviewItem = useReviewItem(productId);
+   const { createReview } = useCreateReview(productId);
    const { register, handleSubmit } = useForm();
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
-   const isReviewed = user ? reviews.find((el) => el.user._id === user._id) : false;
+
    const isInCart = cartList.find((el) => el.product === productId);
-   useEffect(() => {
-      if (!productId) return;
-      getReviews(productId);
-   }, [productId, getReviews]);
 
    function addCartClick(item, quantity) {
       return function () {
@@ -52,7 +57,7 @@ const ProductDetail = ({ className }) => {
    }
 
    function onReviewCreate({ rating, review }) {
-      createReview(productId, +rating, review);
+      createReview(+rating, review);
    }
 
    function renderSelect(count) {
@@ -92,7 +97,7 @@ const ProductDetail = ({ className }) => {
          );
       });
    }
-
+   console.log(reviewItem);
    if (toCart) return <Redirect to='/cart' />;
 
    if (isIdle || isLoading)
@@ -173,16 +178,16 @@ const ProductDetail = ({ className }) => {
                   <Col width='6'>
                      <ListGroup>
                         <Title modifiers='large'>Reviews</Title>
-                        {statusReviews === 'pending' ? (
+                        {isReviewLoading ? (
                            <Spinner modifiers='dark' />
-                        ) : statusReviews === 'resolved' && reviews.length > 0 ? (
+                        ) : isReviewSuccess && reviews.length > 0 ? (
                            renderReviewList(reviews)
                         ) : (
                            <Message text='No Review yet' severity='info' />
                         )}
                         <ListGroup.Item>
-                           {statusReviews === 'resolved' ? (
-                              user && !isReviewed ? (
+                           {isReviewSuccess ? (
+                              user && !reviewItem ? (
                                  <Form onSubmit={handleSubmit(onReviewCreate)}>
                                     <Form.Group>
                                        <Form.Label>Rating</Form.Label>
