@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import useAuth from '../../../stores/auth/authContext';
-import useUser from '../../../stores/user/userContext';
-import styled from 'styled-components';
+import React from 'react';
+import { useUserOrders } from '../../../utils/user';
 import { Row, Col, CenterWrapper, Title } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import Sidebar from '../../../layout/Sidebar';
@@ -18,16 +16,7 @@ import {
 import axios from 'axios';
 
 const UserOrder = ({ className }) => {
-	const [{ user }] = useAuth();
-	const [{ userOrders, statusUserOrders, errorUserOrders }, { userOrdersHandle }] = useUser();
-
-	useEffect(() => {
-		userOrdersHandle(
-			axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/${user._id}/orders`, {
-				withCredentials: true
-			})
-		);
-	}, [userOrdersHandle, user]);
+	const { orders, isIdle, isLoading, isSuccess, isError, error } = useUserOrders();
 
 	function renderUserOrders(list) {
 		return list?.map(function generateItem(order) {
@@ -35,20 +24,20 @@ const UserOrder = ({ className }) => {
 		});
 	}
 
-	if (statusUserOrders === 'idle' || statusUserOrders === 'pending')
+	if (isIdle || isLoading)
 		return (
 			<Row>
 				<Spinner />
 			</Row>
 		);
 
-	if (statusUserOrders === 'rejected' && errorUserOrders)
+	if (isError && error)
 		return (
 			<Row>
-				<Message severity='error' text={errorUserOrders} />
+				<Message severity='error' text={error.message} />
 			</Row>
 		);
-	if (statusUserOrders === 'resolved')
+	if (isSuccess)
 		return (
 			<Row direction={{ tabport: 'column' }}>
 				<Col width='3'>
@@ -69,7 +58,7 @@ const UserOrder = ({ className }) => {
 										<TableCell> </TableCell>
 									</TableRow>
 								</TableHead>
-								<TableBody>{renderUserOrders(userOrders)}</TableBody>
+								<TableBody>{renderUserOrders(orders)}</TableBody>
 							</Table>
 						</TableContainer>
 					</CenterWrapper>
@@ -78,4 +67,4 @@ const UserOrder = ({ className }) => {
 		);
 };
 
-export default styled(UserOrder)``;
+export default UserOrder;

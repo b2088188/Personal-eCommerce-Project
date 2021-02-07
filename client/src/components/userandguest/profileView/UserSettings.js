@@ -1,50 +1,48 @@
 import React, { useEffect } from 'react';
-import useUser from '../../../stores/user/userContext';
-import useAuth from '../../../stores/auth/authContext';
+import { useUserProfile, useUpdateUserData } from '../../../utils/user';
 import { useForm } from 'react-hook-form';
 import { FormContainer, Form, Row, Col, Title, Button, Span } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import Sidebar from '../../../layout/Sidebar';
 
 const UserSettings = () => {
-	const [{ statusAuth, errorAuth }, { updateUserData }] = useAuth();
-	const [{ userProfile, statusUserProfile, errorUserProfile }, { getUserProfile }] = useUser();
+	const { userProfile, isIdle, isLoading, isSuccess, isError, error } = useUserProfile();
+	const { updateUserData } = useUpdateUserData();
 	const { register, handleSubmit, errors, setValue, reset } = useForm();
+
 	useEffect(() => {
-		getUserProfile();
-	}, [getUserProfile]);
-	useEffect(() => {
-		if (userProfile && statusUserProfile === 'resolved') {
+		if (userProfile && isSuccess) {
 			setValue('name', userProfile.name);
 			setValue('email', userProfile.email);
 		}
-	}, [userProfile, statusUserProfile, setValue]);
+	}, [userProfile, isSuccess, setValue]);
 
 	function onSubmit(values) {
 		reset();
 		updateUserData(values);
 	}
-	if (statusUserProfile === 'idle' || statusUserProfile === 'pending')
+
+	if (isIdle || isLoading)
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
 			</Row>
 		);
-	if (statusUserProfile === 'rejected' && errorUserProfile)
+	if (isError && error)
 		return (
 			<Row>
-				<Message text={errorUserProfile} severity='error' />
+				<Message text={error.message} severity='error' />
 			</Row>
 		);
-	if (statusUserProfile === 'resolved')
+	if (isSuccess)
 		return (
 			<Row direction={{ tabport: 'column' }}>
 				<Col width='3'>
 					<Sidebar />
 				</Col>
 				<Col width='9'>
-					{statusAuth === 'pending' ? <Spinner modifiers='dark' /> : null}
-					{statusAuth === 'rejected' ? <Message text={errorAuth} severity='error' /> : null}
+					{/*isMutating ? <Spinner modifiers='dark' /> : null*/}
+					{/*statusAuth === 'rejected' ? <Message text={errorAuth} severity='error' /> : null*/}
 					<FormContainer width={{ desktop: '50', tabport: '90' }} my='2'>
 						<Title modifiers={['big', 'light']}>User Profile</Title>
 						<Form onSubmit={handleSubmit(onSubmit)}>
