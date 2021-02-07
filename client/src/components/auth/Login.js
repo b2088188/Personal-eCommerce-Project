@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import useAuth from '../../stores/auth/authContext';
+import useAuth from 'stores/auth/authContext';
 import {
    Row,
    Col,
@@ -10,8 +10,8 @@ import {
    Title,
    Button,
    Span
-} from '../../design/components';
-import { Message, Spinner } from '../../design/elements';
+} from 'design/components';
+import { Message, Spinner } from 'design/elements';
 import { useForm } from 'react-hook-form';
 
 const Login = ({ location }) => {

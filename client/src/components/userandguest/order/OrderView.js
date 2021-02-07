@@ -1,8 +1,8 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useRouteMatch } from 'react-router-dom';
-import useOrder from '../../../stores/order/orderContext';
-import { useOrderInfo, useUpdateOrderToPaid } from '../../../utils/order';
+import useOrder from 'stores/order/orderContext';
+import { useOrderInfo, useUpdateOrderToPaid } from 'utils/order';
 import styled from 'styled-components';
 import {
 	Row,
@@ -15,13 +15,14 @@ import {
 	Title,
 	Paragraph,
 	Span
-} from '../../../design/components';
-import { setBorder } from '../../../design/utils';
+} from 'design/components';
+import { setBorder } from 'design/utils';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { Message, Spinner } from '../../../design/elements';
-import { media } from '../../../design/utils';
-import formatDate from '../../../utils/formatDate';
+import { Message, Spinner } from 'design/elements';
+import { media } from 'design/utils';
+import formatDate from 'utils/formatDate';
 import axios from 'axios';
+
 const OrderView = ({ className }) => {
 	const { orderId } = useParams();
 	const [sdkReady, setSdkReady] = useState(false);

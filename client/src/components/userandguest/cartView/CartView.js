@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import useCart from '../../../stores/cart/cartContext';
+import useCart from 'stores/cart/cartContext';
 import styled from 'styled-components';
-import { CenterWrapper, Row, Col, Title, Span, Button } from '../../../design/components';
-import { setBorder, setFlex, media } from '../../../design/utils';
+import { CenterWrapper, Row, Col, Title, Span, Button } from 'design/components';
+import { setBorder, setFlex, media } from 'design/utils';
 import CartItem from './CartItem';
 
 const CartView = ({ className }) => {

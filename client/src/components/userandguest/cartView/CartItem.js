@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
 import { Link as ReactLink } from 'react-router-dom';
-import { deleteFromCartList, changeQuantity } from '../../../stores/cart/CartStore';
-import useCart from '../../../stores/cart/cartContext';
+import { deleteFromCartList, changeQuantity } from 'stores/cart/CartStore';
+import useCart from 'stores/cart/cartContext';
 import styled from 'styled-components';
-import {
-   ListGroup,
-   Button,
-   ImageContainer,
-   Image,
-   Link,
-   Select,
-   Icon
-} from '../../../design/components';
-import { colorGrey, setBorder } from '../../../design/utils';
+import { ListGroup, Button, ImageContainer, Image, Link, Select, Icon } from 'design/components';
+import { colorGrey, setBorder } from 'design/utils';
 import { Delete } from '@material-ui/icons';
-import { Options } from '../../../design/elements';
+import { Options } from 'design/elements';
 
 const CartItem = ({ item, className }) => {
    const [, { dispatchCart }] = useCart();

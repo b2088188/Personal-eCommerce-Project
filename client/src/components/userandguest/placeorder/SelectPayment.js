@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import useCart from '../../../stores/cart/cartContext';
+import useCart from 'stores/cart/cartContext';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, CenterWrapper, Title, Form, Button, Radio } from '../../../design/components';
+import { Row, Col, CenterWrapper, Title, Form, Button, Radio } from 'design/components';
 import { RadioGroup } from '@material-ui/core';
 import { useForm, Controller } from 'react-hook-form';
-import Navsteps from '../../../layout/NavSteps';
+import Navsteps from 'layout/NavSteps';
 
 const SelectPayment = ({ className }) => {
 	const [{ shippingAddress }, { savePayInfo }] = useCart();

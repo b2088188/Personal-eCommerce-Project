@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Link as SLink, Icon } from '../../../design/components';
+import { Link as SLink, Icon } from 'design/components';
 import { TableRow, TableCell } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import formatDate from '../../../utils/formatDate';
+import formatDate from 'utils/formatDate';
 
 const UserOrderItem = ({ order }) => {
 	return (

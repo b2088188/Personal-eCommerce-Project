@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Row, Col, CenterWrapper, Title, Button } from '../../../design/components';
-import { useProducts } from '../../../stores/product/productsContext';
+import { Row, Col, CenterWrapper, Title, Button } from 'design/components';
+import { useProducts } from 'stores/product/productsContext';
 import ProductItem from './ProductItem';
-import AdminSidebar from '../../../layout/admin/AdminSidebar';
-import { Spinner, Message } from '../../../design/elements';
+import AdminSidebar from 'layout/admin/AdminSidebar';
+import { Spinner, Message } from 'design/elements';
 import {
 	TableHead,
 	TableRow,

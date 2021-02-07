@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Redirect, Prompt } from 'react-router-dom';
-import useCart from '../../../stores/cart/cartContext';
-import { Row, Col, FormContainer, Form, Span } from '../../../design/components';
+import useCart from 'stores/cart/cartContext';
+import { Row, Col, FormContainer, Form, Span } from 'design/components';
 import { useForm } from 'react-hook-form';
-import Navsteps from '../../../layout/NavSteps';
+import Navsteps from 'layout/NavSteps';
 
 const ShippingInfo = () => {
    const [{ cartList }, { savePayInfo }] = useCart();

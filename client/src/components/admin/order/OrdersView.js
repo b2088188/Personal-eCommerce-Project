@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import useOrder from '../../../stores/order/orderContext';
+import useOrder from 'stores/order/orderContext';
 import OrderItem from './OrderItem';
-import AdminSidebar from '../../../layout/admin/AdminSidebar';
-import { Row, Col, CenterWrapper, Title } from '../../../design/components';
+import AdminSidebar from 'layout/admin/AdminSidebar';
+import { Row, Col, CenterWrapper, Title } from 'design/components';
 import {
 	TableHead,
 	TableRow,
@@ -12,7 +12,7 @@ import {
 	TableCell,
 	TableContainer
 } from '@material-ui/core';
-import { Spinner, Message } from '../../../design/elements';
+import { Spinner, Message } from 'design/elements';
 
 const UserOrder = ({ className }) => {
 	const [{ orderList, statusAllOrders, errorAllOrders }, { getAllOrders }] = useOrder();

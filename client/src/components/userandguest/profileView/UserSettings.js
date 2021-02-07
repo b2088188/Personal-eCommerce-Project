@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useUserProfile, useUpdateUserData } from '../../../utils/user';
+import { useUserProfile, useUpdateUserData } from 'utils/user';
 import { useForm } from 'react-hook-form';
-import { FormContainer, Form, Row, Col, Title, Button, Span } from '../../../design/components';
-import { Spinner, Message } from '../../../design/elements';
-import Sidebar from '../../../layout/Sidebar';
+import { FormContainer, Form, Row, Col, Title, Button, Span } from 'design/components';
+import { Spinner, Message } from 'design/elements';
+import Sidebar from 'layout/Sidebar';
 
 const UserSettings = () => {
 	const { userProfile, isIdle, isLoading, isSuccess, isError, error } = useUserProfile();

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { Row, Col, FormContainer, Form, Span, Button } from '../../../design/components';
-import { useProducts } from '../../../stores/product/productsContext';
+import { Row, Col, FormContainer, Form, Span, Button } from 'design/components';
+import { useProducts } from 'stores/product/productsContext';
 import { useForm } from 'react-hook-form';
-import { Select } from '../../../design/components';
-import { Spinner } from '../../../design/elements';
+import { Select } from 'design/components';
+import { Spinner } from 'design/elements';
 
 const ProductEdit = ({ location }) => {
    const { products, statusProducts, createProduct, updateProduct } = useProducts();

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import useOrder from '../../../stores/order/orderContext';
+import useOrder from 'stores/order/orderContext';
 import styled from 'styled-components';
 import {
 	Row,
@@ -12,10 +12,10 @@ import {
 	Button,
 	Title,
 	Span
-} from '../../../design/components';
-import { setBorder } from '../../../design/utils';
-import { Message, Spinner } from '../../../design/elements';
-import formatDate from '../../../utils/formatDate';
+} from 'design/components';
+import { setBorder } from 'design/utils';
+import { Message, Spinner } from 'design/elements';
+import formatDate from 'utils/formatDate';
 
 const OrderView = ({ className }) => {
 	const [

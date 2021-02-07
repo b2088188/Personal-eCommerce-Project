@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Link as SLink, Icon } from '../../../design/components';
-import formatDate from '../../../utils/formatDate';
+import { Link as SLink, Icon } from 'design/components';
+import formatDate from 'utils/formatDate';
 import { TableRow, TableCell } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 

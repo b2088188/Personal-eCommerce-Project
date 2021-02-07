@@ -14,15 +14,15 @@ import {
    Col,
    Form,
    Select
-} from '../../../design/components';
-import { Message, Options, Spinner, RatingStar } from '../../../design/elements';
-import { media } from '../../../design/utils';
-import { useProductInfo } from '../../../utils/product';
-import { useReviewItems, useCreateReview, useReviewItem } from '../../../utils/review';
-import useAuth from '../../../stores/auth/authContext';
-import useCart from '../../../stores/cart/cartContext';
-import { addToCartList, updateCartItem } from '../../../stores/cart/CartStore';
-import formatDate from '../../../utils/formatDate';
+} from 'design/components';
+import { Message, Options, Spinner, RatingStar } from 'design/elements';
+import { media } from 'design/utils';
+import { useProductInfo } from 'utils/product';
+import { useReviewItems, useCreateReview, useReviewItem } from 'utils/review';
+import useAuth from 'stores/auth/authContext';
+import useCart from 'stores/cart/cartContext';
+import { addToCartList, updateCartItem } from 'stores/cart/CartStore';
+import formatDate from 'utils/formatDate';
 
 const ProductDetail = ({ className }) => {
    const [{ user }] = useAuth();

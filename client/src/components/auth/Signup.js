@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { Redirect } from 'react-router-dom';
-import useAuth from '../../stores/auth/authContext';
-import { Row, Col, FormContainer, Form, Button, Title, Span } from '../../design/components';
-import { Spinner, Message } from '../../design/elements';
+import useAuth from 'stores/auth/authContext';
+import { Row, Col, FormContainer, Form, Button, Title, Span } from 'design/components';
+import { Spinner, Message } from 'design/elements';
 import { useForm } from 'react-hook-form';
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}

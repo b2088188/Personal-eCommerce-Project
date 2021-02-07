@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ListGroup, ImageContainer, Image, Link as SLink, Span } from '../../../design/components';
+import { ListGroup, ImageContainer, Image, Link as SLink, Span } from 'design/components';
 
 const PlaceOrderItem = ({ item }) => {
 	return (

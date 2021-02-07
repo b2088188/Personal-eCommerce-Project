@@ -1,15 +1,15 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Row, Col, Title, ListGroup } from '../../../design/components';
-import { media } from '../../../design/utils';
-import { Spinner, Message } from '../../../design/elements';
-import { useProducts } from '../../../stores/product/productsContext';
+import { Row, Col, Title, ListGroup } from 'design/components';
+import { media } from 'design/utils';
+import { Spinner, Message } from 'design/elements';
+import { useProducts } from 'stores/product/productsContext';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { NativeSelect, FormHelperText } from '@material-ui/core';
-import { Select, Option } from '../../../design/elements';
-import { useProductItems } from '../../../utils/product';
+import { Select, Option } from 'design/elements';
+import { useProductItems } from 'utils/product';
 
 const ProductView = ({ className }) => {
    const [page, setPage] = useState(1);

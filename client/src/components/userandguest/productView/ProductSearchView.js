@@ -12,14 +12,14 @@ import {
    ListGroup,
    Icon,
    Span
-} from '../../../design/components';
-import { Spinner, Message } from '../../../design/elements';
+} from 'design/components';
+import { Spinner, Message } from 'design/elements';
 import { useLocation } from 'react-router-dom';
-import { useProductSearchItems } from '../../../utils/product';
+import { useProductSearchItems } from 'utils/product';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { FilterList } from '@material-ui/icons';
-import { Menu, MenuOpenButton, MenuCloseButton, MenuContent } from '../../../design/elements';
+import { Menu, MenuOpenButton, MenuCloseButton, MenuContent } from 'design/elements';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const ProductView = ({ className }) => {

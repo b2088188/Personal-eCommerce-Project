@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import useCart from '../../../stores/cart/cartContext';
-import useOrder from '../../../stores/order/orderContext';
-import { useCreateOrder } from '../../../utils/order';
+import useCart from 'stores/cart/cartContext';
+import useOrder from 'stores/order/orderContext';
+import { useCreateOrder } from 'utils/order';
 import styled from 'styled-components';
 import {
 	CenterWrapper,
@@ -13,10 +13,10 @@ import {
 	Paragraph,
 	Span,
 	Button
-} from '../../../design/components';
-import Navsteps from '../../../layout/NavSteps';
+} from 'design/components';
+import Navsteps from 'layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
-import { Spinner, Message } from '../../../design/elements';
+import { Spinner, Message } from 'design/elements';
 
 const PlaceOrder = ({ className }) => {
 	const [
