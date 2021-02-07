@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -15,25 +15,23 @@ import {
 } from '../../../design/components';
 import { Spinner, Message } from '../../../design/elements';
 import { useLocation } from 'react-router-dom';
-import { useProducts } from '../../../stores/product/productsContext';
+import { useProductSearchItems } from '../../../utils/product';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { FilterList } from '@material-ui/icons';
-import Menu from '../../../utils/Menu';
+import { Menu, MenuOpenButton, MenuCloseButton, MenuContent } from '../../../design/elements';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const ProductView = ({ className }) => {
-   const { products, statusProducts, errorProducts, getSortedProducts } = useProducts();
    const { search } = useLocation();
    const searchParams = new URLSearchParams(search);
    const q = searchParams.get('q');
    const [sort, setSort] = useState(null);
+   const { products, isIdle, isLoading, isSuccess, isError, error } = useProductSearchItems(
+      q,
+      sort
+   );
    const [page, setPage] = useState(1);
-   const [open, setOpen] = useState(false);
-   const anchorRef = useRef(null);
-   useEffect(() => {
-      getSortedProducts(q, sort);
-   }, [getSortedProducts, q, sort]);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -56,23 +54,22 @@ const ProductView = ({ className }) => {
    function onSortClick(sortBy) {
       return function () {
          setSort(sortBy);
-         setOpen(false);
       };
    }
 
-   if (statusProducts === 'idle' || statusProducts === 'pending')
+   if (isIdle || isLoading)
       return (
          <Row>
             <Spinner modifiers='dark' />
          </Row>
       );
-   if (statusProducts === 'rejected' && errorProducts)
+   if (isError && error)
       return (
          <Row>
-            <Message text={errorProducts} severity='error' />;
+            <Message text={error.message} severity='error' />;
          </Row>
       );
-   if (statusProducts === 'resolved')
+   if (isSuccess)
       return (
          <Row className={className}>
             <Col width='12'>
@@ -84,22 +81,20 @@ const ProductView = ({ className }) => {
                      <Button as={Link} to='/' className='home'>
                         Go Back
                      </Button>
-                     <>
-                        <Button
-                           ref={anchorRef}
-                           onClick={() => setOpen((prev) => !prev)}
-                           modifiers='transparent'
-                           className='products__button'
-                        >
-                           <Icon as={FilterList} />
-                           <Span>Sort By</Span>
-                        </Button>
-                        <Menu open={open} setOpen={setOpen} anchorRef={anchorRef}>
+
+                     <Menu>
+                        <MenuOpenButton>
+                           <Button modifiers='transparent' className='products__button'>
+                              <Icon as={FilterList} />
+                              <Span>Sort By</Span>
+                           </Button>
+                        </MenuOpenButton>
+                        <MenuContent>
                            <MenuItem onClick={onSortClick('price')}>Price (Low -> High)</MenuItem>
                            <MenuItem onClick={onSortClick('-price')}>Price (High -> Low)</MenuItem>
                            <MenuItem onClick={onSortClick('-ratingsAverage')}>Top Rating</MenuItem>
-                        </Menu>
-                     </>
+                        </MenuContent>
+                     </Menu>
                   </Wrapper>
                   <ListGroup flexy='center' wrap='true'>
                      {renderProducts(products, page)}

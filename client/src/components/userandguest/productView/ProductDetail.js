@@ -97,7 +97,7 @@ const ProductDetail = ({ className }) => {
          );
       });
    }
-   console.log(reviewItem);
+
    if (toCart) return <Redirect to='/cart' />;
 
    if (isIdle || isLoading)

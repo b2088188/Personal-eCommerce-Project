@@ -19,6 +19,7 @@ function useProductItems(category) {
                throw data;
             }),
       onSuccess: (products) => {
+         //Once getting the product items, insert all results into the product info query
          products.forEach((product) => {
             queryClient.setQueryData(['productInfo', { productId: product._id }], product);
          });
@@ -26,6 +27,33 @@ function useProductItems(category) {
    });
    const { data } = result;
    return { ...result, products: data };
+}
+
+function useProductSearchItems(q, sort) {
+   const queryClient = useQueryClient();
+   const result = useQuery({
+      queryKey: ['search-items', { q, sort }],
+      queryFn: () =>
+         axios({
+            method: 'GET',
+            baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`,
+            params: {
+               q,
+               sort
+            }
+         })
+            .then(({ data: { data } }) => data.products)
+            .catch(({ response: { data } }) => {
+               throw data;
+            }),
+      onSuccess: (products) => {
+         //Once getting the search items, insert all results into the product info query
+         products.forEach((product) => {
+            queryClient.setQueryData(['productInfo', { productId: product._id }], product);
+         });
+      }
+   });
+   return { ...result, products: result.data };
 }
 
 function useProductInfo(productId) {
@@ -42,4 +70,4 @@ function useProductInfo(productId) {
    return { ...result, product: result.data };
 }
 
-export { useProductItems, useProductInfo };
+export { useProductItems, useProductInfo, useProductSearchItems };
