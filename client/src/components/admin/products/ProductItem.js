@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { useProducts } from 'stores/product/productsContext';
+import { useRemoveProduct } from 'utils/product';
 import { Wrapper, Icon, Button, Title } from 'design/components';
 import { Edit, Delete } from '@material-ui/icons';
 import { TableRow, TableCell } from '@material-ui/core';
-import { Modal } from 'design/elements';
+import { Modal, ModalOpenButton, ModalCloseButton, ModalContent } from 'design/elements';
 
 const ProductItem = ({ product }) => {
-	const { deleteProduct } = useProducts();
+	const { remove } = useRemoveProduct(product._id);
 	const history = useHistory();
 	const { url } = useRouteMatch();
-	const [open, setOpen] = useState(false);
-
-	function onDeleteClick(productId) {
-		return function () {
-			deleteProduct(productId);
-		};
-	}
 
 	return (
 		<TableRow>
@@ -34,21 +27,22 @@ const ProductItem = ({ product }) => {
 				>
 					<Icon as={Edit} />
 				</Button>
-				<Modal
-					toggleButton={
-						<Button modifiers={['transparent', 'dark']} onClick={() => setOpen(true)}>
+				<Modal>
+					<ModalOpenButton>
+						<Button modifiers={['transparent', 'dark']}>
 							<Icon as={Delete} />
 						</Button>
-					}
-					open={open}
-					setOpen={setOpen}
-				>
-					<Wrapper direction='column' y='center'>
-						<Title>Confirm this action</Title>
-						<Button modifiers='outline' onClick={onDeleteClick(product._id)}>
-							Delete
-						</Button>
-					</Wrapper>
+					</ModalOpenButton>
+					<ModalContent>
+						<Wrapper direction='column' y='center'>
+							<Title>Confirm this action</Title>
+							<ModalCloseButton>
+								<Button modifiers='outline' onClick={() => remove()}>
+									Delete
+								</Button>
+							</ModalCloseButton>
+						</Wrapper>
+					</ModalContent>
 				</Modal>
 			</TableCell>
 		</TableRow>

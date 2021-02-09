@@ -6,7 +6,7 @@ import { Spinner, Message } from 'design/elements';
 import Sidebar from 'layout/Sidebar';
 
 const UserSettings = () => {
-	const { userProfile, isIdle, isLoading, isSuccess, isError, error } = useUserProfile();
+	const { userProfile, isIdle, isLoading, isSuccess } = useUserProfile();
 	const { updateUserData } = useUpdateUserData();
 	const { register, handleSubmit, errors, setValue, reset } = useForm();
 
@@ -26,12 +26,6 @@ const UserSettings = () => {
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
-			</Row>
-		);
-	if (isError && error)
-		return (
-			<Row>
-				<Message text={error.message} severity='error' />
 			</Row>
 		);
 	if (isSuccess)

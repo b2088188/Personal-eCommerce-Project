@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import useOrder from 'stores/order/orderContext';
+import React from 'react';
+import { useOrderItems } from 'utils/order';
 import OrderItem from './OrderItem';
 import AdminSidebar from 'layout/admin/AdminSidebar';
 import { Row, Col, CenterWrapper, Title } from 'design/components';
@@ -15,10 +15,7 @@ import {
 import { Spinner, Message } from 'design/elements';
 
 const UserOrder = ({ className }) => {
-	const [{ orderList, statusAllOrders, errorAllOrders }, { getAllOrders }] = useOrder();
-	useEffect(() => {
-		getAllOrders();
-	}, [getAllOrders]);
+	const { orders, isIdle, isLoading, isSuccess } = useOrderItems();
 
 	function renderOrders(list) {
 		return list.map(function generateItem(order) {
@@ -26,19 +23,14 @@ const UserOrder = ({ className }) => {
 		});
 	}
 
-	if (statusAllOrders === 'idle' || statusAllOrders === 'pending')
+	if (isIdle || isLoading)
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
 			</Row>
 		);
-	if (statusAllOrders === 'rejected' && errorAllOrders)
-		return (
-			<Row>
-				<Message severity='error' text={errorAllOrders} />
-			</Row>
-		);
-	if (statusAllOrders === 'resolved')
+
+	if (isSuccess)
 		return (
 			<Row direction={{ tabport: 'column' }} className={className}>
 				<Col width='3'>
@@ -61,7 +53,7 @@ const UserOrder = ({ className }) => {
 										<TableCell> </TableCell>
 									</TableRow>
 								</TableHead>
-								<TableBody>{renderOrders(orderList)}</TableBody>
+								<TableBody>{renderOrders(orders)}</TableBody>
 							</Table>
 						</TableContainer>
 					</CenterWrapper>

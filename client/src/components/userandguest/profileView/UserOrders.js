@@ -16,7 +16,7 @@ import {
 import axios from 'axios';
 
 const UserOrder = ({ className }) => {
-	const { orders, isIdle, isLoading, isSuccess, isError, error } = useUserOrders();
+	const { orders, isIdle, isLoading, isSuccess } = useUserOrders();
 
 	function renderUserOrders(list) {
 		return list?.map(function generateItem(order) {
@@ -31,12 +31,6 @@ const UserOrder = ({ className }) => {
 			</Row>
 		);
 
-	if (isError && error)
-		return (
-			<Row>
-				<Message severity='error' text={error.message} />
-			</Row>
-		);
 	if (isSuccess)
 		return (
 			<Row direction={{ tabport: 'column' }}>

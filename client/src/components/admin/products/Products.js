@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { Row, Col, CenterWrapper, Title, Button } from 'design/components';
-import { useProducts } from 'stores/product/productsContext';
+import { useProductItems } from 'utils/product';
 import ProductItem from './ProductItem';
 import AdminSidebar from 'layout/admin/AdminSidebar';
 import { Spinner, Message } from 'design/elements';
@@ -17,13 +17,9 @@ import {
 } from '@material-ui/core';
 
 const UserProducts = ({ className }) => {
-	const { products, statusProducts, errorProducts, getFilteredProducts } = useProducts();
+	const { products, isIdle, isLoading, isSuccess } = useProductItems();
 	const { url } = useRouteMatch();
 	const history = useHistory();
-
-	useEffect(() => {
-		getFilteredProducts();
-	}, [getFilteredProducts]);
 
 	function renderProducts(list) {
 		return list?.map(function generateItem(product) {
@@ -31,19 +27,14 @@ const UserProducts = ({ className }) => {
 		});
 	}
 
-	if (statusProducts === 'idle' || statusProducts === 'pending')
+	if (isIdle || isLoading)
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
 			</Row>
 		);
-	if (statusProducts === 'rejected' && errorProducts)
-		return (
-			<Row>
-				<Message severity='error' text={errorProducts} />
-			</Row>
-		);
-	if (statusProducts === 'resolved')
+
+	if (isSuccess)
 		return (
 			<Row direction={{ tabport: 'column' }} className={className}>
 				<Col width='3'>

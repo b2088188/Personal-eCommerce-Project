@@ -27,7 +27,7 @@ import formatDate from 'utils/formatDate';
 const ProductDetail = ({ className }) => {
    const [{ user }] = useAuth();
    const { productId } = useParams();
-   const { product, isIdle, isLoading, isSuccess, isError, error } = useProductInfo(productId);
+   const { product, isIdle, isLoading, isSuccess } = useProductInfo(productId);
    const [{ cartList }, { dispatchCart }] = useCart();
    const {
       reviews,
@@ -106,12 +106,7 @@ const ProductDetail = ({ className }) => {
             <Spinner />
          </Row>
       );
-   if (isError && error)
-      return (
-         <Row>
-            <Message text={error.message} severity='error' />
-         </Row>
-      );
+
    if (isSuccess)
       return (
          <Row className={className}>

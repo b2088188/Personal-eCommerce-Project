@@ -1,44 +1,54 @@
 import React, { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { Row, Col, FormContainer, Form, Span, Button } from 'design/components';
-import { useProducts } from 'stores/product/productsContext';
+import { useParams, useHistory, Redirect } from 'react-router-dom';
+import { Row, Col, FormContainer, Form, Span, Button, Select } from 'design/components';
+import { useCreateProduct, useProductItem, useUpdateProduct } from 'utils/product';
+import { useAsync } from 'utils/hooks';
 import { useForm } from 'react-hook-form';
-import { Select } from 'design/components';
 import { Spinner } from 'design/elements';
 
 const ProductEdit = ({ location }) => {
-   const { products, statusProducts, createProduct, updateProduct } = useProducts();
-   const { register, handleSubmit, setValue, errors } = useForm();
-   const { productId } = useParams();
    const history = useHistory();
-   const product = products.find((el) => el._id === productId);
+   const { productId } = useParams();
+   const { create } = useCreateProduct();
+   const { update } = useUpdateProduct(productId);
+   const { isLoading, isSuccess, run } = useAsync();
+   const { register, handleSubmit, setValue, errors } = useForm();
+   const productItem = useProductItem(productId);
 
    useEffect(() => {
-      if (product) {
-         setValue('name', product.name);
-         setValue('price', product.price);
-         setValue('brand', product.brand);
-         setValue('category', product.category);
-         setValue('countInStock', product.countInStock);
-         setValue('description', product.description);
+      if (productItem) {
+         setValue('name', productItem.name);
+         setValue('price', productItem.price);
+         setValue('brand', productItem.brand);
+         setValue('category', productItem.category);
+         setValue('countInStock', productItem.countInStock);
+         setValue('description', productItem.description);
       }
-   }, [product, setValue]);
+   }, [productItem, setValue]);
 
    async function onEditHandle(values) {
-      if (!product) {
-         await createProduct(values);
+      const formData = new FormData();
+      const fields = Object.keys(values);
+      fields.forEach((el) => {
+         if (el === 'image' && values[el].length > 0) {
+            formData.append('image', values[el][0]);
+         }
+         if (el !== 'image') formData.append(el, values[el]);
+      });
+      if (!productItem) {
+         run(create({ formData }));
       } else {
-         await updateProduct(productId, values);
+         run(update({ formData }));
       }
-      history.push('/products');
    }
 
-   if (statusProducts === 'pending')
+   if (isLoading)
       return (
          <Row>
             <Spinner modifiers='dark' />
          </Row>
       );
+   if (isSuccess) return <Redirect to='/products' />;
 
    return (
       <Row>
@@ -118,7 +128,7 @@ const ProductEdit = ({ location }) => {
                         <Span modifiers='danger'>{errors.description.message}</Span>
                      ) : null}
                   </Form.Group>
-                  <Button>{!productId ? 'Create' : 'Update'}</Button>
+                  <Button>{!productItem ? 'Create' : 'Update'}</Button>
                </Form>
             </FormContainer>
          </Col>

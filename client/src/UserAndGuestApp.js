@@ -1,14 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
-import { Spinner } from './design/elements';
-import ProductStore from './stores/product/ProductStore';
+import { Spinner, Message } from './design/elements';
 import CartStore from './stores/cart/CartStore';
-import OrderStore from './stores/order/OrderStore';
-import ReviewStore from './stores/review/ReviewStore';
 import PrivateRoute from './routes/PrivateRoutes';
 import ProductView from './components/userandguest/productView/ProductView';
 import Header from './layout/header/Header';
+import { ErrorBoundary } from 'react-error-boundary';
 const ProductSearchView = lazy(() =>
    import('./components/userandguest/productView/ProductSearchView')
 );
@@ -34,29 +32,41 @@ const UserAndGuestApp = () => {
       >
          <Container>
             <Header />
-            <Route path='/signup' exact component={Signup} />
-            <Route path='/login' exact component={Login} />
-            <OrderStore>
-               <CartStore>
-                  <PrivateRoute path='/placeorder' exact component={PlaceOrder} />
-                  <PrivateRoute path='/shipping' exact component={ShippingInfo} />
-                  <PrivateRoute path='/payment' exact component={SelectPayment} />
-                  <Route path='/cart' exact component={CartView} />
-                  <ProductStore>
-                     <ReviewStore>
-                        <Route path='/' exact component={ProductView} />
-                        <Route path='/search' exact component={ProductSearchView} />
-                        <Route path='/products/:productId' exact component={ProductDetail} />
-                     </ReviewStore>
-                  </ProductStore>
-               </CartStore>
-               <PrivateRoute path='/order/:orderId' exact component={OrderView} />
-               <PrivateRoute path='/profile/settings' exact component={UserSettings} />
-               <PrivateRoute path='/profile/orders' exact component={UserOrder} />
-            </OrderStore>
+            <CartStore>
+               <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <AppRoutes />
+               </ErrorBoundary>
+            </CartStore>
             <Footer>Copyright &copy; Shunze Lin</Footer>
          </Container>
       </Suspense>
+   );
+};
+
+const AppRoutes = () => {
+   return (
+      <>
+         <Route path='/signup' exact component={Signup} />
+         <Route path='/login' exact component={Login} />
+         <PrivateRoute path='/placeorder' exact component={PlaceOrder} />
+         <PrivateRoute path='/shipping' exact component={ShippingInfo} />
+         <PrivateRoute path='/payment' exact component={SelectPayment} />
+         <Route path='/cart' exact component={CartView} />
+         <Route path='/' exact component={ProductView} />
+         <Route path='/search' exact component={ProductSearchView} />
+         <Route path='/products/:productId' exact component={ProductDetail} />
+         <PrivateRoute path='/order/:orderId' exact component={OrderView} />
+         <PrivateRoute path='/profile/settings' exact component={UserSettings} />
+         <PrivateRoute path='/profile/orders' exact component={UserOrder} />
+      </>
+   );
+};
+
+const ErrorFallback = ({ error }) => {
+   return (
+      <Row>
+         <Message text={error.message} severity='error' />;
+      </Row>
    );
 };
 

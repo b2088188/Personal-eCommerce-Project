@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import useOrder from 'stores/order/orderContext';
+import { useOrderInfo, useUpdateOrderToDeliver } from 'utils/order';
 import styled from 'styled-components';
 import {
 	Row,
@@ -18,16 +18,9 @@ import { Message, Spinner } from 'design/elements';
 import formatDate from 'utils/formatDate';
 
 const OrderView = ({ className }) => {
-	const [
-		{ currentOrder, statusOrder, errorOrder },
-		{ getOrder, updateOrderToDeliver }
-	] = useOrder();
 	const { orderId } = useParams();
-
-	useEffect(() => {
-		//clearOrder();
-		getOrder(orderId);
-	}, [orderId, getOrder]);
+	const { order, isIdle, isLoading, isSuccess } = useOrderInfo(orderId);
+	const { updateToDeliver } = useUpdateOrderToDeliver(orderId);
 
 	function renderOrderItems(list) {
 		return list?.map(function generateItem(order) {
@@ -55,40 +48,34 @@ const OrderView = ({ className }) => {
 	}
 
 	function onDeliverClick() {
-		updateOrderToDeliver(orderId);
+		updateToDeliver();
 	}
 
-	if (statusOrder === 'idle' || statusOrder === 'pending')
+	if (isIdle || isLoading)
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
 			</Row>
 		);
-	if (statusOrder === 'rejected' && errorOrder)
-		return (
-			<Row>
-				<Message severity='error' text={errorOrder} />
-			</Row>
-		);
 
-	if (statusOrder === 'resolved')
+	if (isSuccess)
 		return (
 			<Row>
 				<Col width='12' className={className}>
 					<div className='order__container'>
-						<ListGroup.Title modifiers='large'>ORDER {currentOrder._id}</ListGroup.Title>
+						<ListGroup.Title modifiers='large'>ORDER {order._id}</ListGroup.Title>
 						<Row>
 							<Col width='7'>
 								<ListGroup bdbottom>
 									<ListGroup>
 										<ListGroup.Title>Shipping</ListGroup.Title>
 										<ListGroup.Paragraph modifiers='exlight'>
-											{`Address: ${currentOrder.shippingAddress.address}, ${currentOrder.shippingAddress.city}, ${currentOrder.shippingAddress.postalCode}, ${currentOrder.shippingAddress.country}`}
+											{`Address: ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`}
 										</ListGroup.Paragraph>
 									</ListGroup>
-									{currentOrder.isDelivered ? (
+									{order.isDelivered ? (
 										<Message
-											text={`Delivered on ${formatDate(currentOrder.deliveredAt)}`}
+											text={`Delivered on ${formatDate(order.deliveredAt)}`}
 											severity='success'
 										/>
 									) : (
@@ -98,11 +85,11 @@ const OrderView = ({ className }) => {
 								<ListGroup bdbottom>
 									<ListGroup
 										title='Payment Method'
-										info={`Method: ${currentOrder.paymentMethod}`}
+										info={`Method: ${order.paymentMethod}`}
 									/>
-									{currentOrder.isPaid ? (
+									{order.isPaid ? (
 										<Message
-											text={`Paid on ${formatDate(currentOrder.paidAt)}`}
+											text={`Paid on ${formatDate(order.paidAt)}`}
 											severity='success'
 										/>
 									) : (
@@ -111,7 +98,7 @@ const OrderView = ({ className }) => {
 								</ListGroup>
 								<ListGroup bdbottom>
 									<ListGroup.Title>Order Items</ListGroup.Title>
-									{renderOrderItems(currentOrder.orderItems)}
+									{renderOrderItems(order.orderItems)}
 								</ListGroup>
 							</Col>
 							<Col width='4' spacing='2' className='order__summary'>
@@ -121,27 +108,27 @@ const OrderView = ({ className }) => {
 								<ListGroup flexy='center' bdtop>
 									<ListGroup.Item width='50'>Items</ListGroup.Item>
 									<ListGroup.Item>
-										<Span>${currentOrder.itemsPrice}</Span>
+										<Span>${order.itemsPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
 								<ListGroup flexy='center' bdtop>
 									<ListGroup.Item width='50'>Shipping</ListGroup.Item>
 									<ListGroup.Item>
-										<Span>${currentOrder.shippingPrice}</Span>
+										<Span>${order.shippingPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
 								<ListGroup flexy='center' bdtop>
 									<ListGroup.Item width='50'>Total</ListGroup.Item>
 									<ListGroup.Item>
-										<Span>${currentOrder.totalPrice}</Span>
+										<Span>${order.totalPrice}</Span>
 									</ListGroup.Item>
 								</ListGroup>
-								{currentOrder.isDelivered ? null : (
+								{order.isDelivered ? null : (
 									<ListGroup flexy='center' bdtop>
 										<Button
 											onClick={onDeliverClick}
-											modifiers={!currentOrder.isPaid ? 'disabled' : null}
-											disabled={!currentOrder.isPaid}
+											modifiers={!order.isPaid ? 'disabled' : null}
+											disabled={!order.isPaid}
 											className='order__button'
 										>
 											Mark as Delivered

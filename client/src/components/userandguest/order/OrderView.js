@@ -26,7 +26,7 @@ import axios from 'axios';
 const OrderView = ({ className }) => {
 	const { orderId } = useParams();
 	const [sdkReady, setSdkReady] = useState(false);
-	const { order, isIdle, isLoading, isSuccess, isError, error } = useOrderInfo(orderId);
+	const { order, isIdle, isLoading, isSuccess } = useOrderInfo(orderId);
 	const { updateToPaid } = useUpdateOrderToPaid(orderId);
 	const { url } = useRouteMatch();
 
@@ -95,12 +95,6 @@ const OrderView = ({ className }) => {
 		return (
 			<Row>
 				<Spinner modifiers='dark' />
-			</Row>
-		);
-	if (isError && error)
-		return (
-			<Row>
-				<Message severity='error' text={error.message} />
 			</Row>
 		);
 

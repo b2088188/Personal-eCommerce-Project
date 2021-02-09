@@ -27,10 +27,7 @@ const ProductView = ({ className }) => {
    const searchParams = new URLSearchParams(search);
    const q = searchParams.get('q');
    const [sort, setSort] = useState(null);
-   const { products, isIdle, isLoading, isSuccess, isError, error } = useProductSearchItems(
-      q,
-      sort
-   );
+   const { products, isIdle, isLoading, isSuccess } = useProductSearchItems(q, sort);
    const [page, setPage] = useState(1);
 
    function calcPage(results, page, resPerPage = 8) {
@@ -63,12 +60,7 @@ const ProductView = ({ className }) => {
             <Spinner modifiers='dark' />
          </Row>
       );
-   if (isError && error)
-      return (
-         <Row>
-            <Message text={error.message} severity='error' />;
-         </Row>
-      );
+
    if (isSuccess)
       return (
          <Row className={className}>

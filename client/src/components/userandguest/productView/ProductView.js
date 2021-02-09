@@ -14,7 +14,7 @@ import { useProductItems } from 'utils/product';
 const ProductView = ({ className }) => {
    const [page, setPage] = useState(1);
    const [filterBy, setFilterBy] = useState(null);
-   const { products, isIdle, isLoading, isSuccess, isError, error } = useProductItems(filterBy);
+   const { products, isIdle, isLoading, isSuccess } = useProductItems(filterBy);
 
    function calcPage(results, page, resPerPage = 8) {
       const start = (page - 1) * resPerPage;
@@ -40,12 +40,7 @@ const ProductView = ({ className }) => {
             <Spinner modifiers='dark' />
          </Row>
       );
-   if (isError && error)
-      return (
-         <Row>
-            <Message alert={error.message} severity='error' />;
-         </Row>
-      );
+
    if (isSuccess)
       return (
          <Row>

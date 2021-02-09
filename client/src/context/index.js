@@ -10,7 +10,7 @@ export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			//if has an error, react query will throw error to let error boundary to handle
-			//useErrorBoundary: true,
+			useErrorBoundary: true,
 			// when user re-focus the app window, refetch data
 			refetchOnWindowFocus: false,
 			retry(failureCount, error) {

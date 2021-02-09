@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useContext, createContext, cloneElement } from 'react';
 import styled from 'styled-components';
-import { Modal, Backdrop, Fade, makeStyles } from '@material-ui/core';
+import { Modal as MaterialModel, Backdrop, Fade, makeStyles } from '@material-ui/core';
+
+const ModalContext = createContext();
 
 const useStyles = makeStyles((theme) => ({
    modal: {
@@ -16,34 +18,57 @@ const useStyles = makeStyles((theme) => ({
    }
 }));
 
-const TransitionsModal = ({ toggleButton, open, setOpen, children, className }) => {
+const Modal = ({ children }) => {
+   const [isOpen, setIsOpen] = useState(false);
+   const value = { isOpen, setIsOpen };
+   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
+};
+
+const ModalOpenButton = ({ children: child }) => {
+   const { setIsOpen } = useContext(ModalContext);
+
+   return cloneElement(child, {
+      onClick: callAll(() => setIsOpen(true), child.props.onClick)
+   });
+};
+
+const ModalCloseButton = ({ children: child }) => {
+   const { setIsOpen } = useContext(ModalContext);
+
+   return cloneElement(child, {
+      onClick: callAll(() => setIsOpen(false), child.props.onClick)
+   });
+};
+
+const ModalContent = ({ children }) => {
+   const { isOpen, setIsOpen } = useContext(ModalContext);
    const classes = useStyles();
-
-   const handleClose = () => {
-      setOpen(false);
-   };
-
    return (
-      <div className={className}>
-         {toggleButton}
-         <Modal
-            aria-labelledby='transition-modal-title'
-            aria-describedby='transition-modal-description'
-            className={classes.modal}
-            open={open}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-               timeout: 500
-            }}
-         >
-            <Fade in={open}>
-               <div className={classes.paper}>{children}</div>
-            </Fade>
-         </Modal>
-      </div>
+      <MaterialModel
+         aria-labelledby='transition-modal-title'
+         aria-describedby='transition-modal-description'
+         className={classes.modal}
+         open={isOpen}
+         onClose={() => setIsOpen(false)}
+         closeAfterTransition
+         BackdropComponent={Backdrop}
+         BackdropProps={{
+            timeout: 500
+         }}
+      >
+         <Fade in={isOpen}>
+            <div className={classes.paper}>{children}</div>
+         </Fade>
+      </MaterialModel>
    );
 };
 
-export default styled(TransitionsModal)``;
+function callAll(...fns) {
+   return function (...args) {
+      fns.forEach((fn) => {
+         fn && fn(...args);
+      });
+   };
+}
+
+export { Modal, ModalOpenButton, ModalCloseButton, ModalContent };

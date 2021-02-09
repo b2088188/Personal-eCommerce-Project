@@ -11,6 +11,22 @@ function useDefaultMutationOptions(orderId) {
 	};
 }
 
+function useOrderItems() {
+	const result = useQuery({
+		queryKey: 'order-items',
+		queryFn: () =>
+			axios
+				.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/admin`, {
+					//    withCredentials: true
+				})
+				.then(({ data: { data } }) => data.orders)
+				.catch(({ response: { data } }) => {
+					throw data;
+				})
+	});
+	return { ...result, orders: result.data };
+}
+
 function useOrderInfo(orderId) {
 	const result = useQuery({
 		queryKey: ['orderInfo', { orderId }],
@@ -57,31 +73,24 @@ function useUpdateOrderToPaid(orderId) {
 	return { ...mutation, updateToPaid: mutation.mutate };
 }
 
-export { useOrderInfo, useCreateOrder, useUpdateOrderToPaid };
+function useUpdateOrderToDeliver(orderId) {
+	const queryClient = useQueryClient();
+	const mutation = useMutation(
+		() =>
+			axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`, {
+				// withCredentials: true
+			}),
+		{
+			...useDefaultMutationOptions(orderId)
+		}
+	);
+	return { ...mutation, updateToDeliver: mutation.mutate };
+}
 
-// const updateOrderToDeliver = useCallback(
-//    async function (orderId) {
-//       const { status } = await fetchOrder(
-//          axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`, {
-//             // withCredentials: true
-//          })
-//       );
-//       if (status === 'success')
-//          dispatchOrder({
-//             type: UPDATE_ORDER
-//          });
-//    },
-//    [fetchOrder, dispatchOrder]
-// );
-
-// const getAllOrders = useCallback(
-//    async function () {
-//       const { status } = await fetchAllOrders(
-//          axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/admin`, {
-//             //    withCredentials: true
-//          })
-//       );
-//       if (status === 'success') dispatchAllOrders({ type: GET_ORDERLIST });
-//    },
-//    [fetchAllOrders, dispatchAllOrders]
-// );
+export {
+	useOrderItems,
+	useOrderInfo,
+	useCreateOrder,
+	useUpdateOrderToPaid,
+	useUpdateOrderToDeliver
+};
