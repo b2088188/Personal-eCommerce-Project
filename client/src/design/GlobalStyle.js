@@ -27,11 +27,26 @@ body {
     font-weight: 400;
     line-height: 1.6;
     min-height: 100vh;
+    
 }
 
 h1{
     text-transform: uppercase;
     letter-spacing: .3rem;
+}
+.item-enter {
+  opacity: 0;
+}
+.item-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.item-exit {
+  opacity: 1;
+}
+.item-exit-active {
+  opacity: 0;
+ // transition: opacity 500ms ease-in;
 }
 `;
 

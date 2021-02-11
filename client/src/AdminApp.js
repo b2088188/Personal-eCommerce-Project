@@ -1,15 +1,16 @@
 import React, { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
-import { Spinner, Message } from './design/elements';
+import Spinner from 'components/Spinner';
+import { Message } from 'components/Message';
 import AdminHeader from './layout/admin/AdminHeader';
 import { ErrorBoundary } from 'react-error-boundary';
 
-const OrdersView = lazy(() => import('./components/admin/order/OrdersView'));
-const OrderView = lazy(() => import('./components/admin/order/OrderView'));
-const Login = lazy(() => import('./components/auth/Login'));
-const Products = lazy(() => import('./components/admin/products/Products'));
-const ProductEdit = lazy(() => import('./components/admin/products/ProductEdit'));
+const OrdersView = lazy(() => import('./screen/admin/order/OrdersView'));
+const OrderView = lazy(() => import('./screen/admin/order/OrderView'));
+const Login = lazy(() => import('./screen/auth/Login'));
+const Products = lazy(() => import('./screen/admin/products/Products'));
+const ProductEdit = lazy(() => import('./screen/admin/products/ProductEdit'));
 
 const AdminApp = () => {
 	return (

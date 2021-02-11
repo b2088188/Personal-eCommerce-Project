@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { Settings, FormatListBulleted } from '@material-ui/icons';
-import { Link as SLink, Span, Icon, List } from '../design/components';
-import { setTransition, colorGrey, media } from '../design/utils';
+import { Link as SLink, Span, Icon, List } from 'design/components';
+import { setTransition, colorGrey, media } from 'design/utils';
 
 const Sidebar = ({ className }) => {
    return (

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import {applyStyleModifiers} from 'styled-components-modifiers';
-import {colorGrey} from '../utils';
+import { applyStyleModifiers } from 'styled-components-modifiers';
+import { colorGrey } from 'design/utils';
 
 const TITLE_MODIFIERS = {
 	huge: () => `
@@ -30,11 +30,11 @@ const TITLE_MODIFIERS = {
 	exlight: () => `
 	  font-weight: 300
 	`
-}
+};
 
 export const Title = styled.h1`
-	    color: ${colorGrey.greydark1}; 
-	    font-size: 1.7rem;       
-        line-height: 1.2;
-        ${applyStyleModifiers(TITLE_MODIFIERS)}
-`
+	color: ${colorGrey.greydark1};
+	font-size: 1.7rem;
+	line-height: 1.2;
+	${applyStyleModifiers(TITLE_MODIFIERS)}
+`;

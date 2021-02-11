@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
-import useAuth from './stores/auth/authContext';
+import useAuth from './context/auth/authContext';
 import { Container } from './design/components';
-import { Spinner } from './design/elements';
+import Spinner from 'components/Spinner';
 const UserAndGuestApp = lazy(() => import('./UserAndGuestApp'));
 const AdminApp = lazy(() => import('./AdminApp'));
 

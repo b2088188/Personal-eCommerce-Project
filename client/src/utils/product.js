@@ -12,7 +12,6 @@ function useProductItems(category) {
             baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`,
             params: {
                category
-
                // limit: 8
             }
          })

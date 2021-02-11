@@ -1,25 +1,26 @@
 import React, { lazy, Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
-import { Spinner, Message } from './design/elements';
-import CartStore from './stores/cart/CartStore';
+import Spinner from 'components/Spinner';
+import { Message } from 'components/Message';
+import CartProvider from './context/cart/CartProvider';
 import PrivateRoute from './routes/PrivateRoutes';
-import ProductView from './components/userandguest/productView/ProductView';
+import ProductView from './screen/userandguest/product/ProductView';
 import Header from './layout/header/Header';
 import { ErrorBoundary } from 'react-error-boundary';
-const ProductSearchView = lazy(() =>
-   import('./components/userandguest/productView/ProductSearchView')
-);
-const ProductDetail = lazy(() => import('./components/userandguest/productView/ProductDetail'));
-const CartView = lazy(() => import('./components/userandguest/cartView/CartView'));
-const ShippingInfo = lazy(() => import('./components/userandguest/placeorder/ShippingInfo'));
-const SelectPayment = lazy(() => import('./components/userandguest/placeorder/SelectPayment'));
-const PlaceOrder = lazy(() => import('./components/userandguest/placeorder/PlaceOrder'));
-const OrderView = lazy(() => import('./components/userandguest/order/OrderView'));
-const Signup = lazy(() => import('./components/auth/Signup'));
-const Login = lazy(() => import('./components/auth/Login'));
-const UserSettings = lazy(() => import('./components/userandguest/profileView/UserSettings'));
-const UserOrder = lazy(() => import('./components/userandguest/profileView/UserOrders'));
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+const ProductSearchView = lazy(() => import('./screen/userandguest/product/ProductSearchView'));
+const ProductDetail = lazy(() => import('./screen/userandguest/product/ProductDetail'));
+const CartView = lazy(() => import('./screen/userandguest/cart/CartView'));
+const ShippingInfo = lazy(() => import('./screen/userandguest/placeorder/ShippingInfo'));
+const SelectPayment = lazy(() => import('./screen/userandguest/placeorder/SelectPayment'));
+const PlaceOrder = lazy(() => import('./screen/userandguest/placeorder/PlaceOrder'));
+const OrderView = lazy(() => import('./screen/userandguest/order/OrderView'));
+const Signup = lazy(() => import('./screen/auth/Signup'));
+const Login = lazy(() => import('./screen/auth/Login'));
+const UserSettings = lazy(() => import('./screen/userandguest/profile/UserSettings'));
+const UserOrder = lazy(() => import('./screen/userandguest/profile/UserOrders'));
 
 const UserAndGuestApp = () => {
    return (
@@ -32,11 +33,11 @@ const UserAndGuestApp = () => {
       >
          <Container>
             <Header />
-            <CartStore>
+            <CartProvider>
                <ErrorBoundary FallbackComponent={ErrorFallback}>
                   <AppRoutes />
                </ErrorBoundary>
-            </CartStore>
+            </CartProvider>
             <Footer>Copyright &copy; Shunze Lin</Footer>
          </Container>
       </Suspense>
@@ -44,21 +45,34 @@ const UserAndGuestApp = () => {
 };
 
 const AppRoutes = () => {
+   const location = useLocation();
    return (
-      <>
-         <Route path='/signup' exact component={Signup} />
-         <Route path='/login' exact component={Login} />
-         <PrivateRoute path='/placeorder' exact component={PlaceOrder} />
-         <PrivateRoute path='/shipping' exact component={ShippingInfo} />
-         <PrivateRoute path='/payment' exact component={SelectPayment} />
-         <Route path='/cart' exact component={CartView} />
-         <Route path='/' exact component={ProductView} />
-         <Route path='/search' exact component={ProductSearchView} />
-         <Route path='/products/:productId' exact component={ProductDetail} />
-         <PrivateRoute path='/order/:orderId' exact component={OrderView} />
-         <PrivateRoute path='/profile/settings' exact component={UserSettings} />
-         <PrivateRoute path='/profile/orders' exact component={UserOrder} />
-      </>
+      <TransitionGroup component={null}>
+         <CSSTransition
+            timeout={{
+               appear: 250,
+               enter: 250,
+               exit: 250
+            }}
+            classNames='item'
+            key={location.key}
+         >
+            <Switch location={location}>
+               <Route path='/signup' component={Signup} />
+               <Route path='/login' component={Login} />
+               <PrivateRoute path='/placeorder' component={PlaceOrder} />
+               <PrivateRoute path='/shipping' component={ShippingInfo} />
+               <PrivateRoute path='/payment' component={SelectPayment} />
+               <Route path='/cart' component={CartView} />
+               <Route path='/' exact component={ProductView} />
+               <Route path='/search' component={ProductSearchView} />
+               <Route path='/products/:productId' component={ProductDetail} />
+               <PrivateRoute path='/order/:orderId' component={OrderView} />
+               <PrivateRoute path='/profile/settings' component={UserSettings} />
+               <PrivateRoute path='/profile/orders' component={UserOrder} />
+            </Switch>
+         </CSSTransition>
+      </TransitionGroup>
    );
 };
 

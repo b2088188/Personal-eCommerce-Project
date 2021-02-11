@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import useAuth from '../stores/auth/authContext';
+import useAuth from 'context/auth/authContext';
 import axios from 'axios';
 
 function useReviewItems(productId) {
