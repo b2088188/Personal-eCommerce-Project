@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
 import Spinner from 'components/Spinner';
 import { Message } from 'components/Message';
@@ -76,7 +76,12 @@ const AppRoutes = () => {
    );
 };
 
-const ErrorFallback = ({ error }) => {
+const ErrorFallback = ({ error, resetErrorBoundary }) => {
+   const history = useHistory();
+
+   history.listen((location, action) => {
+      if (error) resetErrorBoundary();
+   });
    return (
       <Row>
          <Message text={error.message} severity='error' />;

@@ -1,10 +1,12 @@
 import React, { lazy, Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
 import Spinner from 'components/Spinner';
 import { Message } from 'components/Message';
 import AdminHeader from './layout/admin/AdminHeader';
+import { QueryErrorResetBoundary } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const OrdersView = lazy(() => import('./screen/admin/order/OrdersView'));
 const OrderView = lazy(() => import('./screen/admin/order/OrderView'));
@@ -24,9 +26,13 @@ const AdminApp = () => {
 			>
 				<Container>
 					<AdminHeader />
-					<ErrorBoundary FallbackComponent={ErrorFallback}>
-						<AppRoutes />
-					</ErrorBoundary>
+					<QueryErrorResetBoundary>
+						{({ reset }) => (
+							<ErrorBoundary FallbackComponent={ErrorFallback}>
+								<AppRoutes />
+							</ErrorBoundary>
+						)}
+					</QueryErrorResetBoundary>
 					<Footer>Copyright &copy; Shunze Lin</Footer>
 				</Container>
 			</Suspense>
@@ -35,18 +41,36 @@ const AdminApp = () => {
 };
 
 const AppRoutes = () => {
+	const location = useLocation();
 	return (
-		<>
-			<Route path='/login' exact component={Login} />
-			<Route path='/' exact component={OrdersView} />
-			<Route path='/order/:orderId' exact component={OrderView} />
-			<Route path='/products' exact component={Products} />
-			<Route path='/products/edit/:productId?' exact component={ProductEdit} />
-		</>
+		<TransitionGroup component={null}>
+			<CSSTransition
+				timeout={{
+					appear: 250,
+					enter: 250,
+					exit: 250
+				}}
+				classNames='item'
+				key={location.key}
+			>
+				<Switch location={location}>
+					<Route path='/login' component={Login} />
+					<Route path='/' exact component={OrdersView} />
+					<Route path='/order/:orderId' component={OrderView} />
+					<Route path='/products' component={Products} />
+					<Route path='/products/edit/:productId?' component={ProductEdit} />
+				</Switch>
+			</CSSTransition>
+		</TransitionGroup>
 	);
 };
 
-const ErrorFallback = ({ error }) => {
+const ErrorFallback = ({ error, resetErrorBoundary }) => {
+	const history = useHistory();
+
+	history.listen((location, action) => {
+		if (error) resetErrorBoundary();
+	});
 	return (
 		<Row>
 			<Message text={error.message} severity='error' />;
