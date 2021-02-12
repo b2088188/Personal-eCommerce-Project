@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -36,9 +36,7 @@ const ProductDetail = ({ className }) => {
       reviews,
       isIdle: isReviewIdle,
       isLoading: isReviewLoading,
-      isSuccess: isReviewSuccess,
-      isError: isReviewError,
-      error: errorReviews
+      isSuccess: isReviewSuccess
    } = useReviewItems(productId);
    const reviewItem = useReviewItem(productId);
    const { createReview } = useCreateReview(productId);
@@ -176,7 +174,7 @@ const ProductDetail = ({ className }) => {
                   <Col width='6'>
                      <ListGroup>
                         <Title modifiers='large'>Reviews</Title>
-                        {isReviewLoading ? (
+                        {isReviewIdle || isReviewLoading ? (
                            <Spinner modifiers='dark' />
                         ) : isReviewSuccess && reviews.length > 0 ? (
                            renderReviewList(reviews)

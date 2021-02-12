@@ -1,5 +1,4 @@
 import React, { useState, useContext, createContext, cloneElement } from 'react';
-import styled from 'styled-components';
 import { Modal as MaterialModel, Backdrop, Fade, makeStyles } from '@material-ui/core';
 
 const ModalContext = createContext();

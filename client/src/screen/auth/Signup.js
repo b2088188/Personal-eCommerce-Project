@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({ location }) => {
-   const [{ user, isLoading, isError, error }, { signup }] = useAuth();
+   const [{ user, isLoading, error }, { signup }] = useAuth();
    const { register, handleSubmit, watch, errors } = useForm();
    const password = useRef({});
    password.current = watch('password', '');

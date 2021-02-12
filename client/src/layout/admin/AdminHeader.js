@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import useAuth from 'context/auth/authContext';
 import styled from 'styled-components';

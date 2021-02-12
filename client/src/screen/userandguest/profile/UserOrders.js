@@ -2,7 +2,6 @@ import React from 'react';
 import { useUserOrders } from 'utils/user';
 import { Row, Col, CenterWrapper, Title } from 'design/components';
 import Spinner from 'components/Spinner';
-import Message from 'components/Message';
 import Sidebar from 'layout/Sidebar';
 import UserOrderItem from './UserOrderItem';
 import {
@@ -14,7 +13,6 @@ import {
 	TableCell,
 	TableContainer
 } from '@material-ui/core';
-import axios from 'axios';
 
 const UserOrder = ({ className }) => {
 	const { orders, isIdle, isLoading, isSuccess } = useUserOrders();

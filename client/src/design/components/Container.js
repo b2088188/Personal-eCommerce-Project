@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { applyStyleModifiers } from 'styled-components-modifiers';
 import { setFlex, setFlexWidth, setMargin, media } from '../utils';
 
 export const Container = styled.div`

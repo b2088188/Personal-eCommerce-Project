@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -13,7 +13,6 @@ import {
    Icon,
    Span
 } from 'design/components';
-import Message from 'components/Message';
 import Spinner from 'components/Spinner';
 import { Menu, MenuItem, MenuOpenButton, MenuCloseButton, MenuContent } from 'components/Menu';
 import { useProductSearchItems } from 'utils/product';

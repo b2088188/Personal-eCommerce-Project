@@ -1,9 +1,8 @@
 import * as R from 'ramda';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col, Title, ListGroup } from 'design/components';
 import { media } from 'design/utils';
-import Message from 'components/Message';
 import Spinner from 'components/Spinner';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';

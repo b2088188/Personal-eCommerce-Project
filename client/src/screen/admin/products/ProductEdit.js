@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, useHistory, Redirect } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import { Row, Col, FormContainer, Form, Span, Button, Select } from 'design/components';
 import { useCreateProduct, useProductItem, useUpdateProduct } from 'utils/product';
 import { useAsync } from 'utils/hooks';
@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import Spinner from 'components/Spinner';
 
 const ProductEdit = ({ location }) => {
-   const history = useHistory();
    const { productId } = useParams();
    const { create } = useCreateProduct();
    const { update } = useUpdateProduct(productId);

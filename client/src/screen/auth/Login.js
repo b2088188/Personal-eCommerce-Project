@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import useAuth from 'context/auth/authContext';
 import {
@@ -16,7 +16,7 @@ import { Message } from 'components/Message';
 import { useForm } from 'react-hook-form';
 
 const Login = ({ location }) => {
-   const [{ user, isLoading, isError, error }, { login }] = useAuth();
+   const [{ user, isLoading, error }, { login }] = useAuth();
    const { register, handleSubmit, errors } = useForm();
 
    if (user) return <Redirect to={location.state?.from || '/'} />;

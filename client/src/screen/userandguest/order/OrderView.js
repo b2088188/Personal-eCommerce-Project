@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useRouteMatch } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useOrderInfo, useUpdateOrderToPaid } from 'utils/order';
 import styled from 'styled-components';
 import {
@@ -29,7 +29,6 @@ const OrderView = ({ className }) => {
 	const [sdkSuccess, setSdkSuccess] = useState(false);
 	const { order, isIdle, isLoading, isSuccess } = useOrderInfo(orderId);
 	const { updateToPaid, isLoading: isUpdating } = useUpdateOrderToPaid(orderId);
-	const { url } = useRouteMatch();
 
 	useEffect(() => {
 		if (!sdkLoading && !sdkSuccess) addPaypalScript();

@@ -20,6 +20,8 @@
       "cors": "^2.8.5",
       "dotenv": "^8.2.0",
       "express": "^4.17.1",
+      "express-mongo-sanitize": "^2.0.2",
+      "helmet": "^4.4.1",
       "jsonwebtoken": "^8.5.1",
       "mongoose": "^5.11.8",
       "morgan": "^1.10.0",
@@ -28,7 +30,8 @@
       "react-paypal-button-v2": "^2.6.2",
       "sharp": "^0.27.0",
       "stripe": "^8.130.0",
-      "validator": "^13.5.2"
+      "validator": "^13.5.2",
+      "xss-clean": "^0.1.1"
    },
    "devDependencies": {
       "concurrently": "^5.3.0",

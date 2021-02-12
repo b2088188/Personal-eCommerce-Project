@@ -1,7 +1,5 @@
-import React, { useState, createContext, useContext, Children, cloneElement } from 'react';
+import React from 'react';
 import { NativeSelect, FormHelperText } from '@material-ui/core';
-
-const SelectContext = createContext();
 
 const Select = ({ children, value, setValue, label, name }) => {
    return (

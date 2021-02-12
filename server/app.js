@@ -4,8 +4,12 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import cors from 'cors';
 import compression from 'compression';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
 
 const app = express();
+app.use(helmet());
 // app.enable('trust proxy');
 // app.use(
 // 	cors({
@@ -21,11 +25,13 @@ const app = express();
 // 	res.header('Access-Control-Allow-Credentials', true);
 // 	next();
 // });
-// app.use(compression());
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
+// app.use(compression());
+app.use(mongoSanitize());
+app.use(xss());
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'server/public')));
 

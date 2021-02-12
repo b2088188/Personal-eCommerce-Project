@@ -4,7 +4,6 @@ import OrderItem from './OrderItem';
 import AdminSidebar from 'layout/admin/AdminSidebar';
 import { Row, Col, CenterWrapper, Title } from 'design/components';
 import { TableHead, TableRow, TableBody, TableCell, TableContent } from 'components/Table';
-import Message from 'components/Message';
 import Spinner from 'components/Spinner';
 
 const UserOrder = ({ className }) => {

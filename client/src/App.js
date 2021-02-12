@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 import useAuth from './context/auth/authContext';
-import { Container } from './design/components';
 import Spinner from 'components/Spinner';
 const UserAndGuestApp = lazy(() => import('./UserAndGuestApp'));
 const AdminApp = lazy(() => import('./AdminApp'));

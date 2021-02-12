@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import useCart from 'context/cart/cartContext';
 import { useCreateOrder } from 'utils/order';
 import styled from 'styled-components';
@@ -24,7 +24,6 @@ const PlaceOrder = ({ className }) => {
 	] = useCart();
 	//const [{ currentOrder, statusOrder, errorOrder }, { createOrder }] = useOrder();
 	const { order, createOrder, isLoading, isSuccess, isError, error } = useCreateOrder();
-	const history = useHistory();
 	async function createOrderHandle(e) {
 		createOrder({
 			orderItems: cartList,

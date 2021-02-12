@@ -6,7 +6,6 @@ import { useProductItems } from 'utils/product';
 import ProductItem from './ProductItem';
 import AdminSidebar from 'layout/admin/AdminSidebar';
 import Spinner from 'components/Spinner';
-import Message from 'components/Message';
 import { TableContent, TableHead, TableRow, TableBody, TableCell } from 'components/Table';
 
 const UserProducts = ({ className }) => {

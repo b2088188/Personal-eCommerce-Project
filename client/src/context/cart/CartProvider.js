@@ -28,7 +28,7 @@ export function addToCartList(dispatch, item, quantity) {
       type: ADD_CARTITEM,
       payload: {
          item: {
-            ['product']: R.prop('_id', item),
+            product: R.prop('_id', item),
             ...R.pick(['name', 'image', 'price', 'countInStock'], item),
             ...{ quantity }
          }
@@ -44,7 +44,7 @@ export function updateCartItem(dispatch, item, quantity) {
       type: UPDATE_CARTITEM,
       payload: {
          item: {
-            ['product']: R.prop('_id', item),
+            product: R.prop('_id', item),
             ...R.pick(['name', 'image', 'price', 'countInStock'], item),
             ...{ quantity }
          }
