@@ -81,7 +81,7 @@ const ProductDetail = ({ className }) => {
          return (
             <ListGroup bdbottom key={review._id}>
                <ListGroup.Item full>
-                  <Span modifiers={['large', 'exlight']}>{review.user.name}</Span>
+                  <Span modifiers={['large', 'exlight']}>{review.user?.name || ''}</Span>
                </ListGroup.Item>
                <ListGroup.Item full>
                   <RatingStar average={review.rating} />
