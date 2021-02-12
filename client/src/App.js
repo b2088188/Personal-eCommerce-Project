@@ -9,24 +9,12 @@ const App = () => {
    const [{ isAdmin }] = useAuth();
    if (!isAdmin)
       return (
-         <Suspense
-            fallback={
-               <Container>
-                  <Spinner modifiers='dark' />
-               </Container>
-            }
-         >
+         <Suspense fallback={<Spinner modifiers='dark' />}>
             <UserAndGuestApp />
          </Suspense>
       );
    return (
-      <Suspense
-         fallback={
-            <Container>
-               <Spinner modifiers='dark' />
-            </Container>
-         }
-      >
+      <Suspense fallback={<Spinner modifiers='dark' />}>
          <AdminApp />
       </Suspense>
    );
