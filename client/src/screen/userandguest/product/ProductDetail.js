@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
+
 import {
    CenterWrapper,
    Button,
@@ -15,13 +15,13 @@ import {
    Form,
    Select
 } from 'design/components';
+import ReviewView from '../review/ReviewView';
 import Options from 'components/Options';
 import { Message } from 'components/Message';
 import Spinner from 'components/Spinner';
 import RatingStar from 'components/RatingStar';
 import { media } from 'design/utils';
 import { useProductInfo } from 'utils/product';
-import { useReviewItems, useCreateReview, useReviewItem } from 'utils/review';
 import useAuth from 'context/auth/authContext';
 import useCart from 'context/cart/cartContext';
 import { addToCartList, updateCartItem } from 'context/cart/CartProvider';
@@ -32,15 +32,7 @@ const ProductDetail = ({ className }) => {
    const { productId } = useParams();
    const { product, isIdle, isLoading, isSuccess } = useProductInfo(productId);
    const [{ cartList }, { dispatchCart }] = useCart();
-   const {
-      reviews,
-      isIdle: isReviewIdle,
-      isLoading: isReviewLoading,
-      isSuccess: isReviewSuccess
-   } = useReviewItems(productId);
-   const reviewItem = useReviewItem(productId);
-   const { createReview } = useCreateReview(productId);
-   const { register, handleSubmit } = useForm();
+
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
 
@@ -57,10 +49,6 @@ const ProductDetail = ({ className }) => {
       };
    }
 
-   function onReviewCreate({ rating, review }) {
-      createReview({ rating: +rating, review });
-   }
-
    function renderSelect(count) {
       return (
          <ListGroup bbottom flexy='center'>
@@ -72,31 +60,6 @@ const ProductDetail = ({ className }) => {
             </ListGroup.Item>
          </ListGroup>
       );
-   }
-
-   function renderReviewList(list) {
-      return list?.map((review) => {
-         return (
-            <ListGroup bdbottom key={review._id}>
-               <ListGroup.Item full>
-                  <Span modifiers={['large', 'exlight']}>{review.user?.name || ''}</Span>
-               </ListGroup.Item>
-               <ListGroup.Item full>
-                  <RatingStar average={review.rating} />
-               </ListGroup.Item>
-               <ListGroup.Item full>
-                  <ListGroup.Span modifiers={['medium', 'exlight']}>
-                     {formatDate(review.createdAt)}
-                  </ListGroup.Span>
-               </ListGroup.Item>
-               <ListGroup.Item full>
-                  <ListGroup.Paragraph modifiers={['small', 'exlight']}>
-                     {review.review}
-                  </ListGroup.Paragraph>
-               </ListGroup.Item>
-            </ListGroup>
-         );
-      });
    }
 
    if (toCart) return <Redirect to='/cart' />;
@@ -171,56 +134,7 @@ const ProductDetail = ({ className }) => {
                         </Button>
                      </ListGroup>
                   </Col>
-                  <Col width='6'>
-                     <ListGroup>
-                        <Title modifiers='large'>Reviews</Title>
-                        {isReviewIdle || isReviewLoading ? (
-                           <Spinner modifiers='dark' />
-                        ) : isReviewSuccess && reviews.length > 0 ? (
-                           renderReviewList(reviews)
-                        ) : (
-                           <Message text='No Review yet' severity='info' />
-                        )}
-                        <ListGroup.Item>
-                           {isReviewSuccess ? (
-                              user && !reviewItem ? (
-                                 <Form onSubmit={handleSubmit(onReviewCreate)}>
-                                    <Form.Group>
-                                       <Form.Label>Rating</Form.Label>
-                                       <Select name='rating' id='rating' ref={register}>
-                                          <Options
-                                             options={[
-                                                { value: 1, text: '1 - Poor' },
-                                                { value: 2, text: '2 - Fair' },
-                                                { value: 3, text: '3 - OK' },
-                                                { value: 4, text: '4 - Great' },
-                                                { value: 5, text: '5 - Awesome' }
-                                             ]}
-                                          />
-                                       </Select>
-                                    </Form.Group>
-                                    <Form.Group>
-                                       <Form.Label>Review</Form.Label>
-                                       <Form.Input
-                                          name='review'
-                                          as='textarea'
-                                          ref={register({
-                                             required: "Review can't not be empty"
-                                          })}
-                                       />
-                                    </Form.Group>
-                                    <Button>Submit</Button>
-                                 </Form>
-                              ) : !user ? (
-                                 <Message
-                                    text='Please sign in to write down your review'
-                                    severity='info'
-                                 />
-                              ) : null
-                           ) : null}
-                        </ListGroup.Item>
-                     </ListGroup>
-                  </Col>
+                  <ReviewView />
                </Row>
             </CenterWrapper>
          </Row>
