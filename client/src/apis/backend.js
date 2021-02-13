@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const authRequest = axios.create({
 	baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/users`,
-	{withCredentials: true}
+	withCredentials: true
 });
 
 const productRequest = axios.create({
@@ -12,16 +12,14 @@ const productRequest = axios.create({
 const reviewRequest = (productId) =>
 	axios.create({
 		baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`,
-		{
-			withCredentials: true
-		}
+
+		withCredentials: true
 	});
 
 const orderRequest = axios.create({
 	baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/orders`,
-	{
-	   withCredentials: true
-	}
+
+	withCredentials: true
 });
 
 export { authRequest, productRequest, reviewRequest, orderRequest };
