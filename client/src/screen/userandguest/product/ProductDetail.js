@@ -12,30 +12,23 @@ import {
    ListGroup,
    Row,
    Col,
-   Form,
    Select
 } from 'design/components';
 import ReviewView from '../review/ReviewView';
 import Options from 'components/Options';
-import { Message } from 'components/Message';
 import Spinner from 'components/Spinner';
 import RatingStar from 'components/RatingStar';
 import { media } from 'design/utils';
 import { useProductInfo } from 'utils/product';
-import useAuth from 'context/auth/authContext';
 import useCart from 'context/cart/cartContext';
 import { addToCartList, updateCartItem } from 'context/cart/CartProvider';
-import formatDate from 'utils/formatDate';
 
 const ProductDetail = ({ className }) => {
-   const [{ user }] = useAuth();
    const { productId } = useParams();
    const { product, isIdle, isLoading, isSuccess } = useProductInfo(productId);
    const [{ cartList }, { dispatchCart }] = useCart();
-
    const [selectQty, setSelectQty] = useState(1);
    const [toCart, setToCart] = useState(false);
-
    const isInCart = cartList.find((el) => el.product === productId);
 
    function addCartClick(item, quantity) {

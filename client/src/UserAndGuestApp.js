@@ -21,6 +21,7 @@ const Signup = lazy(() => import('./screen/auth/Signup'));
 const Login = lazy(() => import('./screen/auth/Login'));
 const UserSettings = lazy(() => import('./screen/userandguest/profile/UserSettings'));
 const UserOrder = lazy(() => import('./screen/userandguest/profile/UserOrders'));
+const ErrorNotFound = lazy(() => import('./screen/error/ErrorNotFound'));
 
 const UserAndGuestApp = () => {
    return (
@@ -70,6 +71,7 @@ const AppRoutes = () => {
                <PrivateRoute path='/order/:orderId' component={OrderView} />
                <PrivateRoute path='/profile/settings' component={UserSettings} />
                <PrivateRoute path='/profile/orders' component={UserOrder} />
+               <Route path='*' component={ErrorNotFound} />
             </Switch>
          </CSSTransition>
       </TransitionGroup>

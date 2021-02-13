@@ -13,6 +13,7 @@ const OrderView = lazy(() => import('./screen/admin/order/OrderView'));
 const Login = lazy(() => import('./screen/auth/Login'));
 const Products = lazy(() => import('./screen/admin/products/Products'));
 const ProductEdit = lazy(() => import('./screen/admin/products/ProductEdit'));
+const ErrorNotFound = lazy(() => import('./screen/error/ErrorNotFound'));
 
 const AdminApp = () => {
 	return (
@@ -59,6 +60,7 @@ const AppRoutes = () => {
 					<Route path='/order/:orderId' component={OrderView} />
 					<Route path='/products' component={Products} />
 					<Route path='/products/edit/:productId?' component={ProductEdit} />
+					<Route path='*' component={ErrorNotFound} />
 				</Switch>
 			</CSSTransition>
 		</TransitionGroup>

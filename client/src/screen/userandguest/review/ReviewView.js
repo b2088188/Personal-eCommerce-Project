@@ -20,7 +20,7 @@ const ReviewView = () => {
       isSuccess: isReviewSuccess
    } = useReviewItems(productId);
    const reviewItem = useReviewItem(productId);
-   const { createReview } = useCreateReview(productId);
+   const { createReview, isSuccess: isCreateSuccess } = useCreateReview(productId);
    const { register, handleSubmit } = useForm();
 
    function onReviewCreate({ rating, review }) {
