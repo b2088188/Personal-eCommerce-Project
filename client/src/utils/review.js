@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import useAuth from 'context/auth/authContext';
-import axios from 'axios';
+import { reviewRequest } from 'apis/backend';
 
 function useReviewItems(productId) {
 	const result = useQuery({
 		queryKey: ['review-items', { productId }],
 		queryFn: () =>
-			axios
-				.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`)
+			reviewRequest(productId)
+				.get('/')
 				.then(({ data: { data } }) => data.reviews)
 				.catch(({ response: { data } }) => {
 					throw data;
@@ -25,14 +25,7 @@ function useReviewItem(productId) {
 function useCreateReview(productId) {
 	const queryClient = useQueryClient();
 	const mutation = useMutation(
-		({ rating, review }) =>
-			axios.post(
-				`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`,
-				{ rating, review }
-				// {
-				// 	withCredentials: true
-				// }
-			),
+		({ rating, review }) => reviewRequest(productId).post('/', { rating, review }),
 		{
 			onSettled: () => {
 				queryClient.invalidateQueries(['review-items', { productId }]);

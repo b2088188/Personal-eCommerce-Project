@@ -1,15 +1,14 @@
 import * as R from 'ramda';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import axios from 'axios';
+import { productRequest } from 'apis/backend';
 
 function useProductItems(category) {
    const queryClient = useQueryClient();
    const result = useQuery({
       queryKey: ['product-items', { category }],
       queryFn: () =>
-         axios({
+         productRequest({
             method: 'GET',
-            baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`,
             params: {
                category
                // limit: 8
@@ -35,9 +34,8 @@ function useProductSearchItems(q, sort) {
    const result = useQuery({
       queryKey: ['search-items', { q, sort }],
       queryFn: () =>
-         axios({
+         productRequest({
             method: 'GET',
-            baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`,
             params: {
                q,
                sort
@@ -66,8 +64,8 @@ function useProductInfo(productId) {
    const result = useQuery({
       queryKey: ['productInfo', { productId }],
       queryFn: () =>
-         axios
-            .get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}`)
+         productRequest
+            .get(`/${productId}`)
             .then(({ data: { data } }) => data.product)
             .catch(({ response: { data } }) => {
                throw data;
@@ -80,11 +78,9 @@ function useCreateProduct() {
    const queryClient = useQueryClient();
    const mutation = useMutation(
       ({ formData }) =>
-         axios
-            .post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products`, formData)
-            .catch(({ response: { data } }) => {
-               throw data;
-            }),
+         productRequest.post('/', formData).catch(({ response: { data } }) => {
+            throw data;
+         }),
       {
          onSettled: () => {
             queryClient.invalidateQueries(['product-items', {}]);
@@ -98,11 +94,9 @@ function useUpdateProduct(productId) {
    const queryClient = useQueryClient();
    const mutation = useMutation(
       ({ formData }) =>
-         axios
-            .patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}`, formData)
-            .catch(({ response: { data } }) => {
-               throw data;
-            }),
+         productRequest.patch(`/${productId}`, formData).catch(({ response: { data } }) => {
+            throw data;
+         }),
       {
          onSettled: () => {
             queryClient.invalidateQueries(['product-items', {}]);
@@ -114,16 +108,13 @@ function useUpdateProduct(productId) {
 
 function useRemoveProduct(productId) {
    const queryClient = useQueryClient();
-   const mutation = useMutation(
-      () => axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}`),
-      {
-         onMutate: () => {
-            queryClient.setQueryData(['product-items', {}], (oldData) => {
-               return R.reject((el) => el._id === productId, oldData);
-            });
-         }
+   const mutation = useMutation(() => productRequest.delete(`/${productId}`), {
+      onMutate: () => {
+         queryClient.setQueryData(['product-items', {}], (oldData) => {
+            return R.reject((el) => el._id === productId, oldData);
+         });
       }
-   );
+   });
    return { ...mutation, remove: mutation.mutate };
 }
 

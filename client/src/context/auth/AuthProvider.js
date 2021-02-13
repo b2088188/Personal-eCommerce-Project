@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { Row } from 'design/components';
 import { AuthStateProvider, AuthActionProvider } from './authContext';
 import { useQueryClient } from 'react-query';
 import { useAsync } from 'utils/hooks';
-import axios from 'axios';
-import { Spinner } from 'components/Spinner';
+import { authRequest } from 'apis/backend';
+import { FullPageSpinner } from 'components/Spinner';
 
 const AuthProvider = ({ children }) => {
    const queryClient = useQueryClient();
@@ -25,9 +24,7 @@ const AuthProvider = ({ children }) => {
       try {
          const {
             data: { data }
-         } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users`, {
-            //withCredentials: true
-         });
+         } = await authRequest.get('/');
          return data.user;
       } catch (err) {
          return;
@@ -43,13 +40,7 @@ const AuthProvider = ({ children }) => {
          try {
             const {
                data: { data }
-            } = await axios.post(
-               `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/login`,
-               values,
-               {
-                  //  withCredentials: true
-               }
-            );
+            } = await authRequest.post('/login', values);
             setData(data.user);
          } catch ({ response: { data } }) {
             setError(data.message);
@@ -63,13 +54,7 @@ const AuthProvider = ({ children }) => {
          try {
             const {
                data: { data }
-            } = await axios.post(
-               `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/signup`,
-               values,
-               {
-                  //withCredentials: true
-               }
-            );
+            } = await authRequest.post('/signup', values);
             setData(data.user);
          } catch ({ response: { data } }) {
             setError(data.message);
@@ -92,9 +77,7 @@ const AuthProvider = ({ children }) => {
       async function (values) {
          queryClient.clear();
          try {
-            await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/logout`, {
-               //withCredentials: true
-            });
+            await authRequest.get('/logout');
             setData(null);
          } catch (err) {
             setData(null);
@@ -119,18 +102,14 @@ const AuthProvider = ({ children }) => {
          login,
          signup,
          logout,
+         setData,
          setError
          //updateUserData
       }),
-      [login, signup, logout, setError]
+      [login, signup, logout, setData, setError]
    );
 
-   if (isIdle || isLoading)
-      return (
-         <Row>
-            <Spinner modifiers='dark' />
-         </Row>
-      );
+   if (isIdle || isLoading) return <FullPageSpinner />;
 
    return (
       <AuthStateProvider value={value}>

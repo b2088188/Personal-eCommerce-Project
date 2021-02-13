@@ -14,7 +14,7 @@ import {
    Span
 } from 'design/components';
 import { FullPageSpinner } from 'components/Spinner';
-import { Menu, MenuItem, MenuOpenButton, MenuCloseButton, MenuContent } from 'components/Menu';
+import { Menu, MenuItem, MenuOpenButton, MenuContent } from 'components/Menu';
 import { useProductSearchItems } from 'utils/product';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';

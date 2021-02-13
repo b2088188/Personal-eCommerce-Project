@@ -1,5 +1,5 @@
 import React, { useState, useContext, createContext, cloneElement } from 'react';
-import { Menu as MaterialMenu, MenuItem } from '@material-ui/core';
+import { Menu as MaterialMenu, MenuItem as MaterialMenuItem } from '@material-ui/core';
 
 const MenuContext = createContext();
 
@@ -17,11 +17,13 @@ const MenuOpenButton = ({ children: child }) => {
 	});
 };
 
-const MenuCloseButton = ({ children: child }) => {
+const MenuItem = ({ children, onClick }) => {
 	const { setAnchorEl } = useContext(MenuContext);
-	return cloneElement(child, {
-		onClick: callAll(() => setAnchorEl(null), child.props.onClick)
-	});
+	return (
+		<MaterialMenuItem onClick={callAll(() => setAnchorEl(null), onClick)}>
+			{children}
+		</MaterialMenuItem>
+	);
 };
 
 const MenuContent = ({ children }) => {
@@ -48,4 +50,4 @@ function callAll(...fns) {
 	};
 }
 
-export { Menu, MenuItem, MenuOpenButton, MenuCloseButton, MenuContent };
+export { Menu, MenuItem, MenuOpenButton, MenuContent };

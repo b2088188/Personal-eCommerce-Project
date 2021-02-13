@@ -5,25 +5,20 @@ import styled from 'styled-components';
 import { Wrapper, Span, Link as SLink, Input, Button, Icon } from 'design/components';
 import { colorGrey, media } from 'design/utils';
 import { ShoppingCart, Person, Search } from '@material-ui/icons';
-import { Menu, MenuItem, MenuOpenButton, MenuCloseButton, MenuContent } from 'components/Menu';
+import { Menu, MenuItem, MenuOpenButton, MenuContent } from 'components/Menu';
 
 const Header = ({ className }) => {
    const [q, setQ] = useState('');
    const [{ user }, { logout }] = useAuth();
    let history = useHistory();
-
    function onSearchClick() {
-      if (q) history.push(`/search/?q=${q}`);
+      if (q) history.push(`/products/search/?q=${q}`);
    }
 
    function onNavigationClick(url) {
       return function () {
          history.push(url);
       };
-   }
-
-   function onLogoutClick() {
-      logout();
    }
 
    return (
@@ -63,17 +58,9 @@ const Header = ({ className }) => {
                      </Button>
                   </MenuOpenButton>
                   <MenuContent>
-                     <MenuCloseButton>
-                        <MenuItem onClick={onNavigationClick('/profile/settings')}>
-                           Profile
-                        </MenuItem>
-                     </MenuCloseButton>
-                     <MenuCloseButton>
-                        <MenuItem onClick={onNavigationClick('/profile/orders')}>Orders</MenuItem>
-                     </MenuCloseButton>
-                     <MenuCloseButton>
-                        <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
-                     </MenuCloseButton>
+                     <MenuItem onClick={onNavigationClick('/profile/settings')}>Profile</MenuItem>
+                     <MenuItem onClick={onNavigationClick('/profile/orders')}>Orders</MenuItem>
+                     <MenuItem onClick={() => logout()}>Logout</MenuItem>
                   </MenuContent>
                </Menu>
             ) : (

@@ -12,12 +12,11 @@ import {
 	Button,
 	Title,
 	Paragraph,
-	Span,
-	CenterWrapper
+	Span
 } from 'design/components';
 import { setBorder } from 'design/utils';
 import { Message } from 'components/Message';
-import { Spinner } from 'components/Spinner';
+import { FullPageSpinner, AreaSpinner } from 'components/Spinner';
 import formatDate from 'utils/formatDate';
 
 const OrderView = ({ className }) => {
@@ -50,12 +49,7 @@ const OrderView = ({ className }) => {
 		});
 	}
 
-	if (isIdle || isLoading)
-		return (
-			<Row>
-				<Spinner modifiers='dark' />
-			</Row>
-		);
+	if (isIdle || isLoading) return <FullPageSpinner />;
 
 	if (isSuccess)
 		return (
@@ -123,7 +117,7 @@ const OrderView = ({ className }) => {
 									</ListGroup.Item>
 								</ListGroup>
 								{order.isDelivered ? null : isUpdating ? (
-									<Spinner modifiers='dark' />
+									<AreaSpinner />
 								) : (
 									<ListGroup flexy='center' bdtop>
 										<Button

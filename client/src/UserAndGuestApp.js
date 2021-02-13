@@ -1,13 +1,14 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
-import { Container, Row, Footer } from './design/components';
+import { Route, Switch, useLocation } from 'react-router-dom';
+import { Container, Footer } from './design/components';
 import { FullPageSpinner } from 'components/Spinner';
-import { Message } from 'components/Message';
 import CartProvider from './context/cart/CartProvider';
 import PrivateRoute from './routes/PrivateRoutes';
 import ProductView from './screen/userandguest/product/ProductView';
 import Header from './layout/header/Header';
+import { QueryErrorResetBoundary } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorNotFound, ErrorFallback } from './components/Error';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const ProductSearchView = lazy(() => import('./screen/userandguest/product/ProductSearchView'));
@@ -21,7 +22,6 @@ const Signup = lazy(() => import('./screen/auth/Signup'));
 const Login = lazy(() => import('./screen/auth/Login'));
 const UserSettings = lazy(() => import('./screen/userandguest/profile/UserSettings'));
 const UserOrder = lazy(() => import('./screen/userandguest/profile/UserOrders'));
-const ErrorNotFound = lazy(() => import('./screen/error/ErrorNotFound'));
 
 const UserAndGuestApp = () => {
    return (
@@ -29,9 +29,13 @@ const UserAndGuestApp = () => {
          <Container>
             <Header />
             <CartProvider>
-               <ErrorBoundary FallbackComponent={ErrorFallback}>
-                  <AppRoutes />
-               </ErrorBoundary>
+               <QueryErrorResetBoundary>
+                  {({ reset }) => (
+                     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
+                        <AppRoutes />
+                     </ErrorBoundary>
+                  )}
+               </QueryErrorResetBoundary>
             </CartProvider>
             <Footer>Copyright &copy; Shunze Lin</Footer>
          </Container>
@@ -60,7 +64,7 @@ const AppRoutes = () => {
                <PrivateRoute path='/payment' component={SelectPayment} />
                <Route path='/cart' component={CartView} />
                <Route path='/' exact component={ProductView} />
-               <Route path='/search' component={ProductSearchView} />
+               <Route path='/products/search' component={ProductSearchView} />
                <Route path='/products/:productId' component={ProductDetail} />
                <PrivateRoute path='/order/:orderId' component={OrderView} />
                <PrivateRoute path='/profile/settings' component={UserSettings} />
@@ -69,19 +73,6 @@ const AppRoutes = () => {
             </Switch>
          </CSSTransition>
       </TransitionGroup>
-   );
-};
-
-const ErrorFallback = ({ error, resetErrorBoundary }) => {
-   const history = useHistory();
-
-   history.listen((location, action) => {
-      if (error) resetErrorBoundary();
-   });
-   return (
-      <Row>
-         <Message text={error.message} severity='error' />;
-      </Row>
    );
 };
 

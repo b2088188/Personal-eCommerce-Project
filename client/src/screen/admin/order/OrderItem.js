@@ -20,7 +20,7 @@ const OrderItem = ({ order }) => {
 				{order.isDelivered ? formatDate(order.deliveredAt) : <Icon as={Close} />}
 			</TableCell>
 			<TableCell>
-				<SLink as={Link} to={`/order/${order._id}`}>
+				<SLink as={Link} to={`/orders/${order._id}`}>
 					Details
 				</SLink>
 			</TableCell>

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Span, Link as SLink, Button, Icon } from 'design/components';
 import { colorGrey } from 'design/utils';
 import { Person } from '@material-ui/icons';
-import { Menu, MenuItem, MenuOpenButton, MenuCloseButton, MenuContent } from 'components/Menu';
+import { Menu, MenuItem, MenuOpenButton, MenuContent } from 'components/Menu';
 
 const AdminHeader = ({ className }) => {
    const [{ user }, { logout }] = useAuth();
@@ -36,15 +36,9 @@ const AdminHeader = ({ className }) => {
                   </Button>
                </MenuOpenButton>
                <MenuContent>
-                  <MenuCloseButton>
-                     <MenuItem onClick={onNavigationClick('/')}>Orders</MenuItem>
-                  </MenuCloseButton>
-                  <MenuCloseButton>
-                     <MenuItem onClick={onNavigationClick('/products')}>Products</MenuItem>
-                  </MenuCloseButton>
-                  <MenuCloseButton>
-                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
-                  </MenuCloseButton>
+                  <MenuItem onClick={onNavigationClick('/')}>Orders</MenuItem>
+                  <MenuItem onClick={onNavigationClick('/products')}>Products</MenuItem>
+                  <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
                </MenuContent>
             </Menu>
             <Menu username={user.name}></Menu>

@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import useAuth from 'context/auth/authContext';
-import axios from 'axios';
+import { orderRequest } from 'apis/backend';
 
 function useDefaultMutationOptions(orderId) {
 	const queryClient = useQueryClient();
@@ -15,10 +15,8 @@ function useOrderItems() {
 	const result = useQuery({
 		queryKey: 'order-items',
 		queryFn: () =>
-			axios
-				.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/admin`, {
-					//    withCredentials: true
-				})
+			orderRequest
+				.get('/admin')
 				.then(({ data: { data } }) => data.orders)
 				.catch(({ response: { data } }) => {
 					throw data;
@@ -31,10 +29,8 @@ function useOrderInfo(orderId) {
 	const result = useQuery({
 		queryKey: ['orderInfo', { orderId }],
 		queryFn: () =>
-			axios
-				.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}`, {
-					// withCredentials: true
-				})
+			orderRequest
+				.get(`/${orderId}`)
 				.then(({ data: { data } }) => data.order)
 				.catch(({ response: { data } }) => {
 					throw data;
@@ -47,10 +43,8 @@ function useCreateOrder() {
 	const [{ user }] = useAuth();
 	const queryClient = useQueryClient();
 	const mutation = useMutation((values) =>
-		axios
-			.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/${user?._id}/orders`, values, {
-				//withCredentials: true
-			})
+		orderRequest
+			.post('/', values)
 			.then(({ data: { data } }) => data.order)
 			.catch(({ response: { data } }) => {
 				throw data;
@@ -61,29 +55,17 @@ function useCreateOrder() {
 
 function useUpdateOrderToPaid(orderId) {
 	const queryClient = useQueryClient();
-	const mutation = useMutation(
-		(values) =>
-			axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/pay`, values, {
-				// withCredentials: true
-			}),
-		{
-			...useDefaultMutationOptions(orderId)
-		}
-	);
+	const mutation = useMutation((values) => orderRequest.patch(`/${orderId}/pay`, values), {
+		...useDefaultMutationOptions(orderId)
+	});
 	return { ...mutation, updateToPaid: mutation.mutate };
 }
 
 function useUpdateOrderToDeliver(orderId) {
 	const queryClient = useQueryClient();
-	const mutation = useMutation(
-		() =>
-			axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/orders/${orderId}/deliver`, {
-				// withCredentials: true
-			}),
-		{
-			...useDefaultMutationOptions(orderId)
-		}
-	);
+	const mutation = useMutation(() => orderRequest.patch(`/${orderId}/deliver`), {
+		...useDefaultMutationOptions(orderId)
+	});
 	return { ...mutation, updateToDeliver: mutation.mutate };
 }
 
