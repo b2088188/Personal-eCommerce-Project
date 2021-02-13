@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Span } from 'design/components';
-import { media } from 'design/utils';
+import { media, setFlex } from 'design/utils';
 import { Alert } from '@material-ui/lab';
 import { Fade } from '@material-ui/core';
 
@@ -36,15 +36,13 @@ const UnStyleCoverMessage = ({ variant, text, severity = 'warning', className, f
 };
 
 const CoverMessage = styled(UnStyleCoverMessage)`
-	position: absolute;
+	position: fixed;
 	top: 0;
-	margin: 0 auto;
+	left: 0;
+	margin: 0 25%;
 	border-radius: 0 0 2.5rem 2.5rem;
 	width: 50%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	align-self: flex-start;
+	${setFlex({ x: 'center', y: 'center' })}
 `;
 
 export { Message, CoverMessage };
