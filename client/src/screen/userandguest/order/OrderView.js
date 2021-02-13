@@ -17,7 +17,7 @@ import {
 } from 'design/components';
 import { setBorder } from 'design/utils';
 import { PayPalButton } from 'react-paypal-button-v2';
-import Spinner from 'components/Spinner';
+import { AreaSpinner, FullPageSpinner } from 'components/Spinner';
 import { Message } from 'components/Message';
 import { media } from 'design/utils';
 import formatDate from 'utils/formatDate';
@@ -92,12 +92,7 @@ const OrderView = ({ className }) => {
 		);
 	}
 
-	if (isIdle || isLoading)
-		return (
-			<Row>
-				<Spinner modifiers='dark' />
-			</Row>
-		);
+	if (isIdle || isLoading) return <FullPageSpinner />;
 
 	if (isSuccess)
 		return (
@@ -163,7 +158,7 @@ const OrderView = ({ className }) => {
 									sdkSuccess ? (
 										renderPayButton(order.totalPrice)
 									) : (
-										<Spinner modifiers='dark' />
+										<AreaSpinner />
 									)
 								) : null}
 							</Col>

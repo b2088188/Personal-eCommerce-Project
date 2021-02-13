@@ -1,25 +1,24 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
 import useAuth from 'context/auth/authContext';
 import { Row, Col, FormContainer, Form, Button, Title, Span } from 'design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { Message } from 'components/Message';
 import { useForm } from 'react-hook-form';
 
 // {{pathname: '/signup', state: { prevPath: location.pathname }}}
 const Signup = ({ location }) => {
-   const [{ user, isLoading, error }, { signup }] = useAuth();
+   const [{ user, isLoading, error }, { signup, setError }] = useAuth();
    const { register, handleSubmit, watch, errors } = useForm();
    const password = useRef({});
    password.current = watch('password', '');
 
+   useEffect(() => {
+      return () => setError(null);
+   }, [setError]);
+
    if (user) return <Redirect to={location.state?.from || '/'} />;
-   if (isLoading)
-      return (
-         <Row>
-            <Spinner modifiers='dark' />
-         </Row>
-      );
+   if (isLoading) return <FullPageSpinner />;
    return (
       <Row>
          <Col width='12'>

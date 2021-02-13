@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { Message } from 'components/Message';
 import CartProvider from './context/cart/CartProvider';
 import PrivateRoute from './routes/PrivateRoutes';
@@ -25,13 +25,7 @@ const ErrorNotFound = lazy(() => import('./screen/error/ErrorNotFound'));
 
 const UserAndGuestApp = () => {
    return (
-      <Suspense
-         fallback={
-            <Row>
-               <Spinner modifiers='dark' />
-            </Row>
-         }
-      >
+      <Suspense fallback={<FullPageSpinner />}>
          <Container>
             <Header />
             <CartProvider>

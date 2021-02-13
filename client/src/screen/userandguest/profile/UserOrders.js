@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUserOrders } from 'utils/user';
 import { Row, Col, CenterWrapper, Title } from 'design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import Sidebar from 'layout/Sidebar';
 import UserOrderItem from './UserOrderItem';
 import {
@@ -23,12 +23,7 @@ const UserOrder = ({ className }) => {
 		});
 	}
 
-	if (isIdle || isLoading)
-		return (
-			<Row>
-				<Spinner />
-			</Row>
-		);
+	if (isIdle || isLoading) return <FullPageSpinner />;
 
 	if (isSuccess)
 		return (

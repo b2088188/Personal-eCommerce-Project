@@ -4,7 +4,7 @@ import { AuthStateProvider, AuthActionProvider } from './authContext';
 import { useQueryClient } from 'react-query';
 import { useAsync } from 'utils/hooks';
 import axios from 'axios';
-import Spinner from 'components/Spinner';
+import { Spinner } from 'components/Spinner';
 
 const AuthProvider = ({ children }) => {
    const queryClient = useQueryClient();
@@ -118,10 +118,11 @@ const AuthProvider = ({ children }) => {
       () => ({
          login,
          signup,
-         logout
+         logout,
+         setError
          //updateUserData
       }),
-      [login, signup, logout]
+      [login, signup, logout, setError]
    );
 
    if (isIdle || isLoading)

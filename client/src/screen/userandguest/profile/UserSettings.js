@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useUserProfile, useUpdateUserData } from 'utils/user';
 import { useForm } from 'react-hook-form';
 import { FormContainer, Form, Row, Col, Title, Button, Span } from 'design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { CoverMessage } from 'components/Message';
 import Sidebar from 'layout/Sidebar';
 
@@ -35,12 +35,7 @@ const UserSettings = () => {
 		updateUserData(values);
 	}
 
-	if (isIdle || isLoading)
-		return (
-			<Row>
-				<Spinner modifiers='dark' />
-			</Row>
-		);
+	if (isIdle || isLoading) return <FullPageSpinner />;
 	if (isSuccess)
 		return (
 			<Row direction={{ tabport: 'column' }}>

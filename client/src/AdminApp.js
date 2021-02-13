@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { Container, Row, Footer } from './design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { Message } from 'components/Message';
 import AdminHeader from './layout/admin/AdminHeader';
 import { QueryErrorResetBoundary } from 'react-query';
@@ -17,27 +17,19 @@ const ErrorNotFound = lazy(() => import('./screen/error/ErrorNotFound'));
 
 const AdminApp = () => {
 	return (
-		<>
-			<Suspense
-				fallback={
-					<Row>
-						<Spinner modifiers='dark' />
-					</Row>
-				}
-			>
-				<Container>
-					<AdminHeader />
-					<QueryErrorResetBoundary>
-						{({ reset }) => (
-							<ErrorBoundary FallbackComponent={ErrorFallback}>
-								<AppRoutes />
-							</ErrorBoundary>
-						)}
-					</QueryErrorResetBoundary>
-					<Footer>Copyright &copy; Shunze Lin</Footer>
-				</Container>
-			</Suspense>
-		</>
+		<Suspense fallback={<FullPageSpinner />}>
+			<Container>
+				<AdminHeader />
+				<QueryErrorResetBoundary>
+					{({ reset }) => (
+						<ErrorBoundary FallbackComponent={ErrorFallback}>
+							<AppRoutes />
+						</ErrorBoundary>
+					)}
+				</QueryErrorResetBoundary>
+				<Footer>Copyright &copy; Shunze Lin</Footer>
+			</Container>
+		</Suspense>
 	);
 };
 

@@ -13,7 +13,7 @@ import {
    Icon,
    Span
 } from 'design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { Menu, MenuItem, MenuOpenButton, MenuCloseButton, MenuContent } from 'components/Menu';
 import { useProductSearchItems } from 'utils/product';
 import ProductItem from './ProductItem';
@@ -52,12 +52,7 @@ const ProductView = ({ className }) => {
       };
    }
 
-   if (isIdle || isLoading)
-      return (
-         <Row>
-            <Spinner modifiers='dark' />
-         </Row>
-      );
+   if (isIdle || isLoading) return <FullPageSpinner />;
 
    if (isSuccess)
       return (

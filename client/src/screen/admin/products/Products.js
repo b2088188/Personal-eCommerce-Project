@@ -5,7 +5,7 @@ import { Row, Col, CenterWrapper, Title, Button } from 'design/components';
 import { useProductItems } from 'utils/product';
 import ProductItem from './ProductItem';
 import AdminSidebar from 'layout/admin/AdminSidebar';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { TableContent, TableHead, TableRow, TableBody, TableCell } from 'components/Table';
 
 const UserProducts = ({ className }) => {
@@ -19,12 +19,7 @@ const UserProducts = ({ className }) => {
 		});
 	}
 
-	if (isIdle || isLoading)
-		return (
-			<Row>
-				<Spinner modifiers='dark' />
-			</Row>
-		);
+	if (isIdle || isLoading) return <FullPageSpinner />;
 
 	if (isSuccess)
 		return (

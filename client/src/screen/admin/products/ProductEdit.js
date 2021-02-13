@@ -4,7 +4,7 @@ import { Row, Col, FormContainer, Form, Span, Button, Select } from 'design/comp
 import { useCreateProduct, useProductItem, useUpdateProduct } from 'utils/product';
 import { useAsync } from 'utils/hooks';
 import { useForm } from 'react-hook-form';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 
 const ProductEdit = ({ location }) => {
    const { productId } = useParams();
@@ -41,12 +41,7 @@ const ProductEdit = ({ location }) => {
       }
    }
 
-   if (isLoading)
-      return (
-         <Row>
-            <Spinner modifiers='dark' />
-         </Row>
-      );
+   if (isLoading) return <FullPageSpinner />;
    if (isSuccess) return <Redirect to='/products' />;
 
    return (

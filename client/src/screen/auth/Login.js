@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import useAuth from 'context/auth/authContext';
 import {
@@ -11,21 +11,20 @@ import {
    Button,
    Span
 } from 'design/components';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import { Message } from 'components/Message';
 import { useForm } from 'react-hook-form';
 
 const Login = ({ location }) => {
-   const [{ user, isLoading, error }, { login }] = useAuth();
+   const [{ user, isLoading, error }, { login, setError }] = useAuth();
    const { register, handleSubmit, errors } = useForm();
 
+   useEffect(() => {
+      return () => setError(null);
+   }, [setError]);
+
    if (user) return <Redirect to={location.state?.from || '/'} />;
-   if (isLoading)
-      return (
-         <Row>
-            <Spinner modifiers='dark' />
-         </Row>
-      );
+   if (isLoading) return <FullPageSpinner />;
    return (
       <Row>
          <Col width='12'>

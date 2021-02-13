@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col, Title, ListGroup } from 'design/components';
 import { media } from 'design/utils';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { Select, Option } from 'components/Select';
@@ -32,12 +32,7 @@ const ProductView = ({ className }) => {
       setPage(value);
    }
 
-   if (isIdle || isLoading)
-      return (
-         <Row>
-            <Spinner modifiers='dark' />
-         </Row>
-      );
+   if (isIdle || isLoading) return <FullPageSpinner />;
 
    if (isSuccess)
       return (

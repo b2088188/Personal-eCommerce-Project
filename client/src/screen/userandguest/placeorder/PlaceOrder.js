@@ -16,7 +16,7 @@ import {
 import Navsteps from 'layout/NavSteps';
 import PlaceOrderItem from './PlaceOrderItem';
 import { Message } from 'components/Message';
-import Spinner from 'components/Spinner';
+import { AreaSpinner, FullPageSpinner } from 'components/Spinner';
 
 const PlaceOrder = ({ className }) => {
 	const [
@@ -42,12 +42,7 @@ const PlaceOrder = ({ className }) => {
 	}
 
 	if (!shippingAddress || !paymentMethod) return <Redirect to='/' />;
-	if (isLoading)
-		return (
-			<Row>
-				<Spinner modifiers='dark' />
-			</Row>
-		);
+	if (isLoading) return <FullPageSpinner />;
 	if (isError && error)
 		return (
 			<Row>
@@ -107,7 +102,7 @@ const PlaceOrder = ({ className }) => {
 							</ListGroup>
 							<ListGroup bdtop>
 								{isLoading ? (
-									<Spinner modifiers='dark' />
+									<AreaSpinner />
 								) : (
 									<Button onClick={createOrderHandle} className='placeorder__button'>
 										Place Order

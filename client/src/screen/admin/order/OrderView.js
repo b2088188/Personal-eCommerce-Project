@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 import { Link, useParams } from 'react-router-dom';
 import { useOrderInfo, useUpdateOrderToDeliver } from 'utils/order';
-import styled from 'styled-components';
 import {
 	Row,
 	Col,
@@ -12,11 +12,12 @@ import {
 	Button,
 	Title,
 	Paragraph,
-	Span
+	Span,
+	CenterWrapper
 } from 'design/components';
 import { setBorder } from 'design/utils';
 import { Message } from 'components/Message';
-import Spinner from 'components/Spinner';
+import { Spinner } from 'components/Spinner';
 import formatDate from 'utils/formatDate';
 
 const OrderView = ({ className }) => {
@@ -47,10 +48,6 @@ const OrderView = ({ className }) => {
 				</ListGroup>
 			);
 		});
-	}
-
-	function onDeliverClick() {
-		updateToDeliver();
 	}
 
 	if (isIdle || isLoading)
@@ -130,7 +127,7 @@ const OrderView = ({ className }) => {
 								) : (
 									<ListGroup flexy='center' bdtop>
 										<Button
-											onClick={onDeliverClick}
+											onClick={() => updateToDeliver()}
 											modifiers={!order.isPaid ? 'disabled' : null}
 											disabled={!order.isPaid}
 											className='order__button'

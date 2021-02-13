@@ -4,7 +4,7 @@ import OrderItem from './OrderItem';
 import AdminSidebar from 'layout/admin/AdminSidebar';
 import { Row, Col, CenterWrapper, Title } from 'design/components';
 import { TableHead, TableRow, TableBody, TableCell, TableContent } from 'components/Table';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 
 const UserOrder = ({ className }) => {
 	const { orders, isIdle, isLoading, isSuccess } = useOrderItems();
@@ -15,12 +15,7 @@ const UserOrder = ({ className }) => {
 		});
 	}
 
-	if (isIdle || isLoading)
-		return (
-			<Row>
-				<Spinner modifiers='dark' />
-			</Row>
-		);
+	if (isIdle || isLoading) return <FullPageSpinner />;
 
 	if (isSuccess)
 		return (

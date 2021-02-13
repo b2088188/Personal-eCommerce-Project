@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Button, Span, Title, ListGroup, Col, Form, Select } from 'design/components';
 import Options from 'components/Options';
 import { Message } from 'components/Message';
-import Spinner from 'components/Spinner';
+import { AreaSpinner } from 'components/Spinner';
 import RatingStar from 'components/RatingStar';
 import { useReviewItems, useCreateReview, useReviewItem } from 'utils/review';
 import useAuth from 'context/auth/authContext';
@@ -55,7 +55,7 @@ const ReviewView = () => {
    if (isReviewIdle || isReviewLoading)
       return (
          <Col width='6'>
-            <Spinner modifiers='dark' />
+            <AreaSpinner />
          </Col>
       );
 

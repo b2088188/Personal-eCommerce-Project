@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
 import {
    CenterWrapper,
    Button,
@@ -16,7 +15,7 @@ import {
 } from 'design/components';
 import ReviewView from '../review/ReviewView';
 import Options from 'components/Options';
-import Spinner from 'components/Spinner';
+import { FullPageSpinner } from 'components/Spinner';
 import RatingStar from 'components/RatingStar';
 import { media } from 'design/utils';
 import { useProductInfo } from 'utils/product';
@@ -57,12 +56,7 @@ const ProductDetail = ({ className }) => {
 
    if (toCart) return <Redirect to='/cart' />;
 
-   if (isIdle || isLoading)
-      return (
-         <Row>
-            <Spinner />
-         </Row>
-      );
+   if (isIdle || isLoading) return <FullPageSpinner />;
 
    if (isSuccess)
       return (
