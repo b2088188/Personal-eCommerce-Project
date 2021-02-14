@@ -1,11 +1,11 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { Container, Footer } from './design/components';
-import { FullPageSpinner } from 'components/Spinner';
 import CartProvider from './context/cart/CartProvider';
 import PrivateRoute from './routes/PrivateRoutes';
 import ProductView from './screen/userandguest/product/ProductView';
 import Header from './layout/header/Header';
+import { FullPageSpinner } from 'components/Spinner';
 import { QueryErrorResetBoundary } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorNotFound, ErrorFallback } from './components/Error';
