@@ -3,8 +3,7 @@ import { useContext } from 'react';
 function useContextFactory(name, context) {
 	return function () {
 		const ctx = useContext(context);
-		// if(!ctx)
-		// 	return throw new Error(`use${name}Context must be used withing a ${name} ContextProvider`);
+		if (!ctx) throw new Error(`use${name}Context must be used withing a ${name} ContextProvider`);
 		return ctx;
 	};
 }

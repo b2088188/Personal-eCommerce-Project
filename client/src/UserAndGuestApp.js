@@ -1,69 +1,78 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import GlobalStyle from './design/GlobalStyle';
-import { Container, Row, Footer } from './design/components';
-import { Spinner } from './design/elements';
-import UserStore from './stores/user/UserStore';
-import ProductStore from './stores/product/ProductStore';
-import CartStore from './stores/cart/CartStore';
-import OrderStore from './stores/order/OrderStore';
-import ReviewStore from './stores/review/ReviewStore';
+import { Route, Switch, useLocation } from 'react-router-dom';
+import { Container, Footer } from './design/components';
+import CartProvider from './context/cart/CartProvider';
 import PrivateRoute from './routes/PrivateRoutes';
-import ProductView from './components/userandguest/productView/ProductView';
+import ProductView from './screen/userandguest/product/ProductView';
 import Header from './layout/header/Header';
-const ProductSearchView = lazy(() =>
-   import('./components/userandguest/productView/ProductSearchView')
-);
-const ProductDetail = lazy(() => import('./components/userandguest/productView/ProductDetail'));
-const CartView = lazy(() => import('./components/userandguest/cartView/CartView'));
-const ShippingInfo = lazy(() => import('./components/userandguest/placeorder/ShippingInfo'));
-const SelectPayment = lazy(() => import('./components/userandguest/placeorder/SelectPayment'));
-const PlaceOrder = lazy(() => import('./components/userandguest/placeorder/PlaceOrder'));
-const OrderView = lazy(() => import('./components/userandguest/order/OrderView'));
-const Signup = lazy(() => import('./components/auth/Signup'));
-const Login = lazy(() => import('./components/auth/Login'));
-const UserSettings = lazy(() => import('./components/userandguest/profileView/UserSettings'));
-const UserOrder = lazy(() => import('./components/userandguest/profileView/UserOrders'));
+import { FullPageSpinner } from 'components/Spinner';
+import { QueryErrorResetBoundary } from 'react-query';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorNotFound, ErrorFallback } from './components/Error';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+const ProductSearchView = lazy(() => import('./screen/userandguest/product/ProductSearchView'));
+const ProductDetail = lazy(() => import('./screen/userandguest/product/ProductDetail'));
+const CartView = lazy(() => import('./screen/userandguest/cart/CartView'));
+const ShippingInfo = lazy(() => import('./screen/userandguest/placeorder/ShippingInfo'));
+const SelectPayment = lazy(() => import('./screen/userandguest/placeorder/SelectPayment'));
+const PlaceOrder = lazy(() => import('./screen/userandguest/placeorder/PlaceOrder'));
+const OrderView = lazy(() => import('./screen/userandguest/order/OrderView'));
+const Signup = lazy(() => import('./screen/auth/Signup'));
+const Login = lazy(() => import('./screen/auth/Login'));
+const UserSettings = lazy(() => import('./screen/userandguest/profile/UserSettings'));
+const UserOrder = lazy(() => import('./screen/userandguest/profile/UserOrders'));
 
 const UserAndGuestApp = () => {
    return (
-      <UserStore>
-         <GlobalStyle />
-         <Router>
-            <Suspense
-               fallback={
-                  <Row>
-                     <Spinner modifiers='dark' />
-                  </Row>
-               }
-            >
-               <Container>
-                  <Header />
-                  <Route path='/signup' exact component={Signup} />
-                  <Route path='/login' exact component={Login} />
-                  <OrderStore>
-                     <CartStore>
-                        <PrivateRoute path='/placeorder' exact component={PlaceOrder} />
-                        <PrivateRoute path='/shipping' exact component={ShippingInfo} />
-                        <PrivateRoute path='/payment' exact component={SelectPayment} />
-                        <Route path='/cart' exact component={CartView} />
-                        <ProductStore>
-                           <ReviewStore>
-                              <Route path='/' exact component={ProductView} />
-                              <Route path='/search' exact component={ProductSearchView} />
-                              <Route path='/products/:productId' exact component={ProductDetail} />
-                           </ReviewStore>
-                        </ProductStore>
-                     </CartStore>
-                     <PrivateRoute path='/order/:orderId' exact component={OrderView} />
-                     <PrivateRoute path='/profile/settings' exact component={UserSettings} />
-                     <PrivateRoute path='/profile/orders' exact component={UserOrder} />
-                  </OrderStore>
-                  <Footer>Copyright &copy; Shunze Lin</Footer>
-               </Container>
-            </Suspense>
-         </Router>
-      </UserStore>
+      <Suspense fallback={<FullPageSpinner />}>
+         <Container>
+            <Header />
+            <CartProvider>
+               <QueryErrorResetBoundary>
+                  {({ reset }) => (
+                     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
+                        <AppRoutes />
+                     </ErrorBoundary>
+                  )}
+               </QueryErrorResetBoundary>
+            </CartProvider>
+            <Footer>Copyright &copy; Shunze Lin</Footer>
+         </Container>
+      </Suspense>
+   );
+};
+
+const AppRoutes = () => {
+   const location = useLocation();
+   return (
+      <TransitionGroup component={null}>
+         <CSSTransition
+            timeout={{
+               appear: 250,
+               enter: 250,
+               exit: 250
+            }}
+            classNames='item'
+            key={location.key}
+         >
+            <Switch location={location}>
+               <Route path='/signup' component={Signup} />
+               <Route path='/login' component={Login} />
+               <PrivateRoute path='/placeorder' component={PlaceOrder} />
+               <PrivateRoute path='/shipping' component={ShippingInfo} />
+               <PrivateRoute path='/payment' component={SelectPayment} />
+               <Route path='/cart' component={CartView} />
+               <Route path='/' exact component={ProductView} />
+               <Route path='/products/search' component={ProductSearchView} />
+               <Route path='/products/:productId' component={ProductDetail} />
+               <PrivateRoute path='/order/:orderId' component={OrderView} />
+               <PrivateRoute path='/profile/settings' component={UserSettings} />
+               <PrivateRoute path='/profile/orders' component={UserOrder} />
+               <Route path='*' component={ErrorNotFound} />
+            </Switch>
+         </CSSTransition>
+      </TransitionGroup>
    );
 };
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { CenterWrapper, ListGroup, Icon, Link as SLink } from '../design/components';
+import { CenterWrapper, ListGroup, Icon, Link as SLink } from 'design/components';
 import { Done } from '@material-ui/icons';
+
 const NavSteps = ({ step1, step2, step3, className }) => {
 	const location = useLocation();
 	return (

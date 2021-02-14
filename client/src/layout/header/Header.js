@@ -1,33 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import useAuth from '../../stores/auth/authContext';
+import useAuth from 'context/auth/authContext';
 import styled from 'styled-components';
-import { Wrapper, Span, Link as SLink, Input, Button, Icon } from '../../design/components';
-import { colorGrey, media } from '../../design/utils';
+import { Wrapper, Span, Link as SLink, Input, Button, Icon } from 'design/components';
+import { colorGrey, media } from 'design/utils';
 import { ShoppingCart, Person, Search } from '@material-ui/icons';
-import Menu from '../../utils/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Menu, MenuItem, MenuOpenButton, MenuContent } from 'components/Menu';
 
 const Header = ({ className }) => {
    const [q, setQ] = useState('');
-   const [open, setOpen] = useState(false);
    const [{ user }, { logout }] = useAuth();
    let history = useHistory();
-   const anchorRef = useRef(null);
    function onSearchClick() {
-      if (q) history.push(`/search/?q=${q}`);
+      if (q) history.push(`/products/search/?q=${q}`);
    }
 
    function onNavigationClick(url) {
       return function () {
-         setOpen(false);
          history.push(url);
       };
-   }
-
-   function onLogoutClick() {
-      setOpen(false);
-      logout();
    }
 
    return (
@@ -59,21 +50,19 @@ const Header = ({ className }) => {
                <Span>Cart</Span>
             </SLink>
             {user ? (
-               <>
-                  <Button
-                     ref={anchorRef}
-                     onClick={() => setOpen((prev) => !prev)}
-                     modifiers='transparent'
-                  >
-                     <Icon as={Person} />
-                     <Span>{user.name}</Span>
-                  </Button>
-                  <Menu open={open} setOpen={setOpen} anchorRef={anchorRef}>
+               <Menu>
+                  <MenuOpenButton>
+                     <Button modifiers='transparent'>
+                        <Icon as={Person} />
+                        <Span>{user.name}</Span>
+                     </Button>
+                  </MenuOpenButton>
+                  <MenuContent>
                      <MenuItem onClick={onNavigationClick('/profile/settings')}>Profile</MenuItem>
                      <MenuItem onClick={onNavigationClick('/profile/orders')}>Orders</MenuItem>
-                     <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
-                  </Menu>
-               </>
+                     <MenuItem onClick={() => logout()}>Logout</MenuItem>
+                  </MenuContent>
+               </Menu>
             ) : (
                <SLink as={Link} to='/login' className='header__link header__link--signin'>
                   <Icon as={Person} className='header__icon' />

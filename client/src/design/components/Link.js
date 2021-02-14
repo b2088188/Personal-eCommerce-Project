@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colorGrey } from '../utils';
+import { colorGrey } from 'design/utils';
 import { applyStyleModifiers } from 'styled-components-modifiers';
 
 const LINK_MODIFIERS = {

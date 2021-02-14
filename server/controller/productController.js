@@ -56,8 +56,7 @@ export const createProduct = catchAsync(async (req, res, next) => {
 	if (req.file) req.body.image = `images/products/${req.file.filename}`;
 	const product = await Product.create(
 		{ user: req.user._id, ...req.body }
-		//{ new: true }
-	);
+		//, { new: true }
 	res.status(201).json({
 		status: 'success',
 		data: {
@@ -68,7 +67,6 @@ export const createProduct = catchAsync(async (req, res, next) => {
 
 export const updateProduct = catchAsync(async (req, res, next) => {
 	if (req.file) req.body.image = `images/products/${req.file.filename}`;
-	console.log(req.body);
 	const product = await Product.findByIdAndUpdate(req.params.productId, req.body, { new: true });
 	if (!product) return next(new AppError('No product found with that Id', 404));
 	res.status(200).json({

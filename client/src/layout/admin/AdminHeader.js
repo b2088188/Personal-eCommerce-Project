@@ -1,29 +1,24 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import useAuth from '../../stores/auth/authContext';
+import useAuth from 'context/auth/authContext';
 import styled from 'styled-components';
-import { Span, Link as SLink, Button, Icon } from '../../design/components';
-import { colorGrey } from '../../design/utils';
+import { Span, Link as SLink, Button, Icon } from 'design/components';
+import { colorGrey } from 'design/utils';
 import { Person } from '@material-ui/icons';
-import Menu from '../../utils/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Menu, MenuItem, MenuOpenButton, MenuContent } from 'components/Menu';
 
 const AdminHeader = ({ className }) => {
    const [{ user }, { logout }] = useAuth();
    const history = useHistory();
-   const [open, setOpen] = useState(false);
-   const anchorRef = useRef(null);
 
    function onNavigationClick(url) {
       return function () {
          history.push(url);
-         setOpen(false);
       };
    }
 
    function onLogoutClick() {
       logout();
-      setOpen(false);
    }
 
    return (
@@ -32,21 +27,20 @@ const AdminHeader = ({ className }) => {
             <SLink as={Link} to='/' className='home'>
                eCommerce
             </SLink>
-            <>
-               <Button
-                  ref={anchorRef}
-                  onClick={() => setOpen((prev) => !prev)}
-                  modifiers='transparent'
-               >
-                  <Icon as={Person} />
-                  <Span>{user.name}</Span>
-               </Button>
-               <Menu open={open} setOpen={setOpen} anchorRef={anchorRef}>
+
+            <Menu>
+               <MenuOpenButton>
+                  <Button modifiers='transparent'>
+                     <Icon as={Person} />
+                     <Span>{user.name}</Span>
+                  </Button>
+               </MenuOpenButton>
+               <MenuContent>
                   <MenuItem onClick={onNavigationClick('/')}>Orders</MenuItem>
                   <MenuItem onClick={onNavigationClick('/products')}>Products</MenuItem>
                   <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
-               </Menu>
-            </>
+               </MenuContent>
+            </Menu>
             <Menu username={user.name}></Menu>
          </div>
       </header>

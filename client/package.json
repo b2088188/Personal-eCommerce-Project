@@ -15,9 +15,12 @@
       "ramda-extension": "^0.10.3",
       "react": "^17.0.1",
       "react-dom": "^17.0.1",
+      "react-error-boundary": "^3.1.0",
       "react-hook-form": "^6.13.1",
+      "react-query": "^3.7.1",
       "react-router-dom": "^5.2.0",
       "react-scripts": "4.0.1",
+      "react-transition-group": "^4.4.1",
       "styled-components": "^5.2.1",
       "styled-components-modifiers": "^1.2.5",
       "web-vitals": "^0.2.4"

@@ -1,49 +1,60 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import GlobalStyle from './design/GlobalStyle';
-import { Container, Row, Footer } from './design/components';
-import { Spinner } from './design/elements';
-import UserStore from './stores/user/UserStore';
-import ProductStore from './stores/product/ProductStore';
-import OrderStore from './stores/order/OrderStore';
+import { Route, Switch, useLocation } from 'react-router-dom';
+import { Container, Footer } from './design/components';
+import { FullPageSpinner } from 'components/Spinner';
 import AdminHeader from './layout/admin/AdminHeader';
+import { QueryErrorResetBoundary } from 'react-query';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorNotFound, ErrorFallback } from './components/Error';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-const OrdersView = lazy(() => import('./components/admin/order/OrdersView'));
-const OrderView = lazy(() => import('./components/admin/order/OrderView'));
-const Login = lazy(() => import('./components/auth/Login'));
-const Products = lazy(() => import('./components/admin/products/Products'));
-const ProductEdit = lazy(() => import('./components/admin/products/ProductEdit'));
+const OrdersView = lazy(() => import('./screen/admin/order/OrdersView'));
+const OrderView = lazy(() => import('./screen/admin/order/OrderView'));
+const Login = lazy(() => import('./screen/auth/Login'));
+const Products = lazy(() => import('./screen/admin/products/Products'));
+const ProductEdit = lazy(() => import('./screen/admin/products/ProductEdit'));
 
 const AdminApp = () => {
 	return (
-		<>
-			<GlobalStyle />
-			<Router>
-				<Suspense
-					fallback={
-						<Row>
-							<Spinner modifiers='dark' />
-						</Row>
-					}
-				>
-					<Container>
-						<AdminHeader />
-						<UserStore>
-							<Route path='/login' exact component={Login} />
-							<OrderStore>
-								<Route path='/' exact component={OrdersView} />
-								<Route path='/order/:orderId' exact component={OrderView} />
-							</OrderStore>
-							<ProductStore>
-								<Route path='/products' exact component={Products} />
-								<Route path='/products/edit/:productId?' exact component={ProductEdit} />
-							</ProductStore>
-						</UserStore>
-						<Footer>Copyright &copy; Shunze Lin</Footer>
-					</Container>
-				</Suspense>
-			</Router>
-		</>
+		<Suspense fallback={<FullPageSpinner />}>
+			<Container>
+				<AdminHeader />
+				<QueryErrorResetBoundary>
+					{({ reset }) => (
+						<ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
+							<AppRoutes />
+						</ErrorBoundary>
+					)}
+				</QueryErrorResetBoundary>
+				<Footer>Copyright &copy; Shunze Lin</Footer>
+			</Container>
+		</Suspense>
+	);
+};
+
+const AppRoutes = () => {
+	const location = useLocation();
+	return (
+		<TransitionGroup component={null}>
+			<CSSTransition
+				timeout={{
+					appear: 250,
+					enter: 250,
+					exit: 250
+				}}
+				classNames='item'
+				key={location.key}
+			>
+				<Switch location={location}>
+					<Route path='/login' component={Login} />
+					<Route path='/' exact component={OrdersView} />
+					<Route path='/orders/:orderId' component={OrderView} />
+					<Route path='/products' exact component={Products} />
+					<Route path='/products/edit/:productId?' component={ProductEdit} />
+					<Route path='*' component={ErrorNotFound} />
+				</Switch>
+			</CSSTransition>
+		</TransitionGroup>
 	);
 };
 
