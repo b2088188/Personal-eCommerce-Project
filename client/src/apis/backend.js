@@ -6,13 +6,13 @@ const authRequest = axios.create({
 });
 
 const productRequest = axios.create({
-	baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`
+	baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products`,
+	withCredentials: true
 });
 
 const reviewRequest = (productId) =>
 	axios.create({
 		baseURL: `${process.env.REACT_APP_BACKEND_URL}/api/v1/products/${productId}/reviews`,
-
 		withCredentials: true
 	});
 
