@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import cors from 'cors';
+
 import compression from 'compression';
 
 const app = express();
