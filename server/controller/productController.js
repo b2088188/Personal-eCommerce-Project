@@ -54,9 +54,7 @@ export const getProduct = catchAsync(async (req, res, next) => {
 
 export const createProduct = catchAsync(async (req, res, next) => {
 	if (req.file) req.body.image = `images/products/${req.file.filename}`;
-	const product = await Product.create(
-		{ user: req.user._id, ...req.body }
-		//, { new: true }
+	const product = await Product.create({ user: req.user._id, ...req.body });
 	res.status(201).json({
 		status: 'success',
 		data: {

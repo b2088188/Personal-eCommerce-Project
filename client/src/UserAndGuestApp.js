@@ -28,15 +28,13 @@ const UserAndGuestApp = () => {
       <Suspense fallback={<FullPageSpinner />}>
          <Container>
             <Header />
-            <CartProvider>
-               <QueryErrorResetBoundary>
-                  {({ reset }) => (
-                     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
-                        <AppRoutes />
-                     </ErrorBoundary>
-                  )}
-               </QueryErrorResetBoundary>
-            </CartProvider>
+            <QueryErrorResetBoundary>
+               {({ reset }) => (
+                  <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
+                     <AppRoutes />
+                  </ErrorBoundary>
+               )}
+            </QueryErrorResetBoundary>
             <Footer>Copyright &copy; Shunze Lin</Footer>
          </Container>
       </Suspense>
@@ -59,13 +57,15 @@ const AppRoutes = () => {
             <Switch location={location}>
                <Route path='/signup' component={Signup} />
                <Route path='/login' component={Login} />
-               <PrivateRoute path='/placeorder' component={PlaceOrder} />
-               <PrivateRoute path='/shipping' component={ShippingInfo} />
-               <PrivateRoute path='/payment' component={SelectPayment} />
-               <Route path='/cart' component={CartView} />
-               <Route path='/' exact component={ProductView} />
-               <Route path='/products/search' component={ProductSearchView} />
-               <Route path='/products/:productId' component={ProductDetail} />
+               <CartProvider>
+                  <PrivateRoute path='/placeorder' component={PlaceOrder} />
+                  <PrivateRoute path='/shipping' component={ShippingInfo} />
+                  <PrivateRoute path='/payment' component={SelectPayment} />
+                  <Route path='/cart' component={CartView} />
+                  <Route path='/' exact component={ProductView} />
+                  <Route path='/products/search' component={ProductSearchView} />
+                  <Route path='/products/:productId' component={ProductDetail} />
+               </CartProvider>
                <PrivateRoute path='/order/:orderId' component={OrderView} />
                <PrivateRoute path='/profile/settings' component={UserSettings} />
                <PrivateRoute path='/profile/orders' component={UserOrder} />

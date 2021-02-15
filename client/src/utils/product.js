@@ -52,7 +52,7 @@ function useProductSearchItems(q, sort) {
          });
       }
    });
-   return { ...result, products: result.data };
+   return { ...result, products: result.data ?? [] };
 }
 
 function useProductItem(productId) {

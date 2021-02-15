@@ -13,13 +13,14 @@ function useReviewItems(productId) {
 					throw data;
 				})
 	});
-	return { ...result, reviews: result.data };
+	return { ...result, reviews: result.data ?? [] };
 }
 
 function useReviewItem(productId) {
 	const [{ user }] = useAuth();
 	const { reviews } = useReviewItems(productId);
-	return user ? reviews?.find((el) => el.user._id === user._id) : null;
+	if (!user) return null;
+	return reviews?.find((el) => el.user._id === user._id) || null;
 }
 
 function useCreateReview(productId) {
