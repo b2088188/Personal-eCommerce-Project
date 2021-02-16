@@ -11,21 +11,21 @@ import xss from 'xss-clean';
 
 const app = express();
 app.use(helmet());
-// app.enable('trust proxy');
-// app.use(
-// 	cors({
-// 		origin: 'https://app0746-9a789.web.app',
-// 		credentials: true
-// 	})
-// );
-// app.options('*', cors());
-// app.use(function (req, res, next) {
-// 	res.header('Access-Control-Allow-Origin', 'https://app0746-9a789.web.app');
-// 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-// 	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-// 	res.header('Access-Control-Allow-Credentials', true);
-// 	next();
-// });
+app.enable('trust proxy');
+app.use(
+	cors({
+		origin: 'https://app0746-9a789.web.app',
+		credentials: true
+	})
+);
+app.options('*', cors());
+app.use(function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', 'https://app0746-9a789.web.app');
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+	res.header('Access-Control-Allow-Credentials', true);
+	next();
+});
 
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(express.json({ limit: '10kb' }));
