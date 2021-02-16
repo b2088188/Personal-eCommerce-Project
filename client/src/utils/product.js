@@ -4,15 +4,17 @@ import { productRequest } from 'apis/backend';
 
 function useProductItems(category) {
    const queryClient = useQueryClient();
+   const params = category
+      ? {
+           category
+        }
+      : null;
    const result = useQuery({
       queryKey: ['product-items', { category }],
       queryFn: () =>
          productRequest({
             method: 'GET',
-            params: {
-               category
-               // limit: 8
-            }
+            params
          })
             .then(({ data: { data } }) => data.products)
             .catch(({ response: { data } }) => {
@@ -26,7 +28,7 @@ function useProductItems(category) {
       }
    });
    const { data } = result;
-   return { ...result, products: data };
+   return { ...result, products: data ?? [] };
 }
 
 function useProductSearchItems(q, sort) {

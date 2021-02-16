@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import useAuth from 'context/auth/authContext';
 import { orderRequest } from 'apis/backend';
 
 function useDefaultMutationOptions(orderId) {
@@ -40,7 +39,6 @@ function useOrderInfo(orderId) {
 }
 
 function useCreateOrder() {
-	const [{ user }] = useAuth();
 	const queryClient = useQueryClient();
 	const mutation = useMutation((values) =>
 		orderRequest

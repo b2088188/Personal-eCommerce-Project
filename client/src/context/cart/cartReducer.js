@@ -1,7 +1,5 @@
 import * as R from 'ramda';
 import {
-	LOADING_CARTLIST,
-	CARTLIST_SUCCESS,
 	ADD_CARTITEM,
 	UPDATE_CARTITEM,
 	REMOVE_CARTITEM,
@@ -12,17 +10,6 @@ import {
 
 function cartReducer(currentState, action) {
 	switch (action.type) {
-		case LOADING_CARTLIST:
-			return {
-				...currentState,
-				loading: true
-			};
-		case CARTLIST_SUCCESS:
-			return {
-				...currentState,
-				cartList: action.payload.cartList,
-				loading: false
-			};
 		case ADD_CARTITEM:
 			return {
 				...currentState,

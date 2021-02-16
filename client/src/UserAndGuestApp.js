@@ -31,7 +31,9 @@ const UserAndGuestApp = () => {
             <QueryErrorResetBoundary>
                {({ reset }) => (
                   <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
-                     <AppRoutes />
+                     <CartProvider>
+                        <AppRoutes />
+                     </CartProvider>
                   </ErrorBoundary>
                )}
             </QueryErrorResetBoundary>
@@ -57,15 +59,13 @@ const AppRoutes = () => {
             <Switch location={location}>
                <Route path='/signup' component={Signup} />
                <Route path='/login' component={Login} />
-               <CartProvider>
-                  <PrivateRoute path='/placeorder' component={PlaceOrder} />
-                  <PrivateRoute path='/shipping' component={ShippingInfo} />
-                  <PrivateRoute path='/payment' component={SelectPayment} />
-                  <Route path='/cart' component={CartView} />
-                  <Route path='/' exact component={ProductView} />
-                  <Route path='/products/search' component={ProductSearchView} />
-                  <Route path='/products/:productId' component={ProductDetail} />
-               </CartProvider>
+               <Route path='/' exact component={ProductView} />
+               <Route path='/products/search' component={ProductSearchView} />
+               <Route path='/products/:productId' component={ProductDetail} />
+               <Route path='/cart' component={CartView} />
+               <PrivateRoute path='/shipping' component={ShippingInfo} />
+               <PrivateRoute path='/payment' component={SelectPayment} />
+               <PrivateRoute path='/placeorder' component={PlaceOrder} />
                <PrivateRoute path='/order/:orderId' component={OrderView} />
                <PrivateRoute path='/profile/settings' component={UserSettings} />
                <PrivateRoute path='/profile/orders' component={UserOrder} />

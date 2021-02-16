@@ -24,7 +24,7 @@ const ProductView = ({ className }) => {
    const { search } = useLocation();
    const searchParams = new URLSearchParams(search);
    const q = searchParams.get('q');
-   const [sort, setSort] = useState(null);
+   const [sort, setSort] = useState('');
    const { products, isIdle, isLoading, isSuccess } = useProductSearchItems(q, sort);
    const [page, setPage] = useState(1);
 

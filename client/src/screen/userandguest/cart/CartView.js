@@ -15,7 +15,7 @@ const CartView = ({ className }) => {
          return <CartItem key={item.product} item={item} />;
       });
    }
-
+   console.log(cartList);
    if (toShipping) return <Redirect to='/shipping' />;
 
    return (

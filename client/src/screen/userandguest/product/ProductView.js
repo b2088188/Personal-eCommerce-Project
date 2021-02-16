@@ -11,7 +11,7 @@ import { useProductItems } from 'utils/product';
 
 const ProductView = ({ className }) => {
    const [page, setPage] = useState(1);
-   const [filterBy, setFilterBy] = useState(null);
+   const [filterBy, setFilterBy] = useState('');
    const { products, isIdle, isLoading, isSuccess } = useProductItems(filterBy);
 
    function calcPage(results, page, resPerPage = 8) {

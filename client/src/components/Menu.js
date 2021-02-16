@@ -1,43 +1,47 @@
-import React, { useState, useContext, createContext, cloneElement } from 'react';
-import { Menu as MaterialMenu, MenuItem as MaterialMenuItem } from '@material-ui/core';
+import React, { useState, useContext, useRef, createContext, Children, cloneElement } from 'react';
+import { Menu as MaterialMenu, MenuItem } from '@material-ui/core';
 
 const MenuContext = createContext();
 
 const Menu = ({ children }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 
-	const value = { anchorEl, setAnchorEl };
+	function getMenuOpenProps({ onClick } = {}) {
+		return {
+			onClick: callAll((e) => setAnchorEl(e.currentTarget), onClick),
+			'aria-controls': 'simple-menu',
+			'aria-haspopup': 'true'
+		};
+	}
+
+	function getMenuProps() {
+		return {
+			id: 'simple-menu',
+			anchorEl,
+			keepMounted: null,
+			open: Boolean(anchorEl),
+			onClose: () => setAnchorEl(null)
+		};
+	}
+	const value = { anchorEl, setAnchorEl, getMenuProps, getMenuOpenProps };
 	return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 };
 
 const MenuOpenButton = ({ children: child }) => {
-	const { setAnchorEl } = useContext(MenuContext);
-	return cloneElement(child, {
-		onClick: callAll((e) => setAnchorEl(e.currentTarget), child.props.onClick)
-	});
+	const { getMenuOpenProps } = useContext(MenuContext);
+	return cloneElement(child, getMenuOpenProps({ onClick: child.props.onClick }));
 };
 
-const MenuItem = ({ children, onClick }) => {
-	const { setAnchorEl } = useContext(MenuContext);
-	return (
-		<MaterialMenuItem onClick={callAll(() => setAnchorEl(null), onClick)}>
-			{children}
-		</MaterialMenuItem>
-	);
-};
-
-const MenuContent = ({ children }) => {
-	const { anchorEl, setAnchorEl } = useContext(MenuContext);
+const MenuContent = ({ children, onClick }) => {
+	const { getMenuProps, setAnchorEl } = useContext(MenuContext);
 
 	return (
-		<MaterialMenu
-			id='simple-menu'
-			anchorEl={anchorEl}
-			keepMounted
-			open={Boolean(anchorEl)}
-			onClose={() => setAnchorEl(null)}
-		>
-			{children}
+		<MaterialMenu {...getMenuProps()}>
+			{Children.map(children, (child) => {
+				return cloneElement(child, {
+					onClick: callAll(() => setAnchorEl(null), child.props.onClick)
+				});
+			})}
 		</MaterialMenu>
 	);
 };

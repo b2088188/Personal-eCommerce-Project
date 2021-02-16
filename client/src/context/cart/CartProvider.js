@@ -19,8 +19,7 @@ const InitialState = {
    totalQuantity: 0,
    shippingAddress: null,
    paymentMethod: null,
-   loading: null,
-   error: null
+   createStatus: null
 };
 
 export function addToCartList(dispatch, item, quantity) {
@@ -99,7 +98,8 @@ const CartProvider = ({ children }) => {
          totalPrice: state.totalPrice,
          totalQuantity: state.totalQuantity,
          shippingAddress: state.shippingAddress,
-         paymentMethod: state.paymentMethod
+         paymentMethod: state.paymentMethod,
+         createStatus: state.createStatus
       }),
       [state]
    );

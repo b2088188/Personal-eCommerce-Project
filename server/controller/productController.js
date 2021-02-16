@@ -32,6 +32,7 @@ export const resizeProductImage = catchAsync(async (req, res, next) => {
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
 	const features = new APIFeatures(Product.find(), req.query).filter().sort().paginate();
+	console.log(req.query.category);
 	const products = await features.query;
 	res.status(200).json({
 		status: 'success',
