@@ -1,9 +1,9 @@
 import * as R from 'ramda';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { queryClient } from 'context';
 import { productRequest } from 'apis/backend';
 
 function useProductItems(category) {
-   const queryClient = useQueryClient();
    const params = category
       ? {
            category
@@ -23,7 +23,7 @@ function useProductItems(category) {
       onSuccess: (products) => {
          //Once getting the product items, insert all results into the product info query
          products.forEach((product) => {
-            queryClient.setQueryData(['productInfo', { productId: product._id }], product);
+            setQueryDataForProductInfo(product);
          });
       }
    });
@@ -32,7 +32,6 @@ function useProductItems(category) {
 }
 
 function useProductSearchItems(q, sort) {
-   const queryClient = useQueryClient();
    const result = useQuery({
       queryKey: ['search-items', { q, sort }],
       queryFn: () =>
@@ -50,7 +49,7 @@ function useProductSearchItems(q, sort) {
       onSuccess: (products) => {
          //Once getting the search items, insert all results into the product info query
          products.forEach((product) => {
-            queryClient.setQueryData(['productInfo', { productId: product._id }], product);
+            setQueryDataForProductInfo(product);
          });
       }
    });
@@ -76,33 +75,36 @@ function useProductInfo(productId) {
    return { ...result, product: result.data };
 }
 
-function useCreateProduct() {
+function useDefaultMutation() {
    const queryClient = useQueryClient();
+   return {
+      onSettled: () => {
+         queryClient.invalidateQueries(['product-items', {}]);
+      }
+   };
+}
+
+function useCreateProduct() {
    const mutation = useMutation(
       ({ formData }) =>
          productRequest.post('/', formData).catch(({ response: { data } }) => {
             throw data;
          }),
       {
-         onSettled: () => {
-            queryClient.invalidateQueries(['product-items', {}]);
-         }
+         ...useDefaultMutation()
       }
    );
    return { ...mutation, create: mutation.mutateAsync };
 }
 
 function useUpdateProduct(productId) {
-   const queryClient = useQueryClient();
    const mutation = useMutation(
       ({ formData }) =>
          productRequest.patch(`/${productId}`, formData).catch(({ response: { data } }) => {
             throw data;
          }),
       {
-         onSettled: () => {
-            queryClient.invalidateQueries(['product-items', {}]);
-         }
+         ...useDefaultMutation()
       }
    );
    return { ...mutation, update: mutation.mutateAsync };
@@ -111,6 +113,7 @@ function useUpdateProduct(productId) {
 function useRemoveProduct(productId) {
    const queryClient = useQueryClient();
    const mutation = useMutation(() => productRequest.delete(`/${productId}`), {
+      ...useDefaultMutation(),
       onMutate: () => {
          queryClient.setQueryData(['product-items', {}], (oldData) => {
             return R.reject((el) => el._id === productId, oldData);
@@ -118,6 +121,10 @@ function useRemoveProduct(productId) {
       }
    });
    return { ...mutation, remove: mutation.mutate };
+}
+
+function setQueryDataForProductInfo(product) {
+   queryClient.setQueryData(['productInfo', { productId: product._id }], product);
 }
 
 export {

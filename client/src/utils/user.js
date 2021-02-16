@@ -33,14 +33,26 @@ function useUserOrders() {
    return { ...result, orders: result.data };
 }
 
+function useDefaultMutationOptions(userId) {
+   const queryClient = useQueryClient();
+   return {
+      onSettled: () => {
+         //queries(userProfile cache) get invalidated and refetched after success or fail
+         queryClient.invalidateQueries(['userProfile', { userId }]);
+      },
+      //The recover argument will be the thing that we return from onMutate function
+      onError: (err, variables, recover) => {
+         // If has an error, then restore the userProfile to previous state
+         if (typeof recover === 'function') recover();
+      }
+   };
+}
+
 function useUpdateUserData() {
    const [{ user }, { setData }] = useAuth();
    const queryClient = useQueryClient();
    const mutation = useMutation((values) => authRequest.patch('/profile', values), {
-      onSettled: () => {
-         //queries(userProfile cache) get invalidated and refetched after success or fail
-         queryClient.invalidateQueries(['userProfile', { userId: user._id }]);
-      },
+      ...useDefaultMutationOptions(user._id),
       //This will fire before mutate function, and receiving same arguments mutate function received.
       onMutate: (values) => {
          const prevUserProfile = queryClient.getQueryData(['userProfile', { userId: user._id }]);
@@ -57,11 +69,6 @@ function useUpdateUserData() {
       },
       onSuccess: ({ data: { data } }) => {
          setData(data.user);
-      },
-      //The recover argument will be the thing that we return from onMutate function
-      onError: (err, variables, recover) => {
-         // If has an error, then restore the userProfile to previous state
-         if (typeof recover === 'function') recover();
       }
    });
    return { ...mutation, updateUserData: mutation.mutateAsync };

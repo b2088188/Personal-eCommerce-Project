@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { colorNormal, colorGrey, setFlex } from 'design/utils';
+import { colorGrey, setFlex } from 'design/utils';
 
 const Spinner = () => {
    return (

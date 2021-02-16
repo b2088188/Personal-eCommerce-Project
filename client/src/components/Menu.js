@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, createContext, Children, cloneElement } from 'react';
+import React, { useState, useContext, createContext, Children, cloneElement } from 'react';
 import { Menu as MaterialMenu, MenuItem } from '@material-ui/core';
 
 const MenuContext = createContext();

@@ -21,7 +21,7 @@ function useOrderItems() {
 					throw data;
 				})
 	});
-	return { ...result, orders: result.data };
+	return { ...result, orders: result.data ?? [] };
 }
 
 function useOrderInfo(orderId) {
@@ -39,7 +39,6 @@ function useOrderInfo(orderId) {
 }
 
 function useCreateOrder() {
-	const queryClient = useQueryClient();
 	const mutation = useMutation((values) =>
 		orderRequest
 			.post('/', values)
@@ -52,7 +51,6 @@ function useCreateOrder() {
 }
 
 function useUpdateOrderToPaid(orderId) {
-	const queryClient = useQueryClient();
 	const mutation = useMutation((values) => orderRequest.patch(`/${orderId}/pay`, values), {
 		...useDefaultMutationOptions(orderId)
 	});
@@ -60,7 +58,6 @@ function useUpdateOrderToPaid(orderId) {
 }
 
 function useUpdateOrderToDeliver(orderId) {
-	const queryClient = useQueryClient();
 	const mutation = useMutation(() => orderRequest.patch(`/${orderId}/deliver`), {
 		...useDefaultMutationOptions(orderId)
 	});

@@ -23,14 +23,20 @@ function useReviewItem(productId) {
 	return reviews?.find((el) => el.user._id === user._id) || null;
 }
 
-function useCreateReview(productId) {
+function useDefaultMutationOptions(productId) {
 	const queryClient = useQueryClient();
+	return {
+		onSettled: () => {
+			queryClient.invalidateQueries(['review-items', { productId }]);
+		}
+	};
+}
+
+function useCreateReview(productId) {
 	const mutation = useMutation(
 		({ rating, review }) => reviewRequest(productId).post('/', { rating, review }),
 		{
-			onSettled: () => {
-				queryClient.invalidateQueries(['review-items', { productId }]);
-			}
+			...useDefaultMutationOptions(productId)
 		}
 	);
 	return { ...mutation, createReview: mutation.mutate };
