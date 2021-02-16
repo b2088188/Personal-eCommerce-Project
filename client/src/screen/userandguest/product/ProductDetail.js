@@ -108,7 +108,7 @@ const ProductDetail = ({ className }) => {
                      <ListGroup bdbottom flexy='center'>
                         <ListGroup.Item width='50'>Status:</ListGroup.Item>
                         <ListGroup.Item>
-                           {product.countInStock > 1 ? 'In Stock' : 'Out of Stock'}
+                           {product.countInStock < 1 ? 'Out of Stock' : 'In Stock'}
                         </ListGroup.Item>
                      </ListGroup>
                      {product.countInStock > 0 ? renderSelect(product.countInStock) : null}
@@ -116,6 +116,8 @@ const ProductDetail = ({ className }) => {
                         <Button
                            onClick={addCartClick(product, selectQty)}
                            className='product__button'
+                           modifiers={product.countInStock < 1 ? 'disabled' : null}
+                           disabled={product.countInStock < 1}
                         >
                            Add To Cart
                         </Button>

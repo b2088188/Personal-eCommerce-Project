@@ -94,6 +94,7 @@ const ProductEdit = ({ location }) => {
                      <Form.Label>Category</Form.Label>
                      <Select ref={register} name='category'>
                         <option value='Electronics'>Electronics</option>
+                        <option value='Life'>Life</option>
                      </Select>
                   </Form.Group>
                   <Form.Group>
@@ -101,6 +102,7 @@ const ProductEdit = ({ location }) => {
                      <Form.Input
                         name='countInStock'
                         type='number'
+                        min='1'
                         ref={register({
                            required: 'Please provide your product count'
                         })}
