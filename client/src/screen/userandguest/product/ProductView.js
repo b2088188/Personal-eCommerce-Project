@@ -1,8 +1,8 @@
 import * as R from 'ramda';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Row, Col, Title, ListGroup } from 'design/components';
-import { media } from 'design/utils';
+import { media, setFlex } from 'design/utils';
 import { FullPageSpinner } from 'components/Spinner';
 import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
@@ -37,13 +37,30 @@ const ProductView = ({ className }) => {
    if (isSuccess)
       return (
          <Row>
-            <Col width='12' className={className}>
-               <div className='products'>
-                  <div className='products__titlebox'>
-                     <Title className='products__title' modifiers='big'>
-                        All Products
-                     </Title>
-                     <div className='products__select'>
+            <Col width='12'>
+               <div
+                  css={`
+                     width: 70%;
+                     min-height: 90%;
+                     margin: 2.5rem auto;
+                     ${setFlex({ direction: 'column', x: 'space-between', y: 'center' })}
+                     ${media.phone(`
+                     min-height: auto;
+                     `)}
+                  `}
+               >
+                  <div
+                     css={`
+                        ${setFlex({ y: 'flex-start' })}
+                        align-self: flex-start;
+                     `}
+                  >
+                     <Title modifiers='big'>All Products</Title>
+                     <div
+                        css={`
+                           margin-left: 1rem;
+                        `}
+                     >
                         <Select
                            name='category'
                            value={filterBy}
@@ -70,29 +87,7 @@ const ProductView = ({ className }) => {
       );
 };
 
-export default styled(ProductView)`
-   .products {
-      width: 70%;
-      min-height: 90%;
-      margin: 2.5rem auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      ${media.phone(`
-         min-height: auto;
-         `)}
-      &__titlebox {
-         align-self: flex-start;
-         display: flex;
-         align-items: flex-start;
-      }
-
-      &__select {
-         margin-left: 1rem;
-      }
-   }
-`;
+export default ProductView;
 
 // <NativeSelect
 //                            value={filterBy}
