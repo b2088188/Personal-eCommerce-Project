@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Link as ReactLink } from 'react-router-dom';
 import { deleteFromCartList, changeQuantity } from 'context/cart/CartProvider';
 import useCart from 'context/cart/cartContext';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { ListGroup, Button, ImageContainer, Image, Link, Select, Icon } from 'design/components';
 import { colorGrey, setBorder } from 'design/utils';
 import { Delete } from '@material-ui/icons';
 import Options from 'components/Options';
 
-const CartItem = ({ item, className }) => {
+const CartItem = ({ item }) => {
    const [, { dispatchCart }] = useCart();
    const [selectQty, setSelectQty] = useState(item.quantity);
 
@@ -24,14 +24,24 @@ const CartItem = ({ item, className }) => {
    }
 
    return (
-      <ListGroup flexy='center' className={className}>
+      <ListGroup flexy='center'>
          <ListGroup.Item width='15' spacing='3'>
             <ImageContainer>
                <Image src={`${process.env.REACT_APP_BACKEND_URL}/${item.image}`} alt={item.name} />
             </ImageContainer>
          </ListGroup.Item>
          <ListGroup.Item width='30' spacing='3'>
-            <Link as={ReactLink} to={`/products/${item.product}`} className='cart__link'>
+            <Link
+               as={ReactLink}
+               to={`/products/${item.product}`}
+               css={`
+                  transition: border-bottom 0.25s;
+                  ${setBorder({ position: 'border-bottom' })}
+                  &:hover {
+                     ${setBorder({ position: 'border-bottom', color: colorGrey.dark2 })}
+                  }
+               `}
+            >
                {item.name}
             </Link>
          </ListGroup.Item>
@@ -45,7 +55,13 @@ const CartItem = ({ item, className }) => {
          </ListGroup.Item>
          <ListGroup.Item>
             <Button
-               className='cart__button--delete'
+               css={`
+                  color: ${colorGrey.light4};
+                  transition: color 0.25s;
+                  &:hover {
+                     color: ${colorGrey.dark2};
+                  }
+               `}
                modifiers={['transparent', 'dark']}
                onClick={deleteFromCart(item.product)}
             >
@@ -56,21 +72,4 @@ const CartItem = ({ item, className }) => {
    );
 };
 
-export default styled(CartItem)`
-   .cart {
-      &__link {
-         transition: border-bottom 0.25s;
-         ${setBorder({ position: 'border-bottom' })}
-         &:hover {
-            ${setBorder({ position: 'border-bottom', color: colorGrey.dark2 })}
-         }
-      }
-      &__button--delete {
-         color: ${colorGrey.light4};
-         transition: color 0.25s;
-         &:hover {
-            color: ${colorGrey.dark2};
-         }
-      }
-   }
-`;
+export default CartItem;
