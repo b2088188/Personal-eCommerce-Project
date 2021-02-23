@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useOrderInfo, useUpdateOrderToPaid } from 'utils/order';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
 	Row,
 	Col,
@@ -23,7 +23,7 @@ import { media } from 'design/utils';
 import formatDate from 'utils/formatDate';
 import axios from 'axios';
 
-const OrderView = ({ className }) => {
+const OrderView = () => {
 	const { orderId } = useParams();
 	const [sdkLoading, setSdkLoading] = useState(false);
 	const [sdkSuccess, setSdkSuccess] = useState(false);
@@ -86,7 +86,9 @@ const OrderView = ({ className }) => {
 				<PayPalButton
 					amount={totalPrice}
 					onSuccess={onSuccessPayHandler}
-					className='order__button'
+					css={`
+						width: 100%;
+					`}
 				/>
 			</ListGroup>
 		);
@@ -96,7 +98,7 @@ const OrderView = ({ className }) => {
 
 	if (isSuccess)
 		return (
-			<Row className={className}>
+			<Row>
 				<Col width='12'>
 					<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
 						<Title modifiers='large'>ORDER {order._id}</Title>
@@ -132,7 +134,22 @@ const OrderView = ({ className }) => {
 									{renderOrderItems(order.orderItems)}
 								</ListGroup>
 							</Col>
-							<Col width='4' spacing='2' className='order__summary'>
+							<Col
+								width='4'
+								spacing='2'
+								css={`
+									${setBorder({})}
+									align-self: flex-start;
+									${media.tabport(`
+									align-self: center;
+									width: 50%;
+									margin: 2rem auto;
+									`)}
+									${media.phone(`
+				width: 90%;
+				`)}
+								`}
+							>
 								<ListGroup>
 									<Title>Order Summary</Title>
 								</ListGroup>
@@ -169,22 +186,4 @@ const OrderView = ({ className }) => {
 		);
 };
 
-export default styled(OrderView)`
-	.order {
-		&__summary {
-			${setBorder({})}
-			align-self: flex-start;
-			${media.tabport(`
-				align-self: center;
-				width: 50%;
-				margin: 2rem auto;
-				`)}
-			${media.phone(`
-				width: 90%;
-				`)}
-		}
-		&__buttton {
-			width: 100%;
-		}
-	}
-`;
+export default OrderView;

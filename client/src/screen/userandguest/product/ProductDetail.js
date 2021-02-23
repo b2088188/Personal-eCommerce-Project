@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
    CenterWrapper,
    Button,
@@ -17,7 +17,7 @@ import ReviewView from '../review/ReviewView';
 import Options from 'components/Options';
 import { FullPageSpinner } from 'components/Spinner';
 import RatingStar from 'components/RatingStar';
-import { media } from 'design/utils';
+import { media, setFlex } from 'design/utils';
 import { useProductInfo } from 'utils/product';
 import useCart from 'context/cart/cartContext';
 import { addToCartList, updateCartItem } from 'context/cart/CartProvider';
@@ -61,8 +61,19 @@ const ProductDetail = ({ className }) => {
    if (isSuccess)
       return (
          <Row className={className}>
-            <CenterWrapper width='70' className='product'>
-               <Button as={Link} to='/' className='product__link'>
+            <CenterWrapper
+               width='70'
+               css={`
+                  ${setFlex({ direction: 'column', y: 'flex-start' })}
+               `}
+            >
+               <Button
+                  as={Link}
+                  to='/'
+                  css={`
+                     margin: 2rem 0;
+                  `}
+               >
                   Go Back
                </Button>
                <Row direction={{ tabport: 'column' }}>
@@ -102,7 +113,13 @@ const ProductDetail = ({ className }) => {
                      <ListGroup bdbottom flexy='center'>
                         <ListGroup.Item width='50'>Price:</ListGroup.Item>
                         <ListGroup.Item>
-                           <Span className='product__span'>${product.price}</Span>
+                           <Span
+                              css={`
+                                 margin-left: 1rem;
+                              `}
+                           >
+                              ${product.price}
+                           </Span>
                         </ListGroup.Item>
                      </ListGroup>
                      <ListGroup bdbottom flexy='center'>
@@ -115,7 +132,9 @@ const ProductDetail = ({ className }) => {
                      <ListGroup bdtop>
                         <Button
                            onClick={addCartClick(product, selectQty)}
-                           className='product__button'
+                           css={`
+                              width: 100%;
+                           `}
                            modifiers={product.countInStock < 1 ? 'disabled' : null}
                            disabled={product.countInStock < 1}
                         >
@@ -132,22 +151,10 @@ const ProductDetail = ({ className }) => {
 
 export default styled(ProductDetail)`
    .product {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
       &__group {
          ${media.tabport(`
             margin-bottom: 5rem;
             `)}
-      }
-      &__link {
-         margin: 2rem 0;
-      }
-      &__span {
-         margin-left: 1rem;
-      }
-      &__button {
-         width: 100%;
       }
    }
 `;

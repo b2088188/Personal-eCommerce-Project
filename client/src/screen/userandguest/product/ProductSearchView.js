@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
    Row,
    Col,
@@ -13,6 +13,7 @@ import {
    Icon,
    Span
 } from 'design/components';
+import { setFlex } from 'design/utils';
 import { FullPageSpinner } from 'components/Spinner';
 import { Menu, MenuItem, MenuOpenButton, MenuContent } from 'components/Menu';
 import { useProductSearchItems } from 'utils/product';
@@ -20,7 +21,7 @@ import ProductItem from './ProductItem';
 import { Pagination } from '@material-ui/lab';
 import { FilterList } from '@material-ui/icons';
 
-const ProductView = ({ className }) => {
+const ProductView = () => {
    const { search } = useLocation();
    const searchParams = new URLSearchParams(search);
    const q = searchParams.get('q');
@@ -56,11 +57,27 @@ const ProductView = ({ className }) => {
 
    if (isSuccess)
       return (
-         <Row className={className}>
+         <Row>
             <Col width='12'>
-               <CenterWrapper width='70' my='2' className='products'>
-                  <Wrapper className='products__titlebox'>
-                     <Title className='products__title' modifiers='big'>
+               <CenterWrapper
+                  width='70'
+                  css={`
+                     margin: 2rem auto;
+                     ${setFlex({ direction: 'column', y: 'center' })}
+                  `}
+               >
+                  <Wrapper
+                     css={`
+                        align-self: flex-start;
+                        margin-bottom: 1rem;
+                     `}
+                  >
+                     <Title
+                        css={`
+                           margin-bottom: 1rem;
+                        `}
+                        modifiers='big'
+                     >
                         Search Results
                      </Title>
                      <Button as={Link} to='/' className='home'>
@@ -69,7 +86,13 @@ const ProductView = ({ className }) => {
 
                      <Menu>
                         <MenuOpenButton>
-                           <Button modifiers='transparent' className='products__button'>
+                           <Button
+                              modifiers='transparent'
+                              css={`
+                                 color: #333;
+                                 margin-left: 1rem;
+                              `}
+                           >
                               <Icon as={FilterList} />
                               <Span>Sort By</Span>
                            </Button>
@@ -95,21 +118,4 @@ const ProductView = ({ className }) => {
       );
 };
 
-export default styled(ProductView)`
-   .products {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      &__titlebox {
-         align-self: flex-start;
-         margin-bottom: 1rem;
-      }
-      &__title {
-         margin-bottom: 1rem;
-      }
-      &__button {
-         color: #333;
-         margin-left: 1rem;
-      }
-   }
-`;
+export default ProductView;

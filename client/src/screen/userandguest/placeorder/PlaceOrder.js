@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import useCart from 'context/cart/cartContext';
 import { useCreateOrder } from 'utils/order';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {
 	CenterWrapper,
 	Row,
@@ -18,7 +18,7 @@ import PlaceOrderItem from './PlaceOrderItem';
 import { Message } from 'components/Message';
 import { AreaSpinner, FullPageSpinner } from 'components/Spinner';
 
-const PlaceOrder = ({ className }) => {
+const PlaceOrder = () => {
 	const [
 		{ cartList, itemsPrice, shippingPrice, totalPrice, shippingAddress, paymentMethod }
 	] = useCart();
@@ -53,7 +53,7 @@ const PlaceOrder = ({ className }) => {
 	if (isSuccess) return <Redirect to={`/order/${order._id}`} />;
 
 	return (
-		<Row className={className}>
+		<Row>
 			<Col width='12'>
 				<CenterWrapper width={{ desktop: '70', tabport: '90' }} my='2'>
 					<Navsteps step1 step2 step3 />
@@ -104,7 +104,12 @@ const PlaceOrder = ({ className }) => {
 								{isLoading ? (
 									<AreaSpinner />
 								) : (
-									<Button onClick={createOrderHandle} className='placeorder__button'>
+									<Button
+										onClick={createOrderHandle}
+										css={`
+											width: 100%;
+										`}
+									>
 										Place Order
 									</Button>
 								)}
@@ -117,10 +122,4 @@ const PlaceOrder = ({ className }) => {
 	);
 };
 
-export default styled(PlaceOrder)`
-	.placeorder {
-		&__button {
-			width: 100%;
-		}
-	}
-`;
+export default PlaceOrder;
