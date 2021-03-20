@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Row, Col } from 'design/components';
 import { Message } from 'components/Message';
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
-	const history = useHistory();
+	const { listen } = useHistory();
 
-	history.listen((location, action) => {
-		if (error) resetErrorBoundary();
-	});
+	useEffect(() => {
+		const unlisten = listen(() => {
+			if (error) resetErrorBoundary();
+		});
+		return () => unlisten();
+	}, [listen]);
 	return (
 		<Row>
 			<Message text={error.message} severity='error' />;
