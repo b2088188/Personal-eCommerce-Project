@@ -1,12 +1,23 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { AuthStateProvider, AuthActionProvider } from './authContext';
-import { useQueryClient } from 'react-query';
 import { useAsync } from 'utils/hooks';
 import { authRequest } from 'apis/backend';
 import { FullPageSpinner } from 'components/Spinner';
+import { queryClient } from 'context';
+
+async function getInitialAuth() {
+   try {
+      const {
+         data: { data }
+      } = await authRequest.get('/');
+      return data.user;
+   } catch (err) {
+      return;
+   }
+}
+const userPromise = getInitialAuth();
 
 const AuthProvider = ({ children }) => {
-   const queryClient = useQueryClient();
    const {
       data: user,
       error,
@@ -20,20 +31,9 @@ const AuthProvider = ({ children }) => {
    } = useAsync();
    const isAdmin = user && user.role === 'admin';
 
-   const getInitialAuth = useCallback(async function () {
-      try {
-         const {
-            data: { data }
-         } = await authRequest.get('/');
-         return data.user;
-      } catch (err) {
-         return;
-      }
-   }, []);
-
    useEffect(() => {
-      run(getInitialAuth());
-   }, [getInitialAuth, run]);
+      run(userPromise);
+   }, [run]);
 
    const login = useCallback(
       async function (values) {
